@@ -1,0 +1,18 @@
+{
+	"name": "mage2pro/2checkout"
+	,"version": "1.0.0"
+	,"description": "The «2Checkout» payment extension."
+	,"type": "magento2-module"
+	,"homepage": "https://code.dmitry-fedyuk.com/m2e/2checkout"
+	,"license": "proprietary"
+	,"authors": [{
+		"name": "Dmitry Fedyuk",
+		"email": "admin@mage2.pro",
+		"homepage": "https://mage2.pro/users/dmitry_fedyuk",
+		"role": "Developer"
+	}]
+	,"require": {
+		"mage2pro/core": "^1.2"
+	}
+	,"autoload": {"files": ["registration.php"], "psr-4": {"Dfe\\TwoCheckout\\": ""}}
+}
