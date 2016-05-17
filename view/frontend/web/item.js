@@ -5,7 +5,7 @@ define ([
 	, 'mage/translate'
 	, 'underscore'
 	,'Dfe_TwoCheckout/API'
-], function(Component, $, df, $t, _, Stripe) {
+], function(Component, $, df, $t, _, TwoCheckout) {
 	'use strict';
 	return Component.extend({
 		defaults: {
@@ -32,8 +32,8 @@ define ([
 		 * return _.keys(this.getCcAvailableTypes())
 		 *
 		 * https://support.stripe.com/questions/which-cards-and-payment-types-can-i-accept-with-stripe
-		 * «Which cards and payment types can I accept with Stripe?
-		 * With Stripe, you can charge almost any kind of credit or debit card:
+		 * «Which cards and payment types can I accept with TwoCheckout?
+		 * With TwoCheckout, you can charge almost any kind of credit or debit card:
 		 * U.S. businesses can accept
 		  		Visa, MasterCard, American Express, JCB, Discover, and Diners Club.
 		 * Australian, Canadian, European, and Japanese businesses can accept
@@ -75,7 +75,7 @@ define ([
 		*/
 		getTitle: function() {
 			var result = this._super();
-			return result + (!this.config('isTest') ? '' : ' [<b>Stripe TEST MODE</b>]');
+			return result + (!this.config('isTest') ? '' : ' [<b>TwoCheckout TEST MODE</b>]');
 		},
 		/**
 		 * 2016-03-02
@@ -83,9 +83,9 @@ define ([
 		*/
 		initialize: function() {
 			this._super();
-			Stripe.setPublishableKey(this.config('publishableKey'));
+			TwoCheckout.setPublishableKey(this.config('publishableKey'));
 			// 2016-03-09
-			// «Mage2.PRO» → «Payment» → «Stripe» → «Prefill the Payment Form with Test Data?»
+			// «Mage2.PRO» → «Payment» → «TwoCheckout» → «Prefill the Payment Form with Test Data?»
 			/** {String|Boolean} */
 			var prefill = this.config('prefill');
 			if (prefill) {
@@ -103,14 +103,14 @@ define ([
 			/**
 			 * 2016-03-07
 			 * https://support.stripe.com/questions/which-cards-and-payment-types-can-i-accept-with-stripe
-			 * Which cards and payment types can I accept with Stripe?
-			 * With Stripe, you can charge almost any kind of credit or debit card:
+			 * Which cards and payment types can I accept with TwoCheckout?
+			 * With TwoCheckout, you can charge almost any kind of credit or debit card:
 			 * U.S. businesses can accept:
 			 * 		Visa, MasterCard, American Express, JCB, Discover, and Diners Club.
 			 * Australian, Canadian, European, and Japanese businesses can accept:
 			 * 		Visa, MasterCard, and American Express.
 			 */
-			Stripe.card.createToken($('form.dfe-2checkout'),
+			TwoCheckout.card.createToken($('form.dfe-2checkout'),
 				/**
 				 * 2016-03-02
 			 	 * @param {Number} status

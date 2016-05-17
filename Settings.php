@@ -4,7 +4,7 @@ use Magento\Framework\App\ScopeInterface;
 class Settings extends \Df\Core\Settings {
 	/**
 	 * 2016-03-15
-	 * «Mage2.PRO» → «Payment» → «Stripe» → «Payment Action for a New Customer»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Payment Action for a New Customer»
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return string
 	 */
@@ -12,7 +12,7 @@ class Settings extends \Df\Core\Settings {
 
 	/**
 	 * 2016-03-15
-	 * «Mage2.PRO» → «Payment» → «Stripe» → «Payment Action for a Returned Customer»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Payment Action for a Returned Customer»
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return string
 	 */
@@ -20,7 +20,7 @@ class Settings extends \Df\Core\Settings {
 
 	/**
 	 * 2016-03-09
-	 * «Mage2.PRO» → «Payment» → «Stripe» → «Description»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Description»
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return string
 	 */
@@ -28,7 +28,7 @@ class Settings extends \Df\Core\Settings {
 
 	/**
 	 * 2016-02-27
-	 * «Mage2.PRO» → «Payment» → «Stripe» → «Enable?»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Enable?»
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return bool
 	 */
@@ -38,14 +38,14 @@ class Settings extends \Df\Core\Settings {
 	 * 2016-03-08
 	 * @return void
 	 */
-	public function init() {\Stripe\Stripe::setApiKey($this->secretKey());}
+	public function init() {\2Checkout\2Checkout::setApiKey($this->secretKey());}
 
 	/** @return bool */
 	public function isMerchantInUS() {return 'US' === $this->account()->{'country'};}
 
 	/**
 	 * 2016-03-14
-	 * «Mage2.PRO» → «Payment» → «Stripe» → «Metadata»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Metadata»
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return string[]
 	 */
@@ -53,7 +53,7 @@ class Settings extends \Df\Core\Settings {
 
 	/**
 	 * 2016-03-09
-	 * «Mage2.PRO» → «Payment» → «Stripe» → «Prefill the Payment Form with Test Data?»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Prefill the Payment Form with Test Data?»
 	 * @see \Dfe\TwoCheckout\Source\Prefill::map()
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return string|false
@@ -71,7 +71,7 @@ class Settings extends \Df\Core\Settings {
 
 	/**
 	 * 2016-03-14
-	 * «Mage2.PRO» → «Payment» → «Stripe» → «Statement for Customer»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Statement for Customer»
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return string[]
 	 */
@@ -87,7 +87,7 @@ class Settings extends \Df\Core\Settings {
 	/**
 	 * 2016-03-08
 	 * https://stripe.com/docs/api/php#retrieve_account
-	 * @return \Stripe\Account
+	 * @return \2Checkout\Account
 	 */
 	private function account() {
 		if (!isset($this->{__METHOD__})) {
@@ -99,7 +99,7 @@ class Settings extends \Df\Core\Settings {
 
 	/**
 	 * 2016-03-02
-	 * «Mage2.PRO» → «Payment» → «Stripe» → «Live Publishable Key»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Publishable Key»
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return string
 	 */
@@ -107,7 +107,7 @@ class Settings extends \Df\Core\Settings {
 
 	/**
 	 * 2016-03-02
-	 * «Mage2.PRO» → «Payment» → «Stripe» → «Live Secret Key»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Secret Key»
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return string
 	 */
@@ -124,7 +124,7 @@ class Settings extends \Df\Core\Settings {
 
 	/**
 	 * 2016-03-02
-	 * «Mage2.PRO» → «Payment» → «Stripe» → «Test Mode?»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Mode?»
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return bool
 	 */
@@ -132,7 +132,7 @@ class Settings extends \Df\Core\Settings {
 
 	/**
 	 * 2016-03-02
-	 * «Mage2.PRO» → «Payment» → «Stripe» → «Test Publishable Key»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Publishable Key»
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return string
 	 */
@@ -140,7 +140,7 @@ class Settings extends \Df\Core\Settings {
 
 	/**
 	 * 2016-03-02
-	 * «Mage2.PRO» → «Payment» → «Stripe» → «Test Secret Key»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Secret Key»
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return string
 	 */

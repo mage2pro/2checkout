@@ -5,7 +5,7 @@ use Dfe\TwoCheckout\Settings as S;
 /**
  * 2016-03-18
  * The controller is for ADVANCED integration:
- * - capturing and refunding payments through the Stripe interface (instead of the Magento interface),
+ * - capturing and refunding payments through the 2Checkout interface (instead of the Magento interface),
  * - reverse notifications about the chargebacks and disputes.
  *
  * 2016-03-27

@@ -9,7 +9,7 @@ var config = {
 	}
 	,shim: {
 		'Dfe_TwoCheckout/API': {
-			exports: 'Stripe'
+			exports: 'TwoCheckout'
 		}
 	}
 };
