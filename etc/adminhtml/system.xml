@@ -1,0 +1,329 @@
+<?xml version='1.0'?>
+<config
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xsi:noNamespaceSchemaLocation='urn:magento:module:Df_Config:etc/system_file.xsd'
+>
+    <system>
+        <section id='df_payment'>
+            <!--
+                2015-09-25
+                1-я и 2-я цифры sortOrder соответствуют порядковому номеру первой буквы модуля
+                в английском алфавите: https://en.wikipedia.org/wiki/English_alphabet
+				3-я и 4-я цифры sortOrder соответствуют порядковому номеру второй буквы модуля
+                в английском алфавите.
+            -->
+            <group
+                id='two_checkout'
+                translate='label'
+                type='text'
+                sortOrder='1920'
+                showInDefault='1'
+                showInWebsite='1'
+                showInStore='1'
+            >
+                <label>Stripe</label>
+                <field
+                    id='enable'
+                    translate='label'
+                    type='Df\Framework\Data\Form\Element\Checkbox'
+                    sortOrder='1'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+                >
+                    <label>Enable?</label>
+					<backend_model>Df\Config\Backend\Checkbox</backend_model>
+                    <comment><![CDATA[Enable the «<a href='https://mage2.pro/c/extensions/stripe'>Stripe</a>» payment extension?]]></comment>
+                </field>
+				<field
+					id='title'
+					translate='label'
+					type='text'
+					sortOrder='2'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Title</label>
+					<comment><![CDATA[It is shown on the checkout screen.]]></comment>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
+					id='test'
+					translate='label'
+					type='Df\Framework\Data\Form\Element\Checkbox'
+					sortOrder='3'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Test Mode?</label>
+					<backend_model>Df\Config\Backend\Checkbox</backend_model>
+					<comment><![CDATA[<a href='https://stripe.com/docs/testing#cards'>test card numbers</a>]]></comment>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
+					id='testSecretKey'
+					translate='label'
+					type='obscure'
+					sortOrder='4'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='0'
+				>
+					<label>Test Secret Key</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/726'>how to get it?</a>]]></comment>
+					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<depends>
+						<field id='enable'>1</field>
+						<field id='test'>1</field>
+					</depends>
+				</field>
+				<field
+					id='testPublishableKey'
+					translate='label'
+					type='text'
+					sortOrder='5'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Test Publishable Key</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/726'>how to get it?</a>]]></comment>
+					<depends>
+						<field id='enable'>1</field>
+						<field id='test'>1</field>
+					</depends>
+				</field>
+				<field
+					id='prefill'
+					translate='label'
+					type='select'
+					sortOrder='6'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Prefill the Payment Form with Test Data?</label>
+					<source_model>Dfe\TwoCheckout\Source\Prefill</source_model>
+					<comment><![CDATA[If you do not want it, then please use the following <a href='https://stripe.com/docs/testing#cards'>test card numbers</a>.]]></comment>
+					<depends>
+						<field id='enable'>1</field>
+						<field id='test'>1</field>
+					</depends>
+				</field>
+				<field
+					id='liveSecretKey'
+					translate='label'
+					type='obscure'
+					sortOrder='7'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='0'
+				>
+					<label>Live Secret Key</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/726'>how to get it?</a>]]></comment>
+					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
+					id='livePublishableKey'
+					translate='label'
+					type='text'
+					sortOrder='8'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Live Publishable Key</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/726'>how to get it?</a>]]></comment>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field 
+					id='webhook' 
+					translate='label' 
+					type='Dfe\TwoCheckout\Element\Webhook'
+					sortOrder='9'
+					showInDefault='1' 
+					showInWebsite='1' 
+					showInStore='1'
+				>
+					<label>Webhook</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/977'>set it in your Stripe account</a>]]></comment>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
+					id='actionForNew'
+					translate='label'
+					type='select'
+					sortOrder='10'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Payment Action for a New Customer</label>
+					<source_model>Dfe\TwoCheckout\Source\Action</source_model>
+					<comment><![CDATA[A customer is regarded as <b>new</b>, if he does not have any order in the «Completed» or «Processing» state.]]></comment>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
+					id='actionForReturned'
+					translate='label'
+					type='select'
+					sortOrder='11'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Payment Action for a Returned Customer</label>
+					<source_model>Dfe\TwoCheckout\Source\Action</source_model>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
+					id='description'
+					translate='label'
+					type='textarea'
+					sortOrder='12'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Description</label>
+					<comment><![CDATA[It will be displayed in the Stripe web interface <a href="https://mage2.pro/t/903">alongside the payment</a>.
+<br/>Note that if you use Stripe to send automatic email receipts to your customers, your receipt emails will include the description of the payment(s) that they are describing.
+<br/>You can use the following variables in the template: <table class='df-note df-definition'><tbody>
+		<tr>
+			<td>{customer.name}</td>
+			<td>Customer name</td>
+		</tr>
+		<tr>
+			<td>{order.id}</td>
+			<td>Order increment ID</td>
+		</tr>
+		<tr>
+			<td>{order.items}</td>
+			<td>Order items</td>
+		</tr>
+		<tr>
+			<td>{store.domain}</td>
+			<td>Store domain name</td>
+		</tr>
+		<tr>
+			<td>{store.name}</td>
+			<td>Store name</td>
+		</tr>
+		<tr>
+			<td>{store.url}</td>
+			<td>Store URL</td>
+		</tr>
+		<tr>
+			<td>{a date expression}</td>
+			<td>The current date.
+			<br/>Use any expression supported by <a href="http://php.net/manual/en/function.date.php#refsect1-function.date-parameters">PHP <code>date()</code></a> function.
+			<br/>Examples:
+            <br/>{y-m} => <i>16-01</i>
+			<br/>{Y-m} => <i>2016-01</i>
+		  	<br/>{Y-M} => <i>2016-Jan</i>
+			</td>
+		</tr>
+</tbody></table>]]></comment>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
+					id='statement'
+					translate='label'
+					type='text'
+					sortOrder='13'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Statement for Customer</label>
+					<comment><![CDATA[An arbitrary string to be displayed on your customer's bank card statement.
+<br/>This may be up to <b>22</b> characters, may not include <b><>"'</b> characters, and will appear on your customer's statement in capital letters.
+<br/>Non-ASCII characters are automatically stripped.]]></comment>
+					<depends><field id='enable'>1</field></depends>
+					<validate>validate-length maximum-length-22</validate>
+				</field>
+				<field
+					id='metadata'
+					translate='label'
+					type='Df\Framework\Data\Form\Element\Multiselect'
+					sortOrder='14'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Metadata</label>
+					<source_model>Dfe\TwoCheckout\Source\Metadata</source_model>
+					<comment><![CDATA[It will be displayed in the Stripe web interface <a href="https://mage2.pro/t/932">alongside the payment</a>.]]></comment>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
+					id='min_order_total'
+					translate='label'
+					type='text'
+					sortOrder='15'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Minimum Order Total</label>
+					<comment><![CDATA[]]></comment>
+					<validate>validate-number validate-greater-than-zero</validate>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
+					id='max_order_total'
+					translate='label'
+					type='text'
+					sortOrder='16'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Maximum Order Total</label>
+					<comment><![CDATA[]]></comment>
+					<validate>validate-number validate-greater-than-zero</validate>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
+					id='country_restriction'
+					translate='label'
+					type='select'
+					sortOrder='17'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Country Restriction</label>
+					<source_model>Df\Config\Source\NoWhiteBlack</source_model>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
+					id='countries'
+					translate='label'
+					type='Df\Framework\Data\Form\Element\Multiselect'
+					sortOrder='18'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='0'
+				>
+					<label>Countries</label>
+					<source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+					<can_be_empty>1</can_be_empty>
+					<depends>
+						<field id='enable'>1</field>
+						<!--
+						 	2016-03-08
+						 	«The negative syntax for the backend config field <depends> condition»
+                            https://mage2.pro/t/329
+						-->
+						<field id='country_restriction' negative='1'>0</field>
+					</depends>
+					<comment><![CDATA[Customers from which countries can (or can not) use the method?]]></comment>
+				</field>				
+            </group>
+        </section>
+    </system>
+</config>
