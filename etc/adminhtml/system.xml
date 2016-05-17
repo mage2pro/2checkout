@@ -21,7 +21,7 @@
                 showInWebsite='1'
                 showInStore='1'
             >
-                <label>Stripe</label>
+                <label>2Checkout</label>
                 <field
                     id='enable'
                     translate='label'
