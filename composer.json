@@ -13,6 +13,7 @@
 	}]
 	,"require": {
 		"mage2pro/core": "^1.2"
+		, "2checkout/2checkout-php": "*"
 	}
 	,"autoload": {"files": ["registration.php"], "psr-4": {"Dfe\\TwoCheckout\\": ""}}
 }
