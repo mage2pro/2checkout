@@ -36,10 +36,24 @@
                     <comment><![CDATA[Enable the «<a href='https://mage2.pro/c/extensions/2checkout'>2Checkout</a>» payment extension?]]></comment>
                 </field>
 				<field
-					id='title'
+					id='accountNumber'
 					translate='label'
 					type='text'
 					sortOrder='2'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Account Number</label>
+					<comment><![CDATA[<a href="https://mage2.pro/t/topic/1629">where to find it</a>?]]></comment>
+					<validate>validate-digits validate-length maximum-length-9 minimum-length-9</validate>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
+					id='title'
+					translate='label'
+					type='text'
+					sortOrder='3'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -52,32 +66,15 @@
 					id='test'
 					translate='label'
 					type='Df\Framework\Data\Form\Element\Checkbox'
-					sortOrder='3'
+					sortOrder='4'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
 				>
-					<label>Test Mode?</label>
+					<label>Sandbox Mode?</label>
 					<backend_model>Df\Config\Backend\Checkbox</backend_model>
-					<comment><![CDATA[<a href='https://stripe.com/docs/testing#cards'>test card numbers</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1631'>test card numbers</a>]]></comment>
 					<depends><field id='enable'>1</field></depends>
-				</field>
-				<field
-					id='testSecretKey'
-					translate='label'
-					type='obscure'
-					sortOrder='4'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='0'
-				>
-					<label>Test Secret Key</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/726'>how to get it?</a>]]></comment>
-					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-					<depends>
-						<field id='enable'>1</field>
-						<field id='test'>1</field>
-					</depends>
 				</field>
 				<field
 					id='testPublishableKey'
@@ -88,8 +85,27 @@
 					showInWebsite='1'
 					showInStore='1'
 				>
-					<label>Test Publishable Key</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/726'>how to get it?</a>]]></comment>
+					<label>Sandbox Publishable Key</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>how to get it?</a>]]></comment>
+					<validate>validate-length maximum-length-36 minimum-length-36</validate>
+					<depends>
+						<field id='enable'>1</field>
+						<field id='test'>1</field>
+					</depends>
+				</field>
+				<field
+					id='testSecretKey'
+					translate='label'
+					type='obscure'
+					sortOrder='6'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='0'
+				>
+					<label>Sandbox Private Key</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>how to get it?</a>]]></comment>
+					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<validate>validate-length maximum-length-36 minimum-length-36</validate>
 					<depends>
 						<field id='enable'>1</field>
 						<field id='test'>1</field>
@@ -99,32 +115,18 @@
 					id='prefill'
 					translate='label'
 					type='select'
-					sortOrder='6'
+					sortOrder='7'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
 				>
 					<label>Prefill the Payment Form with Test Data?</label>
 					<source_model>Dfe\TwoCheckout\Source\Prefill</source_model>
-					<comment><![CDATA[If you do not want it, then please use the following <a href='https://stripe.com/docs/testing#cards'>test card numbers</a>.]]></comment>
+					<comment><![CDATA[If you do not want it, then please use the following <a href='https://mage2.pro/t/1631'>test card numbers</a>.]]></comment>
 					<depends>
 						<field id='enable'>1</field>
 						<field id='test'>1</field>
 					</depends>
-				</field>
-				<field
-					id='liveSecretKey'
-					translate='label'
-					type='obscure'
-					sortOrder='7'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='0'
-				>
-					<label>Live Secret Key</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/726'>how to get it?</a>]]></comment>
-					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-					<depends><field id='enable'>1</field></depends>
 				</field>
 				<field
 					id='livePublishableKey'
@@ -136,14 +138,36 @@
 					showInStore='1'
 				>
 					<label>Live Publishable Key</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/726'>how to get it?</a>]]></comment>
-					<depends><field id='enable'>1</field></depends>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>how to get it?</a>]]></comment>
+					<validate>validate-length maximum-length-36 minimum-length-36</validate>
+					<depends>
+						<field id='enable'>1</field>
+						<field id='test'>0</field>
+					</depends>
+				</field>
+				<field
+					id='liveSecretKey'
+					translate='label'
+					type='obscure'
+					sortOrder='9'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='0'
+				>
+					<label>Live Private Key</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>how to get it?</a>]]></comment>
+					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<validate>validate-length maximum-length-36 minimum-length-36</validate>
+					<depends>
+						<field id='enable'>1</field>
+						<field id='test'>0</field>
+					</depends>
 				</field>
 				<field 
 					id='webhook' 
 					translate='label' 
 					type='Dfe\TwoCheckout\Element\Webhook'
-					sortOrder='9'
+					sortOrder='10'
 					showInDefault='1' 
 					showInWebsite='1' 
 					showInStore='1'
@@ -156,7 +180,7 @@
 					id='actionForNew'
 					translate='label'
 					type='select'
-					sortOrder='10'
+					sortOrder='11'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -170,7 +194,7 @@
 					id='actionForReturned'
 					translate='label'
 					type='select'
-					sortOrder='11'
+					sortOrder='12'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -183,7 +207,7 @@
 					id='description'
 					translate='label'
 					type='textarea'
-					sortOrder='12'
+					sortOrder='13'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -233,7 +257,7 @@
 					id='statement'
 					translate='label'
 					type='text'
-					sortOrder='13'
+					sortOrder='14'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -249,7 +273,7 @@
 					id='metadata'
 					translate='label'
 					type='Df\Framework\Data\Form\Element\Multiselect'
-					sortOrder='14'
+					sortOrder='15'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -263,7 +287,7 @@
 					id='min_order_total'
 					translate='label'
 					type='text'
-					sortOrder='15'
+					sortOrder='16'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -277,7 +301,7 @@
 					id='max_order_total'
 					translate='label'
 					type='text'
-					sortOrder='16'
+					sortOrder='17'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -291,7 +315,7 @@
 					id='country_restriction'
 					translate='label'
 					type='select'
-					sortOrder='17'
+					sortOrder='18'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -304,7 +328,7 @@
 					id='countries'
 					translate='label'
 					type='Df\Framework\Data\Form\Element\Multiselect'
-					sortOrder='18'
+					sortOrder='19'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='0'

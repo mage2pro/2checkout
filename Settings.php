@@ -38,7 +38,7 @@ class Settings extends \Df\Core\Settings {
 	 * 2016-03-08
 	 * @return void
 	 */
-	public function init() {\2Checkout\2Checkout::setApiKey($this->secretKey());}
+	public function init() {\Stripe\Stripe::setApiKey($this->secretKey());}
 
 	/** @return bool */
 	public function isMerchantInUS() {return 'US' === $this->account()->{'country'};}
