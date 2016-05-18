@@ -12,11 +12,11 @@ class ConfigProvider implements ConfigProviderInterface {
 	 */
 	public function getConfig() {
 		return ['payment' => [Method::CODE => [
-			'isActive' => S::s()->enable()
+			'accountNumber' => S::s()->accountNumber()
+			,'isActive' => S::s()->enable()
+			,'isTest' => S::s()->test()
 			,'prefill' => S::s()->prefill()
 			,'publishableKey' => S::s()->publishableKey()
-			,'isTest' => S::s()->test()
-			,'isUS' => S::s()->isMerchantInUS()
 		]]];
 	}
 }

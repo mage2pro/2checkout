@@ -46,7 +46,7 @@
                         <span><!-- ko i18n: 'Credit Card Number'--><!-- /ko --></span>
                     </label>
                     <div class="control">
-                        <input type="number" data-stripe="number" class="input-text" value=""
+                        <input type="number" data="number" class="input-text" value=""
                                data-bind="attr: {
                                     autocomplete: off,
                                     id: getCode() + '_cc_number',
@@ -65,7 +65,7 @@
                         <div class="fields group group-2">
                             <div class="field no-label month">
                                 <div class="control">
-                                    <select data-stripe="exp-month" class="select month"
+                                    <select data="expiryMonth" class="select month"
                                         data-bind="attr: {id: getCode() + '_expiration', 'data-container': getCode() + '-cc-month', 'data-validate': JSON.stringify({required:true, 'validate-cc-exp':'#' + getCode() + '_expiration_yr'})},
                                         enable: true,
                                         options: getCcMonthsValues(),
@@ -78,7 +78,7 @@
                             </div>
                             <div class="field no-label year">
                                 <div class="control">
-                                    <select data-stripe="exp-year" class="select year"
+                                    <select data="expiryYear" class="select year"
                                         data-bind="attr: {id: getCode() + '_expiration_yr', 'data-container': getCode() + '-cc-year', 'data-validate': JSON.stringify({required:true})},
                                         enable: true,
                                         options: getCcYearsValues(),
@@ -99,7 +99,7 @@
                     <div class="control _with-tooltip">
                         <input type="number"
                                class="input-text cvv"
-                               data-stripe="cvc"
+                               data="cvv"
                                value=""
                                data-bind="attr: {id: getCode() + '_cc_cid',
                                title: $t('Card Verification Number'),

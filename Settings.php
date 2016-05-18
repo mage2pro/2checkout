@@ -3,6 +3,14 @@ namespace Dfe\TwoCheckout;
 use Magento\Framework\App\ScopeInterface;
 class Settings extends \Df\Core\Settings {
 	/**
+	 * 2016-05-18
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Account Number»
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return string
+	 */
+	public function accountNumber($s = null) {return $this->v(__FUNCTION__, $s);}
+
+	/**
 	 * 2016-03-15
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Payment Action for a New Customer»
 	 * @param null|string|int|ScopeInterface $s [optional]
@@ -39,9 +47,6 @@ class Settings extends \Df\Core\Settings {
 	 * @return void
 	 */
 	public function init() {\Stripe\Stripe::setApiKey($this->secretKey());}
-
-	/** @return bool */
-	public function isMerchantInUS() {return 'US' === $this->account()->{'country'};}
 
 	/**
 	 * 2016-03-14
@@ -83,19 +88,6 @@ class Settings extends \Df\Core\Settings {
 	 * @return string
 	 */
 	protected function prefix() {return 'df_payment/two_checkout/';}
-
-	/**
-	 * 2016-03-08
-	 * https://stripe.com/docs/api/php#retrieve_account
-	 * @return \2Checkout\Account
-	 */
-	private function account() {
-		if (!isset($this->{__METHOD__})) {
-			$this->init();
-			$this->{__METHOD__} = \Stripe\Account::retrieve();
-		}
-		return $this->{__METHOD__};
-	}
 
 	/**
 	 * 2016-03-02

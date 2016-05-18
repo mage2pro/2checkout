@@ -1,15 +1,6 @@
 var config = {
-	paths: {
-		/**
-		 * 2016-03-02
-		 * Хитрый трюк: «?» позволяет избежать автоматического добаления расширения «.js».
-		 * https://coderwall.com/p/y4vk_q/requirejs-and-external-scripts
-		 */
-		'Dfe_TwoCheckout/API': 'https://js.stripe.com/v2/?1'
-	}
-	,shim: {
-		'Dfe_TwoCheckout/API': {
-			exports: 'TwoCheckout'
-		}
-	}
+	// 2016-05-18
+	// https://www.2checkout.com/documentation/payment-api/create-token
+	paths: {'Dfe_TwoCheckout/API': 'https://www.2checkout.com/checkout/api/2co.min.js'}
+	,shim: {'Dfe_TwoCheckout/API': {exports: 'TCO'}}
 };
