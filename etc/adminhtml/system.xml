@@ -172,8 +172,8 @@
 					showInWebsite='1' 
 					showInStore='1'
 				>
-					<label>Webhook</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/977'>set it in your Stripe account</a>]]></comment>
+					<label>Notifications URL</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/977'>set it in your 2Checkout account</a>]]></comment>
 					<depends><field id='enable'>1</field></depends>
 				</field>
 				<field
