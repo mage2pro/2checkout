@@ -4,11 +4,13 @@ use Magento\Framework\App\ScopeInterface;
 class Settings extends \Df\Core\Settings {
 	/**
 	 * 2016-05-18
-	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Account Number»
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Account Number»
 	 * @param null|string|int|ScopeInterface $s [optional]
 	 * @return string
 	 */
-	public function accountNumber($s = null) {return $this->v(__FUNCTION__, $s);}
+	public function accountNumber($s = null) {
+		return $this->test($s) ? $this->testAccountNumber($s) : $this->liveAccountNumber($s);
+	}
 
 	/**
 	 * 2016-03-15
@@ -83,11 +85,27 @@ class Settings extends \Df\Core\Settings {
 	public function statement($s = null) {return $this->v(__FUNCTION__, $s);}
 
 	/**
+	 * 2016-03-02
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Mode?»
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return bool
+	 */
+	public function test($s = null) {return $this->b(__FUNCTION__, $s);}
+
+	/**
 	 * @override
 	 * @used-by \Df\Core\Settings::v()
 	 * @return string
 	 */
 	protected function prefix() {return 'df_payment/two_checkout/';}
+
+	/**
+	 * 2016-05-18
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Account Number»
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return string
+	 */
+	private function liveAccountNumber($s = null) {return $this->v(__FUNCTION__, $s);}
 
 	/**
 	 * 2016-03-02
@@ -115,12 +133,12 @@ class Settings extends \Df\Core\Settings {
 	}
 
 	/**
-	 * 2016-03-02
-	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Mode?»
+	 * 2016-05-18
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Account Number»
 	 * @param null|string|int|ScopeInterface $s [optional]
-	 * @return bool
+	 * @return string
 	 */
-	public function test($s = null) {return $this->b(__FUNCTION__, $s);}
+	private function testAccountNumber($s = null) {return $this->v(__FUNCTION__, $s);}
 
 	/**
 	 * 2016-03-02

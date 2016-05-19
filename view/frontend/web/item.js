@@ -4,7 +4,7 @@ define ([
 	, 'df'
 	, 'mage/translate'
 	, 'underscore'
-	,'Dfe_TCO/API'
+	,'Dfe_TwoCheckout/API'
 ], function(Component, $, df, $t, _, TCO) {
 	'use strict';
 	return Component.extend({
@@ -37,11 +37,12 @@ define ([
 		 * А изменить этот порядок коротко не получается:
 		 * https://github.com/magento/magento2/blob/487f5f45/app/code/Magento/Payment/Model/CcGenericConfigProvider.php#L105-L124
 		 *
+		 * 2016-05-18
+		 * https://www.2checkout.com/faq#what-payment-methods-does-2checkout-offer-my-customers
+		 *
 		 * @returns {String[]}
 	 	 */
-		getCardTypes: function() {
-			return ['VI', 'MC', 'AE'].concat(!this.config('isUS') ? [] : ['JCB', 'DI', 'DN']);
-		},
+		getCardTypes: function() {return ['VI', 'MC', 'AE', 'JCB', 'DI', 'DN'];},
 		/** @returns {String} */
 		getCode: function() {return this.code;},
 		/**
@@ -79,9 +80,10 @@ define ([
 			 * 2016-05-18
 			 * https://www.2checkout.com/documentation/payment-api/create-token
 			 */
+			debugger;
 			TCO.loadPubKey(this.isTest() ? 'sandbox' : 'production', function() {
-			    // Execute when Public Key is available
-			});​
+				debugger;
+			});
 			// 2016-05-18
 			// «Mage2.PRO» → «Payment» → «2Checkout» → «Prefill the Payment Form with Test Data?»
 			// https://mage2.pro/t/topic/1631
@@ -96,6 +98,9 @@ define ([
 			return this;
 		},
 		pay: function() {
+			/** @type {jQuery} HTMLFormElement */
+			var $form = $('form.dfe-2checkout');
+			debugger;
 			var _this = this;
 			/**
 			 * 2016-05-18
@@ -103,12 +108,14 @@ define ([
 			 */
 			TCO.requestToken(
 				function(data){
+					debugger;
 					// 2016-05-18
 					// https://www.2checkout.com/documentation/payment-api/create-token
 					_this.token = data.response.token.token;
 					_this.placeOrder();
 				},
 				function(data){
+					debugger;
 					_this.messageContainer.addErrorMessage({
 						'message': $t(
 							// 2016-05-18
@@ -123,13 +130,13 @@ define ([
 				},
 				{
 					cvv: $('[data="cvv"]', $form).val()
-					,expiryMonth: $('[data="expiry-month"]', $form).val()
-					,expiryYear: $('[data="expiry-year"]', $form).val()
-					,number: $('[data="card-number"]', $form).val()
+					,expMonth: $('[data="expiryMonth"]', $form).val()
+					,expYear: $('[data="expiryYear"]', $form).val()
+					,ccNo: $('[data="number"]', $form).val()
 					,publishableKey: this.config('publishableKey')
 					,sellerId: this.config('accountNumber')
 				}
-			);​
+			);
 		},
 		/**
 		 * 2016-04-11
