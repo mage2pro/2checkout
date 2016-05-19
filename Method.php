@@ -318,54 +318,11 @@ class Method extends \Df\Payment\Method {
 			/** @var Transaction|false|null $auth */
 			$auth = !$capture ? null : $payment->getAuthorizationTransaction();
 			if ($auth) {
-				// 2016-03-17
-				// https://stripe.com/docs/api#retrieve_charge
-				/** @var \Stripe\Charge $charge */
-				$charge = \Stripe\Charge::retrieve($auth->getTxnId());
-				// 2016-03-17
-				// https://stripe.com/docs/api#capture_charge
-				$charge->capture();
+
 			}
 			else {
-				/** @var \Stripe\Charge $charge */
-				$charge = \Stripe\Charge::create($this->paramsCharge($payment, $amount, $capture));
-				/**
-				 * 2016-03-15
-				 * Информация о банковской карте.
-				 * https://stripe.com/docs/api#charge_object-source
-				 * https://stripe.com/docs/api#card_object
-				 */
-				/** @var \Stripe\Card $card */
-				$card = $charge->{'source'};
-				/**
-				 * 2016-03-15
-				 * https://mage2.pro/t/941
-				 * https://stripe.com/docs/api#card_object-last4
-				 * «How is the \Magento\Sales\Model\Order\Payment's setCcLast4() / getCcLast4() used?»
-				 */
-				$payment->setCcLast4($card->{'last4'});
-				/**
-				 * 2016-03-15
-				 * https://stripe.com/docs/api#card_object-brand
-				 */
-				$payment->setCcType($card->{'brand'});
-				/**
-				 * 2016-03-15
-				 * Иначе операция «void» (отмена авторизации платежа) будет недоступна:
-				 * «How is a payment authorization voiding implemented?»
-				 * https://mage2.pro/t/938
-				 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment.php#L540-L555
-				 * @used-by \Magento\Sales\Model\Order\Payment::canVoid()
-				 */
-				$payment->setTransactionId($charge->id);
-				/**
-				 * 2016-03-15
-				 * Аналогично, иначе операция «void» (отмена авторизации платежа) будет недоступна:
-				 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment.php#L540-L555
-				 * @used-by \Magento\Sales\Model\Order\Payment::canVoid()
-				 * Транзакция ситается завершённой, если явно не указать «false».
-				 */
-				$payment->setIsTransactionClosed($capture);
+				/** @var array(string => mixed) $charge */
+				$charge = Charge::request($payment, $this->iia(self::$TOKEN), $amount);
 			}
 		});
 		return $this;

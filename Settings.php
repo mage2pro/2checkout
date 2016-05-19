@@ -45,10 +45,15 @@ class Settings extends \Df\Core\Settings {
 	public function enable($s = null) {return $this->b(__FUNCTION__, $s);}
 
 	/**
-	 * 2016-03-08
+	 * 2016-05-19
+	 * https://github.com/2Checkout/2checkout-php#credentials-and-options
 	 * @return void
 	 */
-	public function init() {\Stripe\Stripe::setApiKey($this->secretKey());}
+	public function init() {
+		\Twocheckout::privateKey($this->secretKey());
+		\Twocheckout::sellerId($this->accountNumber());
+		\Twocheckout::sandbox($this->test());
+	}
 
 	/**
 	 * 2016-03-14
