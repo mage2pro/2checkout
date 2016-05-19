@@ -64,6 +64,14 @@ class Settings extends \Df\Core\Settings {
 	public function metadata($s = null) {return $this->csv(__FUNCTION__, $s);}
 
 	/**
+	 * 2016-05-20
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Pass an Order Items to the Payment Gateway?»
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return bool
+	 */
+	public function passItems($s = null) {return $this->b(__FUNCTION__, $s);}
+
+	/**
 	 * 2016-03-09
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Prefill the Payment Form with Test Data?»
 	 * @see \Dfe\TwoCheckout\Source\Prefill::map()

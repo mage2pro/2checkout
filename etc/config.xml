@@ -31,6 +31,11 @@ https://github.com/magento/magento2/blob/6ce74b2/app/code/Magento/Sales/Model/Or
 				-->
 				<actionForNew>authorize_capture</actionForNew>
 				<actionForReturned>authorize_capture</actionForReturned>
+				<!--
+				 	2016-05-20
+				 	«Pass an Order Items to the Payment Gateway?»
+				-->
+				<passItems>1</passItems>
 				<title>Bank Card</title>
 				<!-- 2016-03-15 -->
 				<title_backend>2Checkout</title_backend>

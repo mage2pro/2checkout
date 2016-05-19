@@ -62,14 +62,6 @@ class Charge extends \Df\Core\O {
 			,'currency' => $this->currencyCode()
 			/**
 			 * 2016-05-19
-			 * «The Sale Total. Format: 0.00-99999999.99,
-			 * defaults to 0 if a value isn’t passed in or if value is incorrectly formatted,
-			 * no negatives (Only Use if you are not passing in lineItems.)»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			,'total' => $this->amount()
-			/**
-			 * 2016-05-19
 			 * «Object that defines the billing address using the attributes specified below.
 			 * Required. (Passed as a sub object to the Authorization Object.)»
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
@@ -84,6 +76,27 @@ class Charge extends \Df\Core\O {
 			 */
 			,'shippingAddr' => $this->addressA($this->addressShipping())
 		];
+		if (!S::s()->passItems()) {
+			/**
+			 * 2016-05-19
+			 * «The Sale Total. Format: 0.00-99999999.99,
+			 * defaults to 0 if a value isn’t passed in or if value is incorrectly formatted,
+			 * no negatives (Only Use if you are not passing in lineItems.)»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			$result['total'] = $this->amount();
+		}
+		else {
+			/**
+			 * 2016-05-20
+			 * «Array of lineitem objects using the attributes specified below.
+			 * Will be returned in the order that they are passed in.
+			 * (Passed as a sub object to the Authorization Object.)
+			 * (Only Use if you are not passing in total.)»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			$result['lineItems'] = $this->lineItems();
+		}
 		return $result;
 	}
 
@@ -197,14 +210,26 @@ class Charge extends \Df\Core\O {
 	/** @return string */
 	private function currencyCode() {return $this->order()->getBaseCurrencyCode();}
 
+	/**
+	 * 2016-05-20
+	 * «Array of lineitem objects using the attributes specified below.
+	 * Will be returned in the order that they are passed in.
+	 * (Passed as a sub object to the Authorization Object.)
+	 * (Only Use if you are not passing in total.)»
+	 * https://www.2checkout.com/documentation/payment-api/create-sale
+	 * @return array(array(string => mixed))
+	 */
+	private function lineItems() {
+		/** @var array(array(string => mixed))  $result */
+		$result = [];
+		return $result;
+	}
+
 	/** @return Order */
 	private function order() {return $this->payment()->getOrder();}
 
 	/** @return InfoInterface|Info|OrderPayment */
 	private function payment() {return $this[self::$P__PAYMENT];}
-
-	/** @return Store */
-	private function store() {return $this->order()->getStore();}
 
 	/** @return string */
 	private function token() {return $this[self::$P__TOKEN];}
