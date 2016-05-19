@@ -3,6 +3,7 @@ namespace Dfe\TwoCheckout;
 use Dfe\TwoCheckout\Settings as S;
 use Dfe\TwoCheckout\Source\Action;
 use Dfe\TwoCheckout\Source\Metadata;
+use Magento\Payment\Model\Method\AbstractMethod as M;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException as LE;
 use Magento\Payment\Model\Info as I;
@@ -13,21 +14,6 @@ use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\Payment as OP;
 use Magento\Sales\Model\Order\Payment\Transaction;
 class Method extends \Df\Payment\Method {
-	/**
-	 * 2016-03-15
-	 * @override
-	 * @see \Df\Payment\Method::acceptPayment()
-	 * @param II|I|OP $payment
-	 * @return bool
-	 */
-	public function acceptPayment(II $payment) {
-		// 2016-03-15
-		// Напрашивающееся $this->charge($payment) не совсем верно:
-		// тогда не будет создан invoice.
-		$payment->capture();
-		return true;
-	}
-
 	/**
 	 * 2016-03-07
 	 * @override
@@ -73,22 +59,6 @@ class Method extends \Df\Payment\Method {
 	public function canRefundPartialPerInvoice() {return true;}
 
 	/**
-	 * 2016-03-15
-	 * @override
-	 * @see \Df\Payment\Method::canReviewPayment()
-	 * @return bool
-	 */
-	public function canReviewPayment() {return true;}
-
-	/**
-	 * 2016-03-15
-	 * @override
-	 * @see \Df\Payment\Method::canVoid()
-	 * @return bool
-	 */
-	public function canVoid() {return true;}
-
-	/**
 	 * 2016-03-06
 	 * @override
 	 * @see \Df\Payment\Method::capture()
@@ -111,23 +81,21 @@ class Method extends \Df\Payment\Method {
 	}
 
 	/**
-	 * 2016-03-15
-	 * @override
-	 * @see \Df\Payment\Method::denyPayment()
-	 * @param II|I|OP  $payment
-	 * @return bool
-	 */
-	public function denyPayment(II $payment) {return true;}
-
-	/**
-	 * 2016-03-15
+	 * 2016-05-20
+	 * «Once you have passed the token to your server,
+	 * you can use it along with your private key to charge the credit card
+	 * and create a new sale using the authorization API call.
+	 * The authorization will capture and deposit automatically within 48 hours of being placed.»
+	 * https://www.2checkout.com/documentation/payment-api/create-sale
+	 * Я так понял, у них нет двух отдельных режимов authorize и capture.
+	 * Вместо этого у них всегда используется authorize, который через 48 часов
+	 * автоматически превращается в capture.
+	 * Поэтому в Magento я всегда буду помечать транзакцию как capture.
 	 * @override
 	 * @see \Df\Payment\Method::getConfigPaymentAction()
 	 * @return string
 	 */
-	public function getConfigPaymentAction() {
-		return $this->isTheCustomerNew() ? S::s()->actionForNew() : S::s()->actionForReturned();
-	}
+	public function getConfigPaymentAction() {return M::ACTION_AUTHORIZE_CAPTURE;}
 
 	/**
 	 * 2016-03-15
@@ -136,31 +104,6 @@ class Method extends \Df\Payment\Method {
 	 * @return string
 	 */
 	public function getInfoBlockType() {return \Magento\Payment\Block\Info\Cc::class;}
-
-	/**
-	 * 2016-03-15
-	 * @override
-	 * @see \Df\Payment\Method::initialize()
-	 * @param string $paymentAction
-	 * @param object $stateObject
-	 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment.php#L336-L346
-	 * @see \Magento\Sales\Model\Order::isPaymentReview()
-	 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order.php#L821-L832
-	 * @return $this
-	 */
-	public function initialize($paymentAction, $stateObject) {
-		$stateObject['state'] = O::STATE_PAYMENT_REVIEW;
-		return $this;
-	}
-
-	/**
-	 * 2016-03-15
-	 * @override
-	 * @see \Df\Payment\Method::isInitializeNeeded()
-	 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment.php#L2336-L346
-	 * @return bool
-	 */
-	public function isInitializeNeeded() {return Action::REVIEW === $this->getConfigPaymentAction();}
 
 	/**
 	 * 2016-03-15
@@ -187,18 +130,6 @@ class Method extends \Df\Payment\Method {
 	public function setStore($storeId) {
 		parent::setStore($storeId);
 		S::s()->setScope($storeId);
-	}
-
-	/**
-	 * 2016-03-15
-	 * @override
-	 * @see \Df\Payment\Method::void()
-	 * @param II|I|OP $payment
-	 * @return $this
-	 */
-	public function void(II $payment) {
-		$this->_refund($payment);
-		return $this;
 	}
 
 	/**
@@ -315,14 +246,56 @@ class Method extends \Df\Payment\Method {
 	 */
 	private function charge(II $payment, $amount = null, $capture = true) {
 		$this->api(function() use($payment, $amount, $capture) {
-			/** @var Transaction|false|null $auth */
-			$auth = !$capture ? null : $payment->getAuthorizationTransaction();
-			if ($auth) {
-
+			df_assert($capture);
+			/**
+			 * 2016-05-20
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 * https://github.com/2Checkout/2checkout-php/wiki/Charge_Authorize#example-usage
+			 * @var array(string => mixed) $response
+			 */
+			$response = Charge::request($payment, $this->iia(self::$TOKEN), $amount);
+			/**
+			 * 2016-05-20
+			 * «If an error occurs when attempting to authorize the sale,
+			 * such as a processing error or an error in the JSON request,
+			 * the errorCode and errorMsg will be returned in the exception sub object
+			 * in the response body.»
+			 */
+			/** @var array(string => mixed)|null $exception */
+			$exception = dfa($response, 'exception');
+			if ($exception) {
+				df_error(dfa($exception, 'errorMsg'));
 			}
 			else {
-				/** @var array(string => mixed) $charge */
-				$charge = Charge::request($payment, $this->iia(self::$TOKEN), $amount);
+				/** @var array(string => mixed)|null $subResponse */
+				$subResponse = dfa($response, 'response');
+				/**
+				 * 2016-05-20
+				 * https://www.2checkout.com/documentation/payment-api/create-sale
+				 * «Code indicating the result of the authorization attempt.»
+				 */
+				df_assert_eq('APPROVED', dfa($subResponse, 'responseCode'));
+				/**
+				 * 2016-03-15
+				 * Иначе операция «void» (отмена авторизации платежа) будет недоступна:
+				 * «How is a payment authorization voiding implemented?»
+				 * https://mage2.pro/t/938
+				 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment.php#L540-L555
+				 * @used-by \Magento\Sales\Model\Order\Payment::canVoid()
+				 *
+				 * 2016-05-20
+				 * https://www.2checkout.com/documentation/payment-api/create-sale
+				 * «2Checkout Invoice ID»
+				 */
+				$payment->setTransactionId(dfa($subResponse, 'transactionId'));
+				/**
+				 * 2016-03-15
+				 * Аналогично, иначе операция «void» (отмена авторизации платежа) будет недоступна:
+				 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment.php#L540-L555
+				 * @used-by \Magento\Sales\Model\Order\Payment::canVoid()
+				 * Транзакция ситается завершённой, если явно не указать «false».
+				 */
+				$payment->setIsTransactionClosed(true);
 			}
 		});
 		return $this;
@@ -369,214 +342,6 @@ class Method extends \Df\Payment\Method {
 				,"{$label} ({$iso3Base})" => $cm['base_' . $key]
 			]
 		);
-	}
-
-	/**
-	 * 2016-03-17
-	 * @see https://stripe.com/docs/charges
-	 * @param II|I|OP $payment
-	 * @param float|null $amount [optional]
-	 * @param bool|null $capture [optional]
-	 * @return array(string => mixed)
-	 */
-	private function paramsCharge(II $payment, $amount = null, $capture = true) {
-		if (is_null($amount)) {
-			$amount = $payment->getBaseAmountOrdered();
-		}
-		/**
-		 * 2016-03-08
-		 * Я так понимаю:
-		 * *) invoice мы здесь получить не можем
-		 * *) у order ещё нет id, но уже есть incrementId (потому что зарезервирован)
-		 */
-		/** @var \Magento\Sales\Model\Order $order */
-		$order = $payment->getOrder();
-		/** @var \Magento\Store\Model\Store $store */
-		$store = $order->getStore();
-		/** @var string $iso3 */
-		$iso3 = $order->getBaseCurrencyCode();
-		/** @var array(string => string) $vars */
-		$vars = Metadata::vars($store, $order);
-		return [
-			/**
-			 * 2016-03-07
-			 * https://stripe.com/docs/api/php#create_charge-amount
-			 */
-			'amount' => self::amount($payment, $amount)
-			/**
-			 * 2016-03-07
-			 * «optional, default is true
-			 * Whether or not to immediately capture the charge.
-			 * When false, the charge issues an authorization (or pre-authorization),
-			 * and will need to be captured later.
-			 * Uncaptured charges expire in 7 days.
-			 * For more information, see authorizing charges and settling later.»
-			 */
-			,'capture' => $capture
-			/**
-			 * 2016-03-07
-			 * https://stripe.com/docs/api/php#create_charge-currency
-			 * «3-letter ISO code for currency.»
-			 * https://support.stripe.com/questions/which-currencies-does-stripe-support
-			 */
-			,'currency' => $iso3
-			/**
-			 * 2016-03-07
-			 * https://stripe.com/docs/api/php#create_charge-customer
-			 * «The ID of an existing customer that will be charged in this request.»
-			 *
-			 * 2016-03-09
-			 * Пустое значение передавать нельзя:
-			 * «You have passed a blank string for 'customer'.
-			 * You should remove the 'customer' parameter from your request or supply a non-blank value.»
-			 */
-			//,'customer' => ''
-			/**
-			 * 2016-03-07
-			 * https://stripe.com/docs/api/php#create_charge-description
-			 * «An arbitrary string which you can attach to a charge object.
-			 * It is displayed when in the web interface alongside the charge.
-			 * Note that if you use Stripe to send automatic email receipts to your customers,
-			 * your receipt emails will include the description of the charge(s)
-			 * that they are describing.»
-			 *
-			 * 2016-03-08
-			 * Текст может иметь произвольную длину и не обрубается в интерфейсе Stripe.
-			 * https://mage2.pro/t/903
-			 */
-			,'description' => df_var(S::s()->description(), $vars)
-			/**
-			 * 2016-03-07
-			 * https://stripe.com/docs/api/php#create_charge-metadata
-			 * «A set of key/value pairs that you can attach to a charge object.
-			 * It can be useful for storing additional information about the customer
-			 * in a structured format.
-			 * It's often a good idea to store an email address in metadata for tracking later.»
-			 *
-			 * https://stripe.com/docs/api/php#metadata
-			 * «You can have up to 20 keys, with key names up to 40 characters long
-			 * and values up to 500 characters long.»
-			 *
-			 * 2016-03-08
-			 * https://stripe.com/blog/adding-context-with-metadata
-			 * «Adding context with metadata»
-			 */
-			,'metadata' => array_combine(
-				dfa_select(Metadata::s()->map(), S::s()->metadata())
-				,dfa_select($vars, S::s()->metadata())
-			)
-			/**
-			 * 2016-03-07
-			 * https://stripe.com/docs/api/php#create_charge-receipt_email
-			 * «The email address to send this charge's receipt to.
-			 * The receipt will not be sent until the charge is paid.
-			 * If this charge is for a customer,
-			 * the email address specified here will override the customer's email address.
-			 * Receipts will not be sent for test mode charges.
-			 * If receipt_email is specified for a charge in live mode,
-			 * a receipt will be sent regardless of your email settings.»
-			 */
-			,'receipt_email' => null
-			/**
-			 * 2016-03-07
-			 * «Shipping information for the charge.
-			 * Helps prevent fraud on charges for physical goods.»
-			 * https://stripe.com/docs/api/php#charge_object-shipping
-			 */
-			,'shipping' => $this->paramsShipping($payment)
-			/**
-			 * 2016-03-07
-			 * https://stripe.com/docs/api/php#create_charge-source
-			 * «A payment source to be charged, such as a credit card.
-			 * If you also pass a customer ID,
-			 * the source must be the ID of a source belonging to the customer.
-			 * Otherwise, if you do not pass a customer ID,
-			 * the source you provide must either be a token,
-			 * like the ones returned by Stripe.js,
-			 * or a associative array containing a user's credit card details,
-			 * with the options described below.
-			 * Although not all information is required, the extra info helps prevent fraud.»
-			 */
-			,'source' => $this->iia(self::$TOKEN)
-			/**
-			 * 2016-03-07
-			 * «An arbitrary string to be displayed on your customer's credit card statement.
-			 * This may be up to 22 characters.
-			 * As an example, if your website is RunClub
-			 * and the item you're charging for is a race ticket,
-			 * you may want to specify a statement_descriptor of RunClub 5K race ticket.
-			 * The statement description may not include <>"' characters,
-			 * and will appear on your customer's statement in capital letters.
-			 * Non-ASCII characters are automatically stripped.
-			 * While most banks display this information consistently,
-			 * some may display it incorrectly or not at all.»
-			 */
-			,'statement_descriptor' => S::s()->statement()
-		];
-	}
-
-	/**
-	 * 2016-03-15
-	 * @param II|I|OP $payment
-	 * @return array(string => mixed)
-	 */
-	private function paramsShipping(II $payment) {
-		/** @var O $order */
-		$order = $payment->getOrder();
-		/** @var \Magento\Sales\Model\Order\Address|null $ba */
-		$sa = $order->getShippingAddress();
-		/** @var @var array(string => mixed) $shipping */
-		return !$sa ? [] : [
-			// 2016-03-14
-			// Shipping address.
-			// https://stripe.com/docs/api/php#charge_object-shipping-address
-			'address' => [
-				// 2016-03-14
-				// City/Suburb/Town/Village.
-				// https://stripe.com/docs/api/php#charge_object-shipping-address-city
-				'city' => $sa->getCity()
-				// 2016-03-14
-				// 2-letter country code
-				// https://stripe.com/docs/api/php#charge_object-shipping-address-country
-				,'country' => $sa->getCountryId()
-				// 2016-03-14
-				// Address line 1 (Street address/PO Box/Company name)
-				// https://stripe.com/docs/api/php#charge_object-shipping-address-line1
-				,'line1' => $sa->getStreetLine(1)
-				// 2016-03-14
-				// https://stripe.com/docs/api/php#charge_object-shipping-address-line2
-				// Address line 2 (Apartment/Suite/Unit/Building)
-				,'line2' => $sa->getStreetLine(2)
-				// 2016-03-14
-				// Zip/Postal Code
-				// https://stripe.com/docs/api/php#charge_object-shipping-address-postal_code
-				,'postal_code' => $sa->getPostcode()
-				// 2016-03-14
-				// State/Province/County
-				// https://stripe.com/docs/api/php#charge_object-shipping-address-state
-				,'state' => $sa->getRegion()
-			]
-			// 2016-03-14
-			// The delivery service that shipped a physical product,
-			// such as Fedex, UPS, USPS, etc.
-			// https://stripe.com/docs/api/php#charge_object-shipping-carrier
-			,'carrier' => df_order_shipping_title($order)
-			// 2016-03-14
-			// Recipient name.
-			// https://stripe.com/docs/api/php#charge_object-shipping-name
-			,'name' => $sa->getName()
-			// 2016-03-14
-			// Recipient phone (including extension).
-			// https://stripe.com/docs/api/php#charge_object-shipping-phone
-			,'phone' => $sa->getTelephone()
-			// 2016-03-14
-			// The tracking number for a physical product,
-			// obtained from the delivery service.
-			// If multiple tracking numbers were generated for this purchase,
-			// please separate them with commas.
-			// https://stripe.com/docs/api/php#charge_object-shipping-tracking_number
-			,'tracking_number' => $order['tracking_numbers']
-		];
 	}
 
 	/**

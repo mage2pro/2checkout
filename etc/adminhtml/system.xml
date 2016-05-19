@@ -116,10 +116,45 @@
 					</depends>
 				</field>
 				<field
+					id='testUsername'
+					translate='label'
+					type='text'
+					sortOrder='7'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Sandbox API Username</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>how to get it?</a>]]></comment>
+					<validate>required-entry</validate>
+					<depends>
+						<field id='enable'>1</field>
+						<field id='test'>1</field>
+					</depends>
+				</field>
+				<field
+					id='testPassword'
+					translate='label'
+					type='obscure'
+					sortOrder='8'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='0'
+				>
+					<label>Sandbox API Password</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>how to get it?</a>]]></comment>
+					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<validate>required-entry</validate>
+					<depends>
+						<field id='enable'>1</field>
+						<field id='test'>1</field>
+					</depends>
+				</field>
+				<field
 					id='prefill'
 					translate='label'
 					type='select'
-					sortOrder='7'
+					sortOrder='9'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -136,7 +171,7 @@
 					id='liveAccountNumber'
 					translate='label'
 					type='text'
-					sortOrder='8'
+					sortOrder='10'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -154,7 +189,7 @@
 					id='livePublishableKey'
 					translate='label'
 					type='text'
-					sortOrder='9'
+					sortOrder='11'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -171,7 +206,7 @@
 					id='liveSecretKey'
 					translate='label'
 					type='obscure'
-					sortOrder='10'
+					sortOrder='12'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='0'
@@ -185,11 +220,46 @@
 						<field id='test'>0</field>
 					</depends>
 				</field>
+				<field
+					id='liveUsername'
+					translate='label'
+					type='text'
+					sortOrder='13'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Live API Username</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>how to get it?</a>]]></comment>
+					<validate>required-entry</validate>
+					<depends>
+						<field id='enable'>1</field>
+						<field id='test'>0</field>
+					</depends>
+				</field>
+				<field
+					id='livePassword'
+					translate='label'
+					type='obscure'
+					sortOrder='14'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='0'
+				>
+					<label>Live API Password</label>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>how to get it?</a>]]></comment>
+					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<validate>required-entry</validate>
+					<depends>
+						<field id='enable'>1</field>
+						<field id='test'>0</field>
+					</depends>
+				</field>
 				<field 
 					id='webhook' 
 					translate='label' 
 					type='Dfe\TwoCheckout\Element\Webhook'
-					sortOrder='11'
+					sortOrder='15'
 					showInDefault='1' 
 					showInWebsite='1' 
 					showInStore='1'
@@ -199,50 +269,10 @@
 					<depends><field id='enable'>1</field></depends>
 				</field>
 				<field
-					id='passItems'
-					translate='label'
-					type='Df\Framework\Data\Form\Element\Checkbox'
-					sortOrder='12'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
-				>
-					<label>Pass an Order Items to the Payment Gateway?</label>
-					<backend_model>Df\Config\Backend\Checkbox</backend_model>
-					<depends><field id='enable'>1</field></depends>
-				</field>
-				<field
-					id='actionForNew'
-					translate='label'
-					type='select'
-					sortOrder='13'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
-				>
-					<label>Payment Action for a New Customer</label>
-					<source_model>Dfe\TwoCheckout\Source\Action</source_model>
-					<comment><![CDATA[A customer is regarded as <b>new</b>, if he does not have any order in the «Completed» or «Processing» state.]]></comment>
-					<depends><field id='enable'>1</field></depends>
-				</field>
-				<field
-					id='actionForReturned'
-					translate='label'
-					type='select'
-					sortOrder='14'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
-				>
-					<label>Payment Action for a Returned Customer</label>
-					<source_model>Dfe\TwoCheckout\Source\Action</source_model>
-					<depends><field id='enable'>1</field></depends>
-				</field>
-				<field
 					id='description'
 					translate='label'
 					type='textarea'
-					sortOrder='15'
+					sortOrder='16'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -292,7 +322,7 @@
 					id='statement'
 					translate='label'
 					type='text'
-					sortOrder='16'
+					sortOrder='17'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -308,7 +338,7 @@
 					id='metadata'
 					translate='label'
 					type='Df\Framework\Data\Form\Element\Multiselect'
-					sortOrder='17'
+					sortOrder='18'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -322,7 +352,7 @@
 					id='min_order_total'
 					translate='label'
 					type='text'
-					sortOrder='18'
+					sortOrder='19'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -336,7 +366,7 @@
 					id='max_order_total'
 					translate='label'
 					type='text'
-					sortOrder='19'
+					sortOrder='20'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -350,7 +380,7 @@
 					id='country_restriction'
 					translate='label'
 					type='select'
-					sortOrder='20'
+					sortOrder='21'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -363,7 +393,7 @@
 					id='countries'
 					translate='label'
 					type='Df\Framework\Data\Form\Element\Multiselect'
-					sortOrder='21'
+					sortOrder='22'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='0'

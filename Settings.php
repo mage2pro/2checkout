@@ -13,22 +13,6 @@ class Settings extends \Df\Core\Settings {
 	}
 
 	/**
-	 * 2016-03-15
-	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Payment Action for a New Customer»
-	 * @param null|string|int|ScopeInterface $s [optional]
-	 * @return string
-	 */
-	public function actionForNew($s = null) {return $this->v(__FUNCTION__, $s);}
-
-	/**
-	 * 2016-03-15
-	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Payment Action for a Returned Customer»
-	 * @param null|string|int|ScopeInterface $s [optional]
-	 * @return string
-	 */
-	public function actionForReturned($s = null) {return $this->v(__FUNCTION__, $s);}
-
-	/**
 	 * 2016-03-09
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Description»
 	 * @param null|string|int|ScopeInterface $s [optional]
@@ -53,6 +37,8 @@ class Settings extends \Df\Core\Settings {
 		\Twocheckout::privateKey($this->secretKey());
 		\Twocheckout::sellerId($this->accountNumber());
 		\Twocheckout::sandbox($this->test());
+		\Twocheckout::username($this->username());
+		\Twocheckout::password($this->password());
 	}
 
 	/**
@@ -62,14 +48,6 @@ class Settings extends \Df\Core\Settings {
 	 * @return string[]
 	 */
 	public function metadata($s = null) {return $this->csv(__FUNCTION__, $s);}
-
-	/**
-	 * 2016-05-20
-	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Pass an Order Items to the Payment Gateway?»
-	 * @param null|string|int|ScopeInterface $s [optional]
-	 * @return bool
-	 */
-	public function passItems($s = null) {return $this->b(__FUNCTION__, $s);}
 
 	/**
 	 * 2016-03-09
@@ -121,6 +99,14 @@ class Settings extends \Df\Core\Settings {
 	private function liveAccountNumber($s = null) {return $this->v(__FUNCTION__, $s);}
 
 	/**
+	 * 2016-05-20
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live API Password»
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return string
+	 */
+	private function livePassword($s = null) {return $this->p(__FUNCTION__, $s);}
+
+	/**
 	 * 2016-03-02
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Publishable Key»
 	 * @param null|string|int|ScopeInterface $s [optional]
@@ -135,6 +121,23 @@ class Settings extends \Df\Core\Settings {
 	 * @return string
 	 */
 	private function liveSecretKey($s = null) {return $this->p(__FUNCTION__, $s);}
+
+	/**
+	 * 2016-05-20
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live API Username»
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return string
+	 */
+	private function liveUsername($s = null) {return $this->v(__FUNCTION__, $s);}
+
+	/**
+	 * 2016-05-20
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return string
+	 */
+	private function password($s = null) {
+		return $this->test($s) ? $this->testPassword($s) : $this->livePassword($s);
+	}
 
 	/**
 	 * 2016-03-02
@@ -154,6 +157,14 @@ class Settings extends \Df\Core\Settings {
 	private function testAccountNumber($s = null) {return $this->v(__FUNCTION__, $s);}
 
 	/**
+	 * 2016-05-20
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Sandbox API Password»
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return string
+	 */
+	private function testPassword($s = null) {return $this->p(__FUNCTION__, $s);}
+
+	/**
 	 * 2016-03-02
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Publishable Key»
 	 * @param null|string|int|ScopeInterface $s [optional]
@@ -168,6 +179,23 @@ class Settings extends \Df\Core\Settings {
 	 * @return string
 	 */
 	private function testSecretKey($s = null) {return $this->p(__FUNCTION__, $s);}
+
+	/**
+	 * 2016-05-20
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Sandbox API Username»
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return string
+	 */
+	private function testUsername($s = null) {return $this->v(__FUNCTION__, $s);}
+
+	/**
+	 * 2016-05-20
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return string
+	 */
+	private function username($s = null) {
+		return $this->test($s) ? $this->testUsername($s) : $this->liveUsername($s);
+	}
 
 	/** @return $this */
 	public static function s() {static $r; return $r ? $r : $r = df_o(__CLASS__);}

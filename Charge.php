@@ -75,28 +75,23 @@ class Charge extends \Df\Core\O {
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 */
 			,'shippingAddr' => $this->addressA($this->addressShipping())
-		];
-		if (!S::s()->passItems()) {
 			/**
 			 * 2016-05-19
 			 * «The Sale Total. Format: 0.00-99999999.99,
 			 * defaults to 0 if a value isn’t passed in or if value is incorrectly formatted,
 			 * no negatives (Only Use if you are not passing in lineItems.)»
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			$result['total'] = $this->amount();
-		}
-		else {
-			/**
+			 *
 			 * 2016-05-20
+			 * Решил пока не связываться с опцией «lineItems».
 			 * «Array of lineitem objects using the attributes specified below.
 			 * Will be returned in the order that they are passed in.
 			 * (Passed as a sub object to the Authorization Object.)
 			 * (Only Use if you are not passing in total.)»
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 */
-			$result['lineItems'] = $this->lineItems();
-		}
+			,'total' => $this->amount()
+		];
 		return $result;
 	}
 
@@ -105,76 +100,102 @@ class Charge extends \Df\Core\O {
 	 * @param OrderAddress $a
 	 * @return array(mixed => mixed)
 	 */
-	private function addressA(OrderAddress $a) {return [
-		/**
-		 * 2016-05-19
-		 * «Card holder’s name. (128 characters max) Required»
-		 * https://www.2checkout.com/documentation/payment-api/create-sale
-		 */
-		'name' => $a->getName()
-		/**
-		 * 2016-05-19
-		 * «Card holder’s street address. (64 characters max) Required»
-		 * https://www.2checkout.com/documentation/payment-api/create-sale
-		 */
-		,'addrLine1' => $a->getStreetLine(1)
+	private function addressA(OrderAddress $a) {
 		/**
 		 * 2016-05-19
 		 * «Card holder’s street address line 2. (64 characters max)
 		 * Required if “country” value is: CHN, JPN, RUS -
 		 * Optional for all other “country” values.»
 		 * https://www.2checkout.com/documentation/payment-api/create-sale
+		 * https://mail.google.com/mail/u/0/#inbox/154ca839388e9f7d
 		 */
-		,'addrLine2' => $a->getStreetLine(2)
-		/**
-		 * 2016-05-19
-		 * «Card holder’s city. (64 characters max) Required»
-		 * https://www.2checkout.com/documentation/payment-api/create-sale
-		 */
-		,'city' => $a->getCity()
-		/**
-		 * 2016-05-19
-		 * «Card holder’s state. (64 characters max)
-		 * Required if “country” value is ARG, AUS, BGR, CAN, CHN, CYP, EGY, FRA, IND,
-		 * IDN, ITA, JPN, MYS, MEX, NLD, PAN, PHL, POL, ROU, RUS, SRB, SGP, ZAF, ESP,
-		 * SWE, THA, TUR, GBR, USA - Optional for all other “country” values.»
-		 * https://www.2checkout.com/documentation/payment-api/create-sale
-		 */
-		,'state' => 'OH'
-		/**
-		 * 2016-05-19
-		 * «Card holder’s zip. (16 characters max)
-		 * Required if “country” value is ARG, AUS, BGR, CAN, CHN, CYP, EGY, FRA, IND,
-		 * IDN, ITA, JPN, MYS, MEX, NLD, PAN, PHL, POL, ROU, RUS, SRB, SGP, ZAF, ESP,
-		 * SWE, THA, TUR, GBR, USA - Optional for all other “country” values.»
-		 * https://www.2checkout.com/documentation/payment-api/create-sale
-		 */
-		,'zipCode' => $a->getPostcode()
-		/**
-		 * 2016-05-19
-		 * «Card holder’s country. (64 characters max) Required»
-		 * https://www.2checkout.com/documentation/payment-api/create-sale
-		 */
-		,'country' => df_country_ctn($a->getCountryId())
-		/**
-		 * 2016-05-19
-		 * «Card holder’s email. (64 characters max) Required»
-		 * https://www.2checkout.com/documentation/payment-api/create-sale
-		 */
-		,'email' => $this->order()->getCustomerEmail()
-		/**
-		 * 2016-05-19
-		 * «Card holder’s phone. (16 characters max) Optional»
-		 * https://www.2checkout.com/documentation/payment-api/create-sale
-		 */
-		,'phoneNumber' => $a->getTelephone()
-		/**
-		 * 2016-05-19
-		 * «Card holder’s phone extension. (9 characters max) Optional»
-		 * https://www.2checkout.com/documentation/payment-api/create-sale
-		 */
-		, 'phoneExt' => ''
-	];}
+		/** @var string $line1 */
+		/** @var string $line2 */
+		if (!in_array($a->getCountryId(), ['CHN', 'JPN', 'RUS'])) {
+			$line1 = $a->getStreetLine(1);
+			$line2 = $a->getStreetLine(2);
+		}
+		else {
+			/** @var string[] $words */
+			$words = df_clean(df_trim(explode(' ', implode(' ', $a->getStreet()))));
+			/** @var int $wordsCount */
+			$wordsCount = count($words);
+			/** @var int $wordsCount1 */
+			$wordsCount1 = round($wordsCount / 2);
+			$line1 = implode(' ', array_slice($words, 0, $wordsCount1));
+			$line2 = implode(' ', array_slice($words, $wordsCount1));
+		}
+		return [
+			/**
+			 * 2016-05-19
+			 * «Card holder’s name. (128 characters max) Required»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			'name' => $a->getName()
+			/**
+			 * 2016-05-19
+			 * «Card holder’s street address. (64 characters max) Required»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'addrLine1' => $line1
+			/**
+			 * 2016-05-19
+			 * «Card holder’s street address line 2. (64 characters max)
+			 * Required if “country” value is: CHN, JPN, RUS -
+			 * Optional for all other “country” values.»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'addrLine2' => $line2
+			/**
+			 * 2016-05-19
+			 * «Card holder’s city. (64 characters max) Required»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'city' => $a->getCity()
+			/**
+			 * 2016-05-19
+			 * «Card holder’s state. (64 characters max)
+			 * Required if “country” value is ARG, AUS, BGR, CAN, CHN, CYP, EGY, FRA, IND,
+			 * IDN, ITA, JPN, MYS, MEX, NLD, PAN, PHL, POL, ROU, RUS, SRB, SGP, ZAF, ESP,
+			 * SWE, THA, TUR, GBR, USA - Optional for all other “country” values.»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'state' => 'OH'
+			/**
+			 * 2016-05-19
+			 * «Card holder’s zip. (16 characters max)
+			 * Required if “country” value is ARG, AUS, BGR, CAN, CHN, CYP, EGY, FRA, IND,
+			 * IDN, ITA, JPN, MYS, MEX, NLD, PAN, PHL, POL, ROU, RUS, SRB, SGP, ZAF, ESP,
+			 * SWE, THA, TUR, GBR, USA - Optional for all other “country” values.»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'zipCode' => $a->getPostcode()
+			/**
+			 * 2016-05-19
+			 * «Card holder’s country. (64 characters max) Required»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'country' => df_country_ctn($a->getCountryId())
+			/**
+			 * 2016-05-19
+			 * «Card holder’s email. (64 characters max) Required»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'email' => $this->order()->getCustomerEmail()
+			/**
+			 * 2016-05-19
+			 * «Card holder’s phone. (16 characters max) Optional»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'phoneNumber' => $a->getTelephone()
+			/**
+			 * 2016-05-19
+			 * «Card holder’s phone extension. (9 characters max) Optional»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			, 'phoneExt' => ''
+		];
+	}
 
 	/**
 	 * 2016-05-19
@@ -209,21 +230,6 @@ class Charge extends \Df\Core\O {
 
 	/** @return string */
 	private function currencyCode() {return $this->order()->getBaseCurrencyCode();}
-
-	/**
-	 * 2016-05-20
-	 * «Array of lineitem objects using the attributes specified below.
-	 * Will be returned in the order that they are passed in.
-	 * (Passed as a sub object to the Authorization Object.)
-	 * (Only Use if you are not passing in total.)»
-	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 * @return array(array(string => mixed))
-	 */
-	private function lineItems() {
-		/** @var array(array(string => mixed))  $result */
-		$result = [];
-		return $result;
-	}
 
 	/** @return Order */
 	private function order() {return $this->payment()->getOrder();}

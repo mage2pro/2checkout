@@ -80,10 +80,7 @@ define ([
 			 * 2016-05-18
 			 * https://www.2checkout.com/documentation/payment-api/create-token
 			 */
-			debugger;
-			TCO.loadPubKey(this.isTest() ? 'sandbox' : 'production', function() {
-				debugger;
-			});
+			TCO.loadPubKey(this.isTest() ? 'sandbox' : 'production');
 			// 2016-05-18
 			// «Mage2.PRO» → «Payment» → «2Checkout» → «Prefill the Payment Form with Test Data?»
 			// https://mage2.pro/t/topic/1631
