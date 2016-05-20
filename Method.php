@@ -1,8 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout;
 use Dfe\TwoCheckout\Settings as S;
-use Dfe\TwoCheckout\Source\Action;
-use Dfe\TwoCheckout\Source\Metadata;
 use Magento\Payment\Model\Method\AbstractMethod as M;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException as LE;
@@ -260,44 +258,47 @@ class Method extends \Df\Payment\Method {
 			 * such as a processing error or an error in the JSON request,
 			 * the errorCode and errorMsg will be returned in the exception sub object
 			 * in the response body.»
+			 *
+			 * Раньше тут стоял код:
+					$e = dfa($r, 'exception');
+					if ($e) {
+						df_error(dfa($e, 'errorMsg'));
+					}
+			 * Однако он бесполезен и избыточен, потому что в случае сбоя
+			 * библиотека 2Checkout сама взозбуждает исключительную ситуацию:
+			 * @see \Twocheckout_Util::checkError()
+			 * https://github.com/2Checkout/2checkout-php/blob/cbac8da68155b6f557db0da0ac16a48a0faa5400/lib/Twocheckout/Api/TwocheckoutUtil.php#L65-L72
 			 */
-			/** @var array(string => mixed)|null $e */
-			$e = dfa($r, 'exception');
-			if ($e) {
-				df_error(dfa($e, 'errorMsg'));
-			}
-			else {
-				/** @var array(string => mixed)|null $rr */
-				$rr = dfa($r, 'response');
-				/**
-				 * 2016-05-20
-				 * https://www.2checkout.com/documentation/payment-api/create-sale
-				 * «Code indicating the result of the authorization attempt.»
-				 */
-				df_assert_eq('APPROVED', dfa($rr, 'responseCode'));
-				df_assert(is_null(dfa($r, 'validationErrors')));
-				/**
-				 * 2016-03-15
-				 * Иначе операция «void» (отмена авторизации платежа) будет недоступна:
-				 * «How is a payment authorization voiding implemented?»
-				 * https://mage2.pro/t/938
-				 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment.php#L540-L555
-				 * @used-by \Magento\Sales\Model\Order\Payment::canVoid()
-				 *
-				 * 2016-05-20
-				 * https://www.2checkout.com/documentation/payment-api/create-sale
-				 * «2Checkout Invoice ID»
-				 */
-				$payment->setTransactionId(dfa($rr, 'transactionId'));
-				/**
-				 * 2016-03-15
-				 * Аналогично, иначе операция «void» (отмена авторизации платежа) будет недоступна:
-				 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment.php#L540-L555
-				 * @used-by \Magento\Sales\Model\Order\Payment::canVoid()
-				 * Транзакция ситается завершённой, если явно не указать «false».
-				 */
-				$payment->setIsTransactionClosed(true);
-			}
+			/** @var array(string => mixed)|null $rr */
+			$rr = dfa($r, 'response');
+			/**
+			 * 2016-05-20
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 * «Code indicating the result of the authorization attempt.»
+			 */
+			df_assert_eq('APPROVED', dfa($rr, 'responseCode'));
+			df_assert(is_null(dfa($r, 'validationErrors')));
+			/**
+			 * 2016-03-15
+			 * Иначе операция «void» (отмена авторизации платежа) будет недоступна:
+			 * «How is a payment authorization voiding implemented?»
+			 * https://mage2.pro/t/938
+			 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment.php#L540-L555
+			 * @used-by \Magento\Sales\Model\Order\Payment::canVoid()
+			 *
+			 * 2016-05-20
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 * «2Checkout Invoice ID»
+			 */
+			$payment->setTransactionId(dfa($rr, 'transactionId'));
+			/**
+			 * 2016-03-15
+			 * Аналогично, иначе операция «void» (отмена авторизации платежа) будет недоступна:
+			 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment.php#L540-L555
+			 * @used-by \Magento\Sales\Model\Order\Payment::canVoid()
+			 * Транзакция ситается завершённой, если явно не указать «false».
+			 */
+			$payment->setIsTransactionClosed(true);
 		});
 		return $this;
 	}

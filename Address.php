@@ -19,14 +19,31 @@ class Address extends \Df\Core\O {
 	 * 2016-05-20
 	 * «Card holder’s country. (64 characters max) Required»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
+	 *
+	 * Раньше реализация была такой:
+			return
+				$this->a()->getCountryId()
+				? df_country_ctn($this->a()->getCountryId())
+				: $this->visitor()->countryName()
+			;
+	 * Но теперь дибилоид из службы поддержки утверждает,
+	 * что надо передавать 3-символьный код страны.
+	 *
 	 * @return string|null
 	 */
 	private function country() {
-		return
-			$this->a()->getCountryId()
-			? df_country_ctn($this->a()->getCountryId())
-			: $this->visitor()->countryName()
-		;
+		return df_country_2_to_3($this->a()->getCountryId() ?: $this->visitor()->iso2());
+	}
+
+	/**
+	 * 2016-05-20
+	 * @return string
+	 */
+	private function countryIso3() {
+		if (!isset($this->{__METHOD__})) {
+			$this->{__METHOD__} = df_country_2_to_3($this->a()->getCountryId());
+		}
+		return $this->{__METHOD__};
 	}
 
 	/**
@@ -48,7 +65,7 @@ class Address extends \Df\Core\O {
 		if (!isset($this->{__METHOD__})) {
 			/** @var string $line1 */
 			/** @var string $line2 */
-			if (!in_array($this->a()->getCountryId(), ['CHN', 'JPN', 'RUS'])) {
+			if (!in_array($this->countryIso3(), ['CHN', 'JPN', 'RUS'])) {
 				$line1 = $this->a()->getStreetLine(1);
 				$line2 = $this->a()->getStreetLine(2);
 			}
@@ -64,7 +81,7 @@ class Address extends \Df\Core\O {
 			}
 			$this->{__METHOD__} = [$line1, $line2];
 		}
-		return is_null($i) ? $this->{__METHOD__} :  $this->{__METHOD__}[$i + 1];
+		return is_null($i) ? $this->{__METHOD__} :  $this->{__METHOD__}[$i - 1];
 	}
 
 	/** @return O */
@@ -98,7 +115,7 @@ class Address extends \Df\Core\O {
 	 */
 	private function req() {
 		if (!isset($this->{__METHOD__})) {
-			$this->{__METHOD__} = in_array($this->a()->getCountryId(), self::$req);
+			$this->{__METHOD__} = in_array($this->countryIso3(), self::$req);
 		}
 		return $this->{__METHOD__};
 	}
@@ -127,14 +144,16 @@ class Address extends \Df\Core\O {
 	/**
 	 * 2016-05-19
 	 * @param A $oa
+	 * @param bool $isBilling [optional]
 	 * @return array(mixed => mixed)
 	 */
-	public static function build(A $oa) {
+	public static function build(A $oa, $isBilling = false) {
 		/** @var $this $a */
 		$a = new self([self::$P__A => $oa]);
 		/** @var O $o */
 		$o = $oa->getOrder();
-		return [
+		/** @var array(string => string) $result */
+		$result = [
 			/**
 			 * 2016-05-19
 			 * «Card holder’s name. (128 characters max) Required»
@@ -185,25 +204,30 @@ class Address extends \Df\Core\O {
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 */
 			,'country' => $a->country()
-			/**
-			 * 2016-05-19
-			 * «Card holder’s email. (64 characters max) Required»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			,'email' => $o->getCustomerEmail()
-			/**
-			 * 2016-05-19
-			 * «Card holder’s phone. (16 characters max) Optional»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			,'phoneNumber' => $oa->getTelephone()
-			/**
-			 * 2016-05-19
-			 * «Card holder’s phone extension. (9 characters max) Optional»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			, 'phoneExt' => ''
 		];
+		if ($isBilling) {
+			$result += [
+				/**
+				 * 2016-05-19
+				 * «Card holder’s email. (64 characters max) Required»
+				 * https://www.2checkout.com/documentation/payment-api/create-sale
+				 */
+				'email' => $o->getCustomerEmail()
+				/**
+				 * 2016-05-19
+				 * «Card holder’s phone. (16 characters max) Optional»
+				 * https://www.2checkout.com/documentation/payment-api/create-sale
+				 */
+				,'phoneNumber' => $oa->getTelephone()
+				/**
+				 * 2016-05-19
+				 * «Card holder’s phone extension. (9 characters max) Optional»
+				 * https://www.2checkout.com/documentation/payment-api/create-sale
+				 */
+				, 'phoneExt' => ''
+			];
+		}
+		return $result;
 	}
 
 	/** @var string */

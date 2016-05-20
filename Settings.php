@@ -34,20 +34,12 @@ class Settings extends \Df\Core\Settings {
 	 * @return void
 	 */
 	public function init() {
-		\Twocheckout::privateKey($this->secretKey());
-		\Twocheckout::sellerId($this->accountNumber());
 		\Twocheckout::sandbox($this->test());
 		\Twocheckout::username($this->username());
 		\Twocheckout::password($this->password());
+		\Twocheckout::privateKey($this->secretKey());
+		\Twocheckout::sellerId($this->accountNumber());
 	}
-
-	/**
-	 * 2016-03-14
-	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Metadata»
-	 * @param null|string|int|ScopeInterface $s [optional]
-	 * @return string[]
-	 */
-	public function metadata($s = null) {return $this->csv(__FUNCTION__, $s);}
 
 	/**
 	 * 2016-03-09
