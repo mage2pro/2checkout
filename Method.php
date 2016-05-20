@@ -251,9 +251,9 @@ class Method extends \Df\Payment\Method {
 			 * 2016-05-20
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 * https://github.com/2Checkout/2checkout-php/wiki/Charge_Authorize#example-usage
-			 * @var array(string => mixed) $response
+			 * @var array(string => mixed) $r
 			 */
-			$response = Charge::request($payment, $this->iia(self::$TOKEN), $amount);
+			$r = Charge::request($payment, $this->iia(self::$TOKEN), $amount);
 			/**
 			 * 2016-05-20
 			 * «If an error occurs when attempting to authorize the sale,
@@ -261,20 +261,21 @@ class Method extends \Df\Payment\Method {
 			 * the errorCode and errorMsg will be returned in the exception sub object
 			 * in the response body.»
 			 */
-			/** @var array(string => mixed)|null $exception */
-			$exception = dfa($response, 'exception');
-			if ($exception) {
-				df_error(dfa($exception, 'errorMsg'));
+			/** @var array(string => mixed)|null $e */
+			$e = dfa($r, 'exception');
+			if ($e) {
+				df_error(dfa($e, 'errorMsg'));
 			}
 			else {
-				/** @var array(string => mixed)|null $subResponse */
-				$subResponse = dfa($response, 'response');
+				/** @var array(string => mixed)|null $rr */
+				$rr = dfa($r, 'response');
 				/**
 				 * 2016-05-20
 				 * https://www.2checkout.com/documentation/payment-api/create-sale
 				 * «Code indicating the result of the authorization attempt.»
 				 */
-				df_assert_eq('APPROVED', dfa($subResponse, 'responseCode'));
+				df_assert_eq('APPROVED', dfa($rr, 'responseCode'));
+				df_assert(is_null(dfa($r, 'validationErrors')));
 				/**
 				 * 2016-03-15
 				 * Иначе операция «void» (отмена авторизации платежа) будет недоступна:
@@ -287,7 +288,7 @@ class Method extends \Df\Payment\Method {
 				 * https://www.2checkout.com/documentation/payment-api/create-sale
 				 * «2Checkout Invoice ID»
 				 */
-				$payment->setTransactionId(dfa($subResponse, 'transactionId'));
+				$payment->setTransactionId(dfa($rr, 'transactionId'));
 				/**
 				 * 2016-03-15
 				 * Аналогично, иначе операция «void» (отмена авторизации платежа) будет недоступна:
