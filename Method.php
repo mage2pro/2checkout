@@ -98,14 +98,6 @@ class Method extends \Df\Payment\Method {
 	/**
 	 * 2016-03-15
 	 * @override
-	 * @see \Df\Payment\Method::getInfoBlockType()
-	 * @return string
-	 */
-	public function getInfoBlockType() {return \Magento\Payment\Block\Info\Cc::class;}
-
-	/**
-	 * 2016-03-15
-	 * @override
 	 * @see \Df\Payment\Method::refund()
 	 * @param II|I|OP  $payment
 	 * @param float $amount
@@ -138,17 +130,6 @@ class Method extends \Df\Payment\Method {
 	 * @return string[]
 	 */
 	protected function iiaKeys() {return [self::$TOKEN];}
-
-	/**
-	 * 2016-05-06
-	 * https://mage2.pro/t/898/3
-	 * Использовать ли @see \Df\Payment\Block\ConfigurableInfo вместо @see \Df\Payment\Block\Info
-	 * @override
-	 * @see \Df\Payment\Method::useConfigurableBlockInfo()
-	 * @used-by \Df\Payment\Method::getInfoBlockType()
-	 * @return bool
-	 */
-	protected function useConfigurableBlockInfo() {return false;}
 
 	/**
 	 * 2016-03-17
@@ -278,6 +259,8 @@ class Method extends \Df\Payment\Method {
 			 */
 			df_assert_eq('APPROVED', dfa($rr, 'responseCode'));
 			df_assert(is_null(dfa($r, 'validationErrors')));
+			/** @var string $id */
+			$id = dfa($rr, 'transactionId');
 			/**
 			 * 2016-03-15
 			 * Иначе операция «void» (отмена авторизации платежа) будет недоступна:
@@ -290,7 +273,30 @@ class Method extends \Df\Payment\Method {
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 * «2Checkout Invoice ID»
 			 */
-			$payment->setTransactionId(dfa($rr, 'transactionId'));
+			$payment->setTransactionId($id);
+			/**
+			 * 2016-05-20
+			 * https://www.2checkout.com/documentation/api/sales/detail-sale
+			 * https://github.com/2Checkout/2checkout-php/wiki#example-admin-api-usage
+			 * @var array(string => string|mixed)
+			 */
+			$sr = \Twocheckout_Sale::retrieve(['invoice_id' => $id]);
+			//df_log($sr);
+			/** @var array(string => string) $card */
+			$card = dfa_deep($sr, 'sale/customer/pay_method');
+			/**
+			 * 2016-03-15
+			 * https://mage2.pro/t/941
+			 * https://stripe.com/docs/api#card_object-last4
+			 * «How is the \Magento\Sales\Model\Order\Payment's setCcLast4() / getCcLast4() used?»
+			 *
+			 * 2016-05-20
+			 * Мы не можем получить 4 последние цифры карты,
+			 * вместо этого получаем 4 первых и 2 последних.
+			 */
+			df_order_payment_add($payment, dfa_select_ordered($card, [
+				'first_six_digits', 'last_two_digits'
+			]));
 			/**
 			 * 2016-03-15
 			 * Аналогично, иначе операция «void» (отмена авторизации платежа) будет недоступна:

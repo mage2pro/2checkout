@@ -97,7 +97,6 @@ define ([
 		pay: function() {
 			/** @type {jQuery} HTMLFormElement */
 			var $form = $('form.dfe-2checkout');
-			debugger;
 			var _this = this;
 			/**
 			 * 2016-05-18
@@ -105,7 +104,6 @@ define ([
 			 */
 			TCO.requestToken(
 				function(data){
-					debugger;
 					// 2016-05-18
 					// https://www.2checkout.com/documentation/payment-api/create-token
 					_this.token = data.response.token.token;
