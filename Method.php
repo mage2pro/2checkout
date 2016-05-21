@@ -15,30 +15,10 @@ class Method extends \Df\Payment\Method {
 	/**
 	 * 2016-03-07
 	 * @override
-	 * @see \Df\Payment\Method::::authorize()
-	 * @param II|I|OP $payment
-	 * @param float $amount
-	 * @return $this
-	 */
-	public function authorize(II $payment, $amount) {
-		return $this->charge($payment, $amount, $capture = false);
-	}
-
-	/**
-	 * 2016-03-07
-	 * @override
 	 * @see \Df\Payment\Method::canCapture()
 	 * @return bool
 	 */
 	public function canCapture() {return true;}
-
-	/**
-	 * 2016-03-08
-	 * @override
-	 * @see \Df\Payment\Method::canCapturePartial()
-	 * @return bool
-	 */
-	public function canCapturePartial() {return true;}
 
 	/**
 	 * 2016-03-08
@@ -132,7 +112,7 @@ class Method extends \Df\Payment\Method {
 	protected function iiaKeys() {return [self::$TOKEN];}
 
 	/**
-	 * 2016-03-17
+	 * 2016-05-21
 	 * @param II|I|OP $payment
 	 * @param float|null $amount [optional]
 	 * @return void
@@ -148,9 +128,9 @@ class Method extends \Df\Payment\Method {
 			 * Это как раз то, что нам нужно, ведь наш модуль может быть настроен сразу на capture,
 			 * без предварительной транзакции типа «авторизация».
 			 */
-			/** @var Transaction|false $parent */
-			$parent = $payment->getAuthorizationTransaction();
-			if ($parent) {
+			/** @var Transaction $tCapture */
+			$tCapture = $payment->getAuthorizationTransaction();
+			if ($tCapture) {
 				/** @var Creditmemo $cm */
 				$cm = $payment->getCreditmemo();
 				/**
@@ -158,42 +138,64 @@ class Method extends \Df\Payment\Method {
 				 * Credit Memo и Invoice отсутствуют в сценарии Authorize / Capture
 				 * и присутствуют в сценарии Capture / Refund.
 				 */
-				if (!$cm) {
-					$metadata = [];
-				}
-				else {
-					/** @var Invoice $invoice */
-					$invoice = $cm->getInvoice();
-					$metadata = df_clean([
-						'Comment' => $payment->getCreditmemo()->getCustomerNote()
-						,'Credit Memo' => $cm->getIncrementId()
-						,'Invoice' => $invoice->getIncrementId()
-					])
-						+ $this->metaAdjustments($cm, 'positive')
-						+ $this->metaAdjustments($cm, 'negative')
-					;
-				}
-				// 2016-03-16
-				// https://stripe.com/docs/api#create_refund
-				\Stripe\Refund::create(df_clean([
-					// 2016-03-17
-					// https://stripe.com/docs/api#create_refund-amount
-					'amount' => !$amount ? null : self::amount($payment, $amount)
+				df_assert($cm);
+				/** @var Invoice $invoice */
+				$invoice = $cm->getInvoice();
+				$cm->getCustomerNote();
+				$cm->getIncrementId();
+				$invoice->getIncrementId();
+				/**
+				 * 2016-05-21
+				 * https://www.2checkout.com/documentation/api/sales/refund-invoice
+				 * https://github.com/2Checkout/2checkout-php/wiki/Sale_Refund
+				 * https://github.com/2Checkout/2checkout-php/wiki#exceptions
+				 * @var array(string => string) $r
+				 */
+				$r = \Twocheckout_Sale::refund([
+					'invoice_id' => $tCapture->getTxnId()
 					/**
-					 * 2016-03-18
-					 * Хитрый трюк,
-					 * который позволяет нам не заниматься хранением идентификаторов платежей.
-					 * Система уже хранит их в виде «ch_17q00rFzKb8aMux1YsSlBIlW-capture»,
-					 * а нам нужно лишь отсечь суффиксы (Stripe не использует символ «-»).
+					 * 2016-05-21
+					 * «ID representing the reason the refund was issued.
+					 * Required. (values: 1-17 from the following list can be used
+					 * except for 7 as it is for internal use only)»
+					 * https://www.2checkout.com/documentation/api/sales/refund-invoice
+					 * @todo Надо сделать настраиваемым.
+					 * Пока зашито значение «5:	Other».
 					 */
-					,'charge' => df_first(explode('-', $parent->getTxnId()))
-					// 2016-03-17
-					// https://stripe.com/docs/api#create_refund-metadata
-					,'metadata' => $metadata
-					// 2016-03-18
-					// https://stripe.com/docs/api#create_refund-reason
-					,'reason' => 'requested_by_customer'
-				]));
+					,'category' => 5
+					/**
+					 * 2016-05-21
+					 * «Message explaining why the refund was issued.
+					 * Required. May not contain ‘<’ or ‘>’. (5000 character max)»
+					 * https://www.2checkout.com/documentation/api/sales/refund-invoice
+					 * @todo Надо сделать настраиваемым.
+					 * Пока зашито значение «5:	Other».
+					 */
+					,'comment' => df_trim($cm->getCustomerNote()) ?: 'No comments.'
+					/**
+					 * 2016-05-21
+					 * «Currency type of refund amount.
+					 * Can be ‘usd’, ‘vendor’ or ‘customer’. Only required if amount is used.»
+					 * https://www.2checkout.com/documentation/api/sales/refund-invoice
+					 *
+					 * [Payment API / Refund] What do mean «vendor» and «customer» currency codes?
+					 * https://mail.google.com/mail/u/0/#sent/154d347f4c3d79a8
+					 *
+					 * Сначала пытался поставить тут $cm->getBaseCurrencyCode()
+					 * но это неправильно.
+					 */
+					,'currency' => 'vendor'
+					/**
+					 * 2016-05-21
+					 * «The amount to refund.
+					 * Only needed when issuing a partial refund.
+					 * If an amount is not specified,
+					 * the remaining amount for the invoice is assumed.»
+					 * https://www.2checkout.com/documentation/api/sales/refund-invoice
+					 */
+					, 'amount' => $amount
+				]);
+				df_log($r);
 			}
 		});
 	}
@@ -279,6 +281,28 @@ class Method extends \Df\Payment\Method {
 			 * https://www.2checkout.com/documentation/api/sales/detail-sale
 			 * https://github.com/2Checkout/2checkout-php/wiki#example-admin-api-usage
 			 * @var array(string => string|mixed)
+			 *
+			 * 2016-05-21
+			 * Этот запрос в промышленном («live») режиме с включенной опцией «Demo Setting»
+			 * закончится сбоем: «Unable to find record.»
+			 * https://mail.google.com/mail/u/0/#sent/154d2ebd2fddf942
+			 *
+			 * «I try to use a Payment API live mode with the "demo setting" enabled.
+			 * A payment trasaction is succeeded, but the Sale and Invoice are not created,
+			 * and the https://www.2checkout.com/api/sales/detail_sale API does not work.
+			 *
+			 * See the screenshots attached.
+			 *
+			 * Is it normal?
+			 * Is it because of the  "demo setting" or because of my account is not fully registered ("your application is 25% complete")?
+			 * I am developing a redistributable payment extension for Magento 2 ecommerce system.
+			 * So how should a store administrator test my extension? Shoud it register a Sandbox account for testing?
+			 * Or is any possibility to make full testing with a live account
+			 * ("full" - I mean: 1) sale, 2) get sale details. 3) refund).»
+			 *
+			 * Кстати, включена ли опция «Demo Setting»
+			 * мы можем узнать посредством API:
+			 * https://www.2checkout.com/documentation/api/account/detail-company-info
 			 */
 			$sr = \Twocheckout_Sale::retrieve(['invoice_id' => $id]);
 			//df_log($sr);
@@ -313,49 +337,6 @@ class Method extends \Df\Payment\Method {
 			$payment->setIsTransactionClosed(true);
 		});
 		return $this;
-	}
-
-	/**
-	 * 2016-03-18
-	 * @param Creditmemo $cm
-	 * @param string $type
-	 * @return array(string => float)
-	 */
-	private function metaAdjustments(Creditmemo $cm, $type) {
-		/** @var string $iso3Base */
-		$iso3Base = $cm->getBaseCurrencyCode();
-		/** @var string $iso3 */
-		$iso3 = $cm->getOrderCurrencyCode();
-		/** @var bool $multiCurrency */
-		$multiCurrency = $iso3Base !== $iso3;
-		/**
-		 * 2016-03-18
-		 * @uses \Magento\Sales\Api\Data\CreditmemoInterface::ADJUSTMENT_POSITIVE
-		 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Api/Data/CreditmemoInterface.php#L32-L35
-		 * @uses \Magento\Sales\Api\Data\CreditmemoInterface::ADJUSTMENT_NEGATIVE
-		 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Api/Data/CreditmemoInterface.php#L72-L75
-		 */
-		/** @var string $key */
-		$key = 'adjustment_' . $type;
-		/** @var float $a */
-		$a = $cm[$key];
-		/** @var string $label */
-		$label = ucfirst($type) . ' Adjustment';
-		return !$a ? [] : (
-			!$multiCurrency
-			? [$label => $a]
-			: [
-				"{$label} ({$iso3})" => $a
-				/**
-				 * 2016-03-18
-				 * @uses \Magento\Sales\Api\Data\CreditmemoInterface::BASE_ADJUSTMENT_POSITIVE
-				 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Api/Data/CreditmemoInterface.php#L112-L115
-				 * @uses \Magento\Sales\Api\Data\CreditmemoInterface::BASE_ADJUSTMENT_NEGATIVE
-				 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Api/Data/CreditmemoInterface.php#L56-L59
-				 */
-				,"{$label} ({$iso3Base})" => $cm['base_' . $key]
-			]
-		);
 	}
 
 	/**
