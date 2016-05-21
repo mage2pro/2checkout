@@ -35,7 +35,7 @@ https://mage2.pro/t/903
 				 	2016-05-06
 				 	По аналогии с https://mage2.pro/t/topic/898/3
 				-->
-				<paymentInfoKeys>first_six_digits,last_two_digits</paymentInfoKeys>
+				<paymentInfoKeys></paymentInfoKeys>
 				<privateInfoKeys></privateInfoKeys>
             </dfe_two_checkout>
         </payment>

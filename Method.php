@@ -282,8 +282,10 @@ class Method extends \Df\Payment\Method {
 			 */
 			$sr = \Twocheckout_Sale::retrieve(['invoice_id' => $id]);
 			//df_log($sr);
+			/** @var array(string => string|array) $sale */
+			$sale = dfa($sr, 'sale');
 			/** @var array(string => string) $card */
-			$card = dfa_deep($sr, 'sale/customer/pay_method');
+			$card = dfa_deep($sale, 'customer/pay_method');
 			/**
 			 * 2016-03-15
 			 * https://mage2.pro/t/941
@@ -296,7 +298,11 @@ class Method extends \Df\Payment\Method {
 			 */
 			df_order_payment_add($payment, dfa_select_ordered($card, [
 				'first_six_digits', 'last_two_digits'
-			]));
+			]) + [
+				'sale_id' => dfa($sale, 'sale_id')
+				,'sandbox' => S::s()->test()
+			]);
+			$payment->unsAdditionalInformation(self::$TOKEN);
 			/**
 			 * 2016-03-15
 			 * Аналогично, иначе операция «void» (отмена авторизации платежа) будет недоступна:
