@@ -13,15 +13,9 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 	protected function _prepareSpecificInformation($transport = null) {
 		/** @var DataObject $result */
 		$result = parent::_prepareSpecificInformation($transport);
-		$result->addData([
-			'Card Number' => implode('********', $this->iia('first_six_digits', 'last_two_digits'))
-		]);
+		/** @var bool $sandbox */
+		$sandbox = $this->iia('sandbox');
 		if (!$this->getIsSecureMode()) {
-			/** @var bool $sandbox */
-			$sandbox = $this->iia('sandbox');
-			if ($sandbox) {
-				$result->setData('Mode', 'Sandbox');
-			}
 			$result->setData('Sale', df_tag('a', [
 				'target' => '_blank', 'href' =>
 					(
@@ -30,6 +24,14 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 						: 'https://www.2checkout.com/va/'
 					) . 'sales/detail?sale_id=' . $this->iia('sale_id')
 			], $this->iia('sale_id')));
+		}
+		$result->addData([
+			'Card Number' => implode('********', $this->iia('first_six_digits', 'last_two_digits'))
+		]);
+		if (!$this->getIsSecureMode()) {
+			if ($sandbox) {
+				$result->setData('Mode', 'Sandbox');
+			}
 		}
 		return $result;
 	}

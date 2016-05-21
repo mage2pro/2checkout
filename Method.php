@@ -141,9 +141,9 @@ class Method extends \Df\Payment\Method {
 				df_assert($cm);
 				/** @var Invoice $invoice */
 				$invoice = $cm->getInvoice();
-				$cm->getCustomerNote();
-				$cm->getIncrementId();
-				$invoice->getIncrementId();
+				//$cm->getCustomerNote();
+				//$cm->getIncrementId();
+				//$invoice->getIncrementId();
 				/**
 				 * 2016-05-21
 				 * https://www.2checkout.com/documentation/api/sales/refund-invoice
@@ -161,6 +161,11 @@ class Method extends \Df\Payment\Method {
 					 * https://www.2checkout.com/documentation/api/sales/refund-invoice
 					 * @todo Надо сделать настраиваемым.
 					 * Пока зашито значение «5:	Other».
+					 *
+					 * В личном кабинете магазина в 2Сheckout этот параметр никак не отображается.
+					 * Спросил у техподдержки, для чего он:
+					 * «[Payment API] How is a refund's «category» parameter used?»
+					 * https://mail.google.com/mail/u/0/#sent/154d4e34743cb87f
 					 */
 					,'category' => 5
 					/**
@@ -168,10 +173,23 @@ class Method extends \Df\Payment\Method {
 					 * «Message explaining why the refund was issued.
 					 * Required. May not contain ‘<’ or ‘>’. (5000 character max)»
 					 * https://www.2checkout.com/documentation/api/sales/refund-invoice
-					 * @todo Надо сделать настраиваемым.
-					 * Пока зашито значение «5:	Other».
+					 *
+					 * Комментарий отображается в личном кабинете магазина в 2Checkout.
+					 *
+					 * Переносы строк пока в комментариях не сохраняются:
+					 * https://mail.google.com/mail/u/0/#sent/154d4d9e86de1576
+					 * «Is any way to preserve line breaks for a sale comments?»
+					 * Но всё равно их добавляем:
+					 * вдруг в будущем появится возможность их сохранения.
+					 *
+					 * Идеально было бы вообще ставить ссылку на документ-возврат
+					 * в интернет-магазине. Но теги тем более не сохраняются.
+					 * Если они добавят поддержку переносов строк, то попрошу их и о тегах.
 					 */
-					,'comment' => df_trim($cm->getCustomerNote()) ?: 'No comments.'
+					,'comment' => df_cc_n(
+						df_trim($cm->getCustomerNote())
+						,'Credit Memo: ' . $cm->getIncrementId()
+					)
 					/**
 					 * 2016-05-21
 					 * «Currency type of refund amount.

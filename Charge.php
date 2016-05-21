@@ -91,6 +91,7 @@ class Charge extends \Df\Core\O {
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 */
 			,'total' => $this->amount()
+			,'custom_username' => $this->order()->getIncrementId()
 		];
 		return $result;
 	}
