@@ -1,5 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout;
+use Dfe\TwoCheckout\Block\Info as InfoBlock;
 use Dfe\TwoCheckout\Settings as S;
 use Magento\Payment\Model\Method\AbstractMethod as M;
 use Magento\Framework\DataObject;
@@ -139,11 +140,6 @@ class Method extends \Df\Payment\Method {
 				 * и присутствуют в сценарии Capture / Refund.
 				 */
 				df_assert($cm);
-				/** @var Invoice $invoice */
-				$invoice = $cm->getInvoice();
-				//$cm->getCustomerNote();
-				//$cm->getIncrementId();
-				//$invoice->getIncrementId();
 				/**
 				 * 2016-05-21
 				 * https://www.2checkout.com/documentation/api/sales/refund-invoice
@@ -188,7 +184,7 @@ class Method extends \Df\Payment\Method {
 					 */
 					,'comment' => df_cc_n(
 						df_trim($cm->getCustomerNote())
-						,'Credit Memo: ' . $cm->getIncrementId()
+						,'Magento Credit Memo: ' . $cm->getIncrementId()
 					)
 					/**
 					 * 2016-05-21
@@ -213,7 +209,17 @@ class Method extends \Df\Payment\Method {
 					 */
 					, 'amount' => $amount
 				]);
-				df_log($r);
+				/**
+				 * 2016-05-22
+				 * Используем addCommitCallback, потому что нам нужен идентификатор возврата,
+				 * а в этой точке программы возврат ещё не имеет идентификатора.
+				 */
+				$cm->getResource()->addCommitCallback(function() use($cm, $payment) {
+					\Twocheckout_Sale::comment([
+						'sale_id' => $payment->getAdditionalInformation(InfoBlock::SALE_ID)
+						, 'sale_comment' => df_credit_memo_backend_url($cm->getId())
+					]);
+				});
 			}
 		});
 	}
@@ -279,8 +285,24 @@ class Method extends \Df\Payment\Method {
 			 */
 			df_assert_eq('APPROVED', dfa($rr, 'responseCode'));
 			df_assert(is_null(dfa($r, 'validationErrors')));
-			/** @var string $id */
+			/**
+			 * 2016-05-21
+			 * Идентификатор документа-invoice в 2Checkout.
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 * Обратите внимание, что он отличается
+			 * от идентификатора документа-sale в 2Checkout.
+			 * @var string $id
+			 */
 			$id = dfa($rr, 'transactionId');
+			/**
+			 * 2016-05-21
+			 * Идентификатор документа-sale в 2Checkout.
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 * Обратите внимание, что он отличается
+			 * от идентификатора документа-invoice в 2Checkout.
+			 * @var string $saleId
+			 */
+			$saleId = dfa($rr, 'orderNumber');
 			/**
 			 * 2016-03-15
 			 * Иначе операция «void» (отмена авторизации платежа) будет недоступна:
@@ -339,9 +361,17 @@ class Method extends \Df\Payment\Method {
 			 * вместо этого получаем 4 первых и 2 последних.
 			 */
 			df_order_payment_add($payment, dfa_select_ordered($card, [
-				'first_six_digits', 'last_two_digits'
+				InfoBlock::CARD_F6, InfoBlock::CARD_L2
 			]) + [
-				'sale_id' => dfa($sale, 'sale_id')
+				/**
+				 * 2016-05-21
+				 * Идентификатор документа-sale в 2Checkout.
+				 * https://www.2checkout.com/documentation/payment-api/create-sale
+				 * Обратите внимание, что он отличается
+				 * от идентификатора документа-invoice в 2Checkout.
+				 * Его также можно получить посредством dfa($sale, 'sale_id')
+				 */
+				InfoBlock::SALE_ID => $saleId
 				,'sandbox' => S::s()->test()
 			]);
 			$payment->unsAdditionalInformation(self::$TOKEN);
@@ -353,6 +383,33 @@ class Method extends \Df\Payment\Method {
 			 * Транзакция ситается завершённой, если явно не указать «false».
 			 */
 			$payment->setIsTransactionClosed(true);
+			/**
+			 * 2016-05-21
+			 * Пока не знаю, как передавать нестандартные параметры нормальным способом.
+			 * Похоже, для Payment API такой возможности пока нет.
+			 * https://mail.google.com/mail/u/0/#sent/154d5138c541ed85
+			 * Вариант 'x_custom_username' => $this->order()->getIncrementId()
+			 * у меня не работает.
+			 *
+			 * Поэтому для удобства администратора указываем в комментарии к заказу в 2Checkout
+			 * номер заказа в Magento.
+			 * https://www.2checkout.com/documentation/api/sales/create-comment
+			 */
+			/**
+			 * 2016-05-22
+			 * Используем addCommitCallback, потому что нам нужен идентификатор заказа,
+			 * а в этой точке программы (в момент платежа) заказ ещё не имеет идентификатора.
+			 */
+			$this->o()->getResource()->addCommitCallback(function() use($saleId) {
+				\Twocheckout_Sale::comment([
+					'sale_id' => $saleId
+					, 'sale_comment' => implode(' ', [
+						'Magento Order:'
+						, $this->o()->getIncrementId()
+						, df_order_backend_url($this->o()->getId())
+					])
+				]);
+			});
 		});
 		return $this;
 	}

@@ -91,7 +91,14 @@ class Charge extends \Df\Core\O {
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 */
 			,'total' => $this->amount()
-			,'custom_username' => $this->order()->getIncrementId()
+			/**
+			 * 2016-05-21
+			 * Пока не знаю, как передавать нестандартные параметры.
+			 * Похоже, для Payment API такой возможности пока нет.
+			 * https://mail.google.com/mail/u/0/#sent/154d5138c541ed85
+			 * Вариант 'x_custom_username' => $this->order()->getIncrementId()
+			 * у меня не работает.
+			 */
 		];
 		return $result;
 	}

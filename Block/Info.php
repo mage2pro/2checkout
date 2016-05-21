@@ -22,11 +22,11 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 						$sandbox
 						? 'https://sandbox.2checkout.com/sandbox/'
 						: 'https://www.2checkout.com/va/'
-					) . 'sales/detail?sale_id=' . $this->iia('sale_id')
+					) . 'sales/detail?sale_id=' . $this->iia(self::SALE_ID)
 			], $this->iia('sale_id')));
 		}
 		$result->addData([
-			'Card Number' => implode('********', $this->iia('first_six_digits', 'last_two_digits'))
+			'Card Number' => implode('********', $this->iia(self::CARD_F6, self::CARD_L2))
 		]);
 		if (!$this->getIsSecureMode()) {
 			if ($sandbox) {
@@ -35,6 +35,30 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 		}
 		return $result;
 	}
+
+	/**
+	 * 2016-05-21
+	 * @used-by \Dfe\TwoCheckout\Method::charge()
+	 * @used-by \Dfe\TwoCheckout\Block\Info::_prepareSpecificInformation()
+	 */
+	const CARD_F6 = 'first_six_digits';
+
+	/**
+	 * 2016-05-21
+	 * @used-by \Dfe\TwoCheckout\Method::charge()
+	 * @used-by \Dfe\TwoCheckout\Block\Info::_prepareSpecificInformation()
+	 */
+	const CARD_L2 = 'last_two_digits';
+
+	/**
+	 * 2016-05-21
+	 * Идентификатор документа-sale в 2Checkout.
+	 * https://www.2checkout.com/documentation/payment-api/create-sale
+	 * Обратите внимание, что он отличается от идентификатора документа-invoice в 2Checkout.
+	 * @used-by \Dfe\TwoCheckout\Method::charge()
+	 * @used-by \Dfe\TwoCheckout\Block\Info::_prepareSpecificInformation()
+	 */
+	const SALE_ID = 'sale_id';
 }
 
 
