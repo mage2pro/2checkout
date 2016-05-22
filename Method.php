@@ -41,7 +41,6 @@ class Method extends \Df\Payment\Method {
 	 * 2016-03-06
 	 * @override
 	 * @see \Df\Payment\Method::capture()
-	 * @see https://stripe.com/docs/charges
 	 *
 	 * $amount содержит значение в учётной валюте системы.
 	 * https://github.com/magento/magento2/blob/6ce74b2/app/code/Magento/Sales/Model/Order/Payment/Operations/CaptureOperation.php#L37-L37
@@ -53,9 +52,7 @@ class Method extends \Df\Payment\Method {
 	 * @throws \Stripe\Error\Card
 	 */
 	public function capture(II $payment, $amount) {
-		if (!$payment[self::WEBHOOK_CASE]) {
-			$this->charge($payment, $amount);
-		}
+		$this->charge($payment, $amount);
 		return $this;
 	}
 
@@ -145,9 +142,8 @@ class Method extends \Df\Payment\Method {
 				 * https://www.2checkout.com/documentation/api/sales/refund-invoice
 				 * https://github.com/2Checkout/2checkout-php/wiki/Sale_Refund
 				 * https://github.com/2Checkout/2checkout-php/wiki#exceptions
-				 * @var array(string => string) $r
 				 */
-				$r = \Twocheckout_Sale::refund([
+				\Twocheckout_Sale::refund([
 					'invoice_id' => $tCapture->getTxnId()
 					/**
 					 * 2016-05-21
@@ -420,7 +416,7 @@ class Method extends \Df\Payment\Method {
 	 * @used-by \Dfe\TwoCheckout\Method::refund()
 	 * @used-by \Dfe\TwoCheckout\Handler\Charge::payment()
 	 */
-	const WEBHOOK_CASE = 'dfe_already_done';
+	const WEBHOOK_CASE = 'dfe_webhook_case';
 
 	/**
 	 * 2016-02-29
@@ -433,46 +429,4 @@ class Method extends \Df\Payment\Method {
 	 * @var string
 	 */
 	private static $TOKEN = 'token';
-
-	/**
-	 * 2016-03-07
-	 * https://stripe.com/docs/api/php#create_charge-amount
-	 * «A positive integer in the smallest currency unit
-	 * (e.g 100 cents to charge $1.00, or 1 to charge ¥1, a 0-decimal currency)
-	 * representing how much to charge the card.
-	 * The minimum amount is $0.50 (or equivalent in charge currency).»
-	 *
-	 * «Zero-decimal currencies»
-	 * https://support.stripe.com/questions/which-zero-decimal-currencies-does-stripe-support
-	 * Here is the full list of zero-decimal currencies supported by Stripe:
-	 * BIF: Burundian Franc
-	 * CLP: Chilean Peso
-	 * DJF: Djiboutian Franc
-	 * GNF: Guinean FrancJ
-	 * PY: Japanese Yen
-	 * KMF: Comorian Franc
-	 * KRW: South Korean Won
-	 * MGA: Malagasy Ariary
-	 * PYG: Paraguayan Guaraní
-	 * RWF: Rwandan Franc
-	 * VND: Vietnamese Đồng
-	 * VUV: Vanuatu Vatu
-	 * XAF: Central African Cfa Franc
-	 * XOF: West African Cfa Franc
-	 * XPF: Cfp Franc
-	 *
-	 * @param $payment II|I|OP
-	 * @param float $amount
-	 * @return int
-	 */
-	private static function amount(II $payment, $amount) {
-		/** @var string[] $zeroDecimal */
-		static $zeroDecimal = [
-			'BIF', 'CLP', 'DJF', 'GNF', 'JPY', 'KMF', 'KRW', 'MGA'
-			,'PYG', 'RWF', 'VND', 'VUV', 'XAF', 'XOF', 'XPF'
-		];
-		/** @var string $iso3 */
-		$iso3 = $payment->getOrder()->getBaseCurrencyCode();
-		return ceil($amount * (in_array($iso3, $zeroDecimal) ? 1 : 100));
-	}
 }

@@ -16,7 +16,7 @@
                 id='two_checkout'
                 translate='label'
                 type='text'
-                sortOrder='1920'
+                sortOrder='3'
                 showInDefault='1'
                 showInWebsite='1'
                 showInStore='1'
@@ -77,7 +77,7 @@
 					showInStore='1'
 				>
 					<label>Sandbox Publishable Key</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>how to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>How to get it?</a>]]></comment>
 					<validate>validate-length maximum-length-36 minimum-length-36</validate>
 					<depends>
 						<field id='enable'>1</field>
@@ -94,7 +94,7 @@
 					showInStore='0'
 				>
 					<label>Sandbox Private Key</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>how to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
 					<validate>validate-length maximum-length-36 minimum-length-36</validate>
 					<depends>
@@ -112,7 +112,7 @@
 					showInStore='1'
 				>
 					<label>Sandbox API Username</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>how to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>How to get it?</a>]]></comment>
 					<validate>required-entry</validate>
 					<depends>
 						<field id='enable'>1</field>
@@ -129,7 +129,25 @@
 					showInStore='0'
 				>
 					<label>Sandbox API Password</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>how to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>How to get it?</a>]]></comment>
+					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<validate>required-entry</validate>
+					<depends>
+						<field id='enable'>1</field>
+						<field id='test'>1</field>
+					</depends>
+				</field>
+				<field
+					id='testSecretWord'
+					translate='label'
+					type='obscure'
+					sortOrder='8'
+					showInDefault='1'
+					showInWebsite='0'
+					showInStore='0'
+				>
+					<label>Sandbox Secret Word</label>
+					<comment><![CDATA[It is used for Notifications. <a href='https://mage2.pro/t/1646'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
 					<validate>required-entry</validate>
 					<depends>
@@ -141,7 +159,7 @@
 					id='prefill'
 					translate='label'
 					type='select'
-					sortOrder='8'
+					sortOrder='9'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -158,7 +176,7 @@
 					id='liveAccountNumber'
 					translate='label'
 					type='text'
-					sortOrder='9'
+					sortOrder='10'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -176,13 +194,13 @@
 					id='livePublishableKey'
 					translate='label'
 					type='text'
-					sortOrder='10'
+					sortOrder='11'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
 				>
 					<label>Live Publishable Key</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>how to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>How to get it?</a>]]></comment>
 					<validate>validate-length maximum-length-36 minimum-length-36</validate>
 					<depends>
 						<field id='enable'>1</field>
@@ -193,13 +211,13 @@
 					id='liveSecretKey'
 					translate='label'
 					type='obscure'
-					sortOrder='11'
+					sortOrder='12'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='0'
 				>
 					<label>Live Private Key</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>how to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
 					<validate>validate-length maximum-length-36 minimum-length-36</validate>
 					<depends>
@@ -211,13 +229,13 @@
 					id='liveUsername'
 					translate='label'
 					type='text'
-					sortOrder='12'
+					sortOrder='13'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
 				>
 					<label>Live API Username</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>how to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>How to get it?</a>]]></comment>
 					<validate>required-entry</validate>
 					<depends>
 						<field id='enable'>1</field>
@@ -228,13 +246,31 @@
 					id='livePassword'
 					translate='label'
 					type='obscure'
-					sortOrder='13'
+					sortOrder='14'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='0'
 				>
 					<label>Live API Password</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>how to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>How to get it?</a>]]></comment>
+					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<validate>required-entry</validate>
+					<depends>
+						<field id='enable'>1</field>
+						<field id='test'>0</field>
+					</depends>
+				</field>
+				<field
+					id='liveSecretWord'
+					translate='label'
+					type='obscure'
+					sortOrder='15'
+					showInDefault='1'
+					showInWebsite='0'
+					showInStore='0'
+				>
+					<label>Live Secret Word</label>
+					<comment><![CDATA[It is used for Notifications. <a href='https://mage2.pro/t/1646'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
 					<validate>required-entry</validate>
 					<depends>
@@ -246,7 +282,7 @@
 					id='title'
 					translate='label'
 					type='text'
-					sortOrder='14'
+					sortOrder='16'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -259,7 +295,7 @@
 					id='webhook' 
 					translate='label' 
 					type='Dfe\TwoCheckout\Element\Webhook'
-					sortOrder='15'
+					sortOrder='17'
 					showInDefault='1' 
 					showInWebsite='1' 
 					showInStore='1'
@@ -272,7 +308,7 @@
 					id='description'
 					translate='label'
 					type='textarea'
-					sortOrder='16'
+					sortOrder='18'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -322,7 +358,7 @@
 					id='statement'
 					translate='label'
 					type='text'
-					sortOrder='17'
+					sortOrder='19'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -338,7 +374,7 @@
 					id='min_order_total'
 					translate='label'
 					type='text'
-					sortOrder='19'
+					sortOrder='20'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -352,7 +388,7 @@
 					id='max_order_total'
 					translate='label'
 					type='text'
-					sortOrder='20'
+					sortOrder='21'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -366,7 +402,7 @@
 					id='country_restriction'
 					translate='label'
 					type='select'
-					sortOrder='21'
+					sortOrder='22'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -379,7 +415,7 @@
 					id='countries'
 					translate='label'
 					type='Df\Framework\Data\Form\Element\Multiselect'
-					sortOrder='22'
+					sortOrder='23'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='0'

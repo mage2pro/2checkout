@@ -60,6 +60,15 @@ class Settings extends \Df\Core\Settings {
 	}
 
 	/**
+	 * 2016-05-22
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return string
+	 */
+	public function secretWord($s = null) {
+		return $this->test($s) ? $this->testSecretWord($s) : $this->liveSecretWord($s);
+	}
+
+	/**
 	 * 2016-03-14
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Statement for Customer»
 	 * @param null|string|int|ScopeInterface $s [optional]
@@ -113,6 +122,14 @@ class Settings extends \Df\Core\Settings {
 	 * @return string
 	 */
 	private function liveSecretKey($s = null) {return $this->p(__FUNCTION__, $s);}
+
+	/**
+	 * 2016-05-22
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Secret Word»
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return string
+	 */
+	private function liveSecretWord($s = null) {return $this->p(__FUNCTION__, $s);}
 
 	/**
 	 * 2016-05-20
@@ -171,6 +188,14 @@ class Settings extends \Df\Core\Settings {
 	 * @return string
 	 */
 	private function testSecretKey($s = null) {return $this->p(__FUNCTION__, $s);}
+
+	/**
+	 * 2016-05-22
+	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Sandbox Secret Word»
+	 * @param null|string|int|ScopeInterface $s [optional]
+	 * @return string
+	 */
+	private function testSecretWord($s = null) {return $this->p(__FUNCTION__, $s);}
 
 	/**
 	 * 2016-05-20

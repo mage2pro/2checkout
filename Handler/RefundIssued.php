@@ -1,16 +1,19 @@
 <?php
-namespace Dfe\TwoCheckout\Handler\Charge;
-use Dfe\TwoCheckout\Handler\Charge;
-use Dfe\TwoCheckout\Method;
-use Magento\Sales\Api\CreditmemoManagementInterface as CMI;
+namespace Dfe\CheckoutCom\Handler\Charge;
+use Dfe\TwoCheckout\Handler;
+use Magento\Sales\Api\CreditmemoManagementInterface as ICreditmemoService;
 use Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\Payment;
-// 2016-03-27
-// https://stripe.com/docs/api#event_types-charge.refunded
-class Refunded extends Charge {
+use Magento\Sales\Model\Service\CreditmemoService;
+/**
+ * 2016-05-22
+ * REFUND_ISSUED
+ * https://www.2checkout.com/documentation/notifications/refund-issued
+ */
+class RefundIssued extends Charge {
 	/**
 	 * 2016-03-27
 	 * @override
@@ -34,14 +37,18 @@ class Refunded extends Charge {
 	 * @return mixed
 	 */
 	protected function process() {
-		/** @var CMI $cmi */
-		$cmi = df_om()->create(CMI::class);
+		/**
+		 * 2016-05-22
+		 * @todo Примечание к заказу.
+		 */
+		/** @var CreditmemoService|ICreditmemoService $cmi */
+		$cmi = df_om()->create(ICreditmemoService::class);
 		$cmi->refund($this->cm(), false);
 		/**
 		 * 2016-03-28
 		 * @todo Надо отослать покупателю письмо-оповещение о возврате оплаты.
 		 * 2016-05-15
-		 * Что интересно, при возврате из административной части Magent 2
+		 * Что интересно, при возврате из административной части Magento 2
 		 * покупатель тоже не получает уведомление.
 		 */
 		return $this->cm()->getId();
@@ -63,7 +70,7 @@ class Refunded extends Charge {
 			/**
 			 * 2016-03-28
 			 * Важно! Иначе order загрузат payment автоматически вместо нашего,
-			 * и флаг @see \Dfe\TwoCheckout\Method::WEBHOOK_CASE будет утерян
+			 * и флаг @see \Dfe\CheckoutCom\Method::WEBHOOK_CASE будет утерян
 			 */
 			$result->getOrder()->setData(Order::PAYMENT, $this->payment());
 			$this->{__METHOD__} = $result;
@@ -77,7 +84,7 @@ class Refunded extends Charge {
 	 */
 	private function invoice() {
 		if (!isset($this->{__METHOD__})) {
-			$this->{__METHOD__} = df_invoice_by_transaction($this->order(), $this->id() . '-capture');
+			$this->{__METHOD__} = df_invoice_by_transaction($this->order(), $this->parentId());
 			df_assert($this->{__METHOD__});
 		}
 		return $this->{__METHOD__};
