@@ -27,7 +27,7 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 	 * 2016-05-23
 	 * @return bool
 	 */
-	private function isSandbox() {
+	public function isSandbox() {
 		if (!isset($this->{__METHOD__})) {
 			$this->{__METHOD__} = $this->iia('sandbox');
 		}
