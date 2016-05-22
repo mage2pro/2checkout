@@ -1,8 +1,7 @@
 <?php
-namespace Dfe\CheckoutCom\Handler\Charge;
+namespace Dfe\TwoCheckout\Handler;
 use Dfe\TwoCheckout\Handler;
 use Dfe\TwoCheckout\Method;
-use Dfe\TwoCheckout\Settings as S;
 use Df\Sales\Model\Order as DfOrder;
 use Df\Sales\Model\Order\Payment as DfPayment;
 use Magento\Framework\Exception\LocalizedException as LE;
@@ -13,6 +12,15 @@ use Magento\Sales\Api\Data\OrderInterface;
  * 2016-05-22
  */
 abstract class Charge extends Handler {
+	/**
+	 * 2016-05-23
+	 * @used-by \Dfe\TwoCheckout\Handler::p()
+	 * @override
+	 * @see \Dfe\TwoCheckout\Handler::eligible()
+	 * @return bool
+	 */
+	protected function eligible() {return !!$this->payment();}
+
 	/**
 	 * 2016-03-26
 	 * @return Order|DfOrder

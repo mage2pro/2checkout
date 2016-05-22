@@ -1,5 +1,5 @@
 <?php
-namespace Dfe\CheckoutCom\Handler\Charge;
+namespace Dfe\TwoCheckout\Handler;
 use Dfe\TwoCheckout\Handler;
 use Magento\Sales\Api\CreditmemoManagementInterface as ICreditmemoService;
 use Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader;
@@ -14,6 +14,15 @@ use Magento\Sales\Model\Service\CreditmemoService;
  * https://www.2checkout.com/documentation/notifications/refund-issued
  */
 class RefundIssued extends Charge {
+	/**
+	 * 2016-05-23
+	 * @used-by \Dfe\TwoCheckout\Handler::p()
+	 * @override
+	 * @see \Dfe\TwoCheckout\Handler::eligible()
+	 * @return bool
+	 */
+	protected function eligible() {return parent::eligible() && $this->order()->canCreditmemo();}
+
 	/**
 	 * 2016-03-27
 	 * @override

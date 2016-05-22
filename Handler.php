@@ -51,9 +51,9 @@ abstract class Handler extends \Df\Core\O {
 			 * and is computed as follows:
 			 * UPPERCASE(MD5_ENCRYPTED(sale_id + vendor_id + invoice_id + Secret Word))»
 			 */
-			//if (!\Twocheckout_Notification::check($request, S::s()->secretWord())) {
-			//	df_error('Invalid signature.');
-			//}
+			if (!\Twocheckout_Notification::check($request, S::s()->secretWord())) {
+				df_error('Invalid signature.');
+			}
 			/**
 			 * 2016-05-22
 			 * https://www.2checkout.com/documentation/notifications/refund-issued
