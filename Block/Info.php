@@ -3,6 +3,38 @@ namespace Dfe\TwoCheckout\Block;
 use Magento\Framework\DataObject;
 class Info extends \Df\Payment\Block\ConfigurableInfo {
 	/**
+	 * 2016-05-23
+	 * @return string
+	 */
+	public function cardNumber() {
+		if (!isset($this->{__METHOD__})) {
+			$this->{__METHOD__} = implode('********', $this->iia(self::CARD_F6, self::CARD_L2));
+		}
+		return $this->{__METHOD__};
+	}
+
+	/**
+	 * 2016-05-23
+	 * @override
+	 * @see \Magento\Framework\View\Element\Template::getTemplate()
+	 * @return string
+	 */
+	public function getTemplate() {
+		return 'frontend' === $this->getArea() ? 'Dfe_TwoCheckout::info.phtml' : parent::getTemplate();
+	}
+
+	/**
+	 * 2016-05-23
+	 * @return bool
+	 */
+	private function isSandbox() {
+		if (!isset($this->{__METHOD__})) {
+			$this->{__METHOD__} = $this->iia('sandbox');
+		}
+		return $this->{__METHOD__};
+	}
+
+	/**
 	 * 2016-05-21
 	 * @override
 	 * @see \Magento\Payment\Block\ConfigurableInfo::_prepareSpecificInformation()
@@ -13,23 +45,19 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 	protected function _prepareSpecificInformation($transport = null) {
 		/** @var DataObject $result */
 		$result = parent::_prepareSpecificInformation($transport);
-		/** @var bool $sandbox */
-		$sandbox = $this->iia('sandbox');
 		if (!$this->getIsSecureMode()) {
 			$result->setData('Sale', df_tag('a', [
 				'target' => '_blank', 'href' =>
 					(
-						$sandbox
+						$this->isSandbox()
 						? 'https://sandbox.2checkout.com/sandbox/'
 						: 'https://www.2checkout.com/va/'
 					) . 'sales/detail?sale_id=' . $this->iia(self::SALE_ID)
 			], $this->iia('sale_id')));
 		}
-		$result->addData([
-			'Card Number' => implode('********', $this->iia(self::CARD_F6, self::CARD_L2))
-		]);
+		$result->addData(['Card Number' => $this->cardNumber()]);
 		if (!$this->getIsSecureMode()) {
-			if ($sandbox) {
+			if ($this->isSandbox()) {
 				$result->setData('Mode', 'Sandbox');
 			}
 		}

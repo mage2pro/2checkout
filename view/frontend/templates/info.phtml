@@ -1,0 +1,13 @@
+<?php
+/** @var \Dfe\TwoCheckout\Block\Info $block */
+/** @var string $title */
+$title = $block->escapeHtml($block->getMethod()->getTitle());
+if ($this->isSandbox()) {
+	$title .= '(Sandbox Mode)';
+}
+?>
+<dl class='payment-method'>
+    <dt class='title'><?php echo $title; ?></dt>
+    <dd class='content'><?php echo $block->cardNumber(); ?></dd>
+</dl>
+<?php echo $block->getChildHtml()?>
