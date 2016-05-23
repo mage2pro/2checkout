@@ -51,7 +51,7 @@ abstract class Handler extends \Df\Core\O {
 			 * and is computed as follows:
 			 * UPPERCASE(MD5_ENCRYPTED(sale_id + vendor_id + invoice_id + Secret Word))»
 			 */
-			if (!\Twocheckout_Notification::check($request, S::s()->secretWord())) {
+			if (!df_is_it_my_local_pc() && !\Twocheckout_Notification::check($request, S::s()->secretWord())) {
 				df_error('Invalid signature.');
 			}
 			/**

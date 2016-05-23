@@ -3,7 +3,7 @@
 /** @var string $title */
 $title = $block->escapeHtml($block->getMethod()->getTitle());
 if ($this->isSandbox()) {
-	$title .= '(Sandbox Mode)';
+	$title .= ' (Sandbox Mode)';
 }
 ?>
 <dl class='payment-method'>
