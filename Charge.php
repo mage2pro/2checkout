@@ -7,7 +7,6 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Address as OrderAddress;
 use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Sales\Model\Order\Payment as OrderPayment;
-use Magento\Store\Model\Store;
 class Charge extends \Df\Core\O {
 	/**
 	 * 2016-05-19
@@ -35,7 +34,7 @@ class Charge extends \Df\Core\O {
 			 * «Your custom order identifier. Required.»
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 */
-			'merchantOrderId' => $this->order()->getIncrementId()
+			'merchantOrderId' => $this->o()->getIncrementId()
 			/**
 			 * 2016-05-19
 			 * «The credit card token. Required.»
@@ -76,30 +75,35 @@ class Charge extends \Df\Core\O {
 			 */
 			,'shippingAddr' => Address::build($this->addressShipping())
 			/**
+			 * 2016-05-21
+			 * Пока не знаю, как передавать нестандартные параметры.
+			 * Похоже, для Payment API такой возможности пока нет.
+			 * https://mail.google.com/mail/u/0/#sent/154d5138c541ed85
+			 * Вариант 'x_custom_username' => $this->o()->getIncrementId()
+			 * у меня не работает.
+			 */
+		];
+		if (!S::s()->passOrderItems()) {
+			/**
 			 * 2016-05-19
 			 * «The Sale Total. Format: 0.00-99999999.99,
 			 * defaults to 0 if a value isn’t passed in or if value is incorrectly formatted,
 			 * no negatives (Only Use if you are not passing in lineItems.)»
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 *
-			 * 2016-05-20
-			 * Решил пока не связываться с опцией «lineItems».
+			 */
+			$result['total'] = $this->amount();
+		}
+		else {
+			/**
+			 * 2016-05-23
 			 * «Array of lineitem objects using the attributes specified below.
 			 * Will be returned in the order that they are passed in.
 			 * (Passed as a sub object to the Authorization Object.)
 			 * (Only Use if you are not passing in total.)»
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 */
-			,'total' => $this->amount()
-			/**
-			 * 2016-05-21
-			 * Пока не знаю, как передавать нестандартные параметры.
-			 * Похоже, для Payment API такой возможности пока нет.
-			 * https://mail.google.com/mail/u/0/#sent/154d5138c541ed85
-			 * Вариант 'x_custom_username' => $this->order()->getIncrementId()
-			 * у меня не работает.
-			 */
-		];
+			$result['lineItems'] = $this->lineItems();
+		}
 		return $result;
 	}
 
@@ -110,8 +114,8 @@ class Charge extends \Df\Core\O {
 	private function addressBilling() {
 		if (!isset($this->{__METHOD__})) {
 			/** @var OrderAddress $result */
-			$result = $this->order()->getBillingAddress();
-			$this->{__METHOD__} = $result ? $result : $this->order()->getShippingAddress();
+			$result = $this->o()->getBillingAddress();
+			$this->{__METHOD__} = $result ? $result : $this->o()->getShippingAddress();
 			df_assert($this->{__METHOD__});
 		}
 		return $this->{__METHOD__};
@@ -124,8 +128,8 @@ class Charge extends \Df\Core\O {
 	private function addressShipping() {
 		if (!isset($this->{__METHOD__})) {
 			/** @var OrderAddress $result */
-			$result = $this->order()->getShippingAddress();
-			$this->{__METHOD__} = $result ? $result : $this->order()->getBillingAddress();
+			$result = $this->o()->getShippingAddress();
+			$this->{__METHOD__} = $result ? $result : $this->o()->getBillingAddress();
 			df_assert($this->{__METHOD__});
 		}
 		return $this->{__METHOD__};
@@ -135,10 +139,223 @@ class Charge extends \Df\Core\O {
 	private function amount() {return $this[self::$P__AMOUNT];}
 
 	/** @return string */
-	private function currencyCode() {return $this->order()->getBaseCurrencyCode();}
+	private function currencyCode() {return $this->o()->getBaseCurrencyCode();}
+
+	/**
+	 * 2016-05-23
+	 * @return array(string => string)|null
+	 */
+	private function lineItem_discount() {
+		return !$this->o()->getBaseDiscountAmount() ? null : [
+			/**
+			 * 2016-05-23
+			 * «The type of line item that is being passed in.
+			 * (Always Lower Case, ‘product’, ‘shipping’, ‘tax’ or ‘coupon’, defaults to ‘product’) Required»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			'type' => 'coupon'
+			/**
+			 * 2016-05-23
+			 * «Name of the item passed in. (128 characters max, cannot use ‘<' or '>’,
+			 * defaults to capitalized version of ‘type’.) Required»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'name' => df_cc_clean(': ',
+				$this->o()->getDiscountDescription() === $this->o()->getCouponCode()
+					? $this->o()['coupon_rule_name'] : null
+				,$this->o()->getDiscountDescription())
+			/**
+			 * 2016-05-23
+			 * «Quantity of the item passed in.
+			 * (0-999, defaults to 1 if not passed in or incorrectly formatted.) Optional»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'quantity' => 1
+			/**
+			 * 2016-05-23
+			 * «Price of the line item.
+			 * Format: 0.00-99999999.99, defaults to 0 if a value isn’t passed in
+			 * or if value is incorrectly formatted, no negatives
+			 * (use positive values for coupons). Required»
+			 *
+			 * Здесь нужно указывать именно цену товара, а не цену строки заказа.
+			 * Т.е. умножать на количество здесь не надо: проверил опытным путём.
+			 */
+			,'price' => abs($this->o()->getBaseDiscountAmount())
+			/**
+			 * 2016-05-23
+			 * «Y or N. Will default to Y if the type is shipping. Optional»
+			 */
+			,'tangible' => 'N'
+		];
+	}
+
+	/**
+	 * 2016-05-23
+	 * @return array(string => string)|null
+	 */
+	private function lineItem_shipping() {
+		return !$this->o()->getBaseShippingAmount() ? null : [
+			/**
+			 * 2016-05-23
+			 * «The type of line item that is being passed in.
+			 * (Always Lower Case, ‘product’, ‘shipping’, ‘tax’ or ‘coupon’, defaults to ‘product’) Required»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			'type' => 'shipping'
+			/**
+			 * 2016-05-23
+			 * «Name of the item passed in. (128 characters max, cannot use ‘<' or '>’,
+			 * defaults to capitalized version of ‘type’.) Required»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'name' => $this->o()->getShippingDescription()
+			/**
+			 * 2016-05-23
+			 * «Quantity of the item passed in.
+			 * (0-999, defaults to 1 if not passed in or incorrectly formatted.) Optional»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'quantity' => 1
+			/**
+			 * 2016-05-23
+			 * «Price of the line item.
+			 * Format: 0.00-99999999.99, defaults to 0 if a value isn’t passed in
+			 * or if value is incorrectly formatted, no negatives
+			 * (use positive values for coupons). Required»
+			 *
+			 * Здесь нужно указывать именно цену товара, а не цену строки заказа.
+			 * Т.е. умножать на количество здесь не надо: проверил опытным путём.
+			 */
+			,'price' => $this->o()->getBaseShippingAmount()
+			/**
+			 * 2016-05-23
+			 * «Y or N. Will default to Y if the type is shipping. Optional»
+			 */
+			,'tangible' => 'Y'
+			/**
+			 * 2016-05-23
+			 * «Your custom product identifier. Optional»
+			 * Например: «flatrate_flatrate»
+			 */
+			,'productId' =>	$this->o()->getShippingMethod()
+		];
+	}
+
+	/**
+	 * 2016-05-23
+	 * @return array(string => string)|null
+	 */
+	private function lineItem_tax() {
+		return !$this->o()->getBaseTaxAmount() ? null : [
+			/**
+			 * 2016-05-23
+			 * «The type of line item that is being passed in.
+			 * (Always Lower Case, ‘product’, ‘shipping’, ‘tax’ or ‘coupon’, defaults to ‘product’) Required»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			'type' => 'tax'
+			/**
+			 * 2016-05-23
+			 * «Name of the item passed in. (128 characters max, cannot use ‘<' or '>’,
+			 * defaults to capitalized version of ‘type’.) Required»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'name' => 'Tax'
+			/**
+			 * 2016-05-23
+			 * «Quantity of the item passed in.
+			 * (0-999, defaults to 1 if not passed in or incorrectly formatted.) Optional»
+			 * https://www.2checkout.com/documentation/payment-api/create-sale
+			 */
+			,'quantity' => 1
+			/**
+			 * 2016-05-23
+			 * «Price of the line item.
+			 * Format: 0.00-99999999.99, defaults to 0 if a value isn’t passed in
+			 * or if value is incorrectly formatted, no negatives
+			 * (use positive values for coupons). Required»
+			 *
+			 * Здесь нужно указывать именно цену товара, а не цену строки заказа.
+			 * Т.е. умножать на количество здесь не надо: проверил опытным путём.
+			 */
+			,'price' => $this->o()->getBaseTaxAmount()
+		];
+	}
+	
+	/**
+	 * 2016-05-23
+	 * @return array(array(string => string))
+	 */
+	private function lineItems() {
+		/** @var array(array(string => string)) $result */
+		$result = [];
+		foreach ($this->o()->getItems() as $item) {
+			/** @var OrderItem $item */
+			/**
+			 * 2016-03-24
+			 * Если товар является настраиваемым, то
+			 * @uses \Magento\Sales\Model\Order::getItems()
+			 * будет содержать как настраиваемый товар, так и его простой вариант.
+			 */
+			if (!$item->getChildrenItems()) {
+				$result[]= LineItem::build($item);
+			}
+		}
+		$result = df_clean(array_merge($result, [
+			$this->lineItem_shipping()
+			,$this->lineItem_discount()
+			,$this->lineItem_tax()
+		]));
+		/** @var float $total */
+		$total = 0.0;
+		foreach ($result as $item) {
+			/** @var array(string => string|int|float) $item */
+			$total += $item['price'] * dfa($item, 'quantity', 1) * ('coupon' === $item['type'] ? -1 : 1);
+		}
+		/** @var float $rest */
+		$rest = $this->o()->getBaseTotalDue() - $total;
+		if (abs($rest) >= 0.01) {
+			$result[]= [
+				/**
+				 * 2016-05-23
+				 * «The type of line item that is being passed in.
+				 * (Always Lower Case, ‘product’, ‘shipping’, ‘tax’ or ‘coupon’, defaults to ‘product’) Required»
+				 * https://www.2checkout.com/documentation/payment-api/create-sale
+				 */
+				'type' => $rest > 0 ? 'tax' : 'coupon'
+				/**
+				 * 2016-05-23
+				 * «Name of the item passed in. (128 characters max, cannot use ‘<' or '>’,
+				 * defaults to capitalized version of ‘type’.) Required»
+				 * https://www.2checkout.com/documentation/payment-api/create-sale
+				 */
+				,'name' => 'Correction'
+				/**
+				 * 2016-05-23
+				 * «Quantity of the item passed in.
+				 * (0-999, defaults to 1 if not passed in or incorrectly formatted.) Optional»
+				 * https://www.2checkout.com/documentation/payment-api/create-sale
+				 */
+				,'quantity' => 1
+				/**
+				 * 2016-05-23
+				 * «Price of the line item.
+				 * Format: 0.00-99999999.99, defaults to 0 if a value isn’t passed in
+				 * or if value is incorrectly formatted, no negatives
+				 * (use positive values for coupons). Required»
+				 *
+				 * Здесь нужно указывать именно цену товара, а не цену строки заказа.
+				 * Т.е. умножать на количество здесь не надо: проверил опытным путём.
+				 */
+				,'price' => abs($rest)
+			];
+		}
+		return $result;
+	}
 
 	/** @return Order */
-	private function order() {return $this->payment()->getOrder();}
+	private function o() {return $this->payment()->getOrder();}
 
 	/** @return InfoInterface|Info|OrderPayment */
 	private function payment() {return $this[self::$P__PAYMENT];}

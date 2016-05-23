@@ -55,8 +55,8 @@
 					type='text'
 					sortOrder='3'
 					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
+					showInWebsite='0'
+					showInStore='0'
 				>
 					<label>Sandbox Account Number</label>
 					<comment><![CDATA[<a href="https://mage2.pro/t/topic/1629">where to find it</a>?
@@ -73,8 +73,8 @@
 					type='text'
 					sortOrder='4'
 					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
+					showInWebsite='0'
+					showInStore='0'
 				>
 					<label>Sandbox Publishable Key</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>How to get it?</a>]]></comment>
@@ -90,7 +90,7 @@
 					type='obscure'
 					sortOrder='5'
 					showInDefault='1'
-					showInWebsite='1'
+					showInWebsite='0'
 					showInStore='0'
 				>
 					<label>Sandbox Private Key</label>
@@ -108,8 +108,8 @@
 					type='text'
 					sortOrder='6'
 					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
+					showInWebsite='0'
+					showInStore='0'
 				>
 					<label>Sandbox API Username</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>How to get it?</a>]]></comment>
@@ -125,7 +125,7 @@
 					type='obscure'
 					sortOrder='7'
 					showInDefault='1'
-					showInWebsite='1'
+					showInWebsite='0'
 					showInStore='0'
 				>
 					<label>Sandbox API Password</label>
@@ -178,8 +178,8 @@
 					type='text'
 					sortOrder='10'
 					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
+					showInWebsite='0'
+					showInStore='0'
 				>
 					<label>Live Account Number</label>
 					<comment><![CDATA[<a href="https://mage2.pro/t/topic/1629">where to find it</a>?
@@ -196,8 +196,8 @@
 					type='text'
 					sortOrder='11'
 					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
+					showInWebsite='0'
+					showInStore='0'
 				>
 					<label>Live Publishable Key</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>How to get it?</a>]]></comment>
@@ -213,7 +213,7 @@
 					type='obscure'
 					sortOrder='12'
 					showInDefault='1'
-					showInWebsite='1'
+					showInWebsite='0'
 					showInStore='0'
 				>
 					<label>Live Private Key</label>
@@ -231,8 +231,8 @@
 					type='text'
 					sortOrder='13'
 					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
+					showInWebsite='0'
+					showInStore='0'
 				>
 					<label>Live API Username</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>How to get it?</a>]]></comment>
@@ -248,7 +248,7 @@
 					type='obscure'
 					sortOrder='14'
 					showInDefault='1'
-					showInWebsite='1'
+					showInWebsite='0'
 					showInStore='0'
 				>
 					<label>Live API Password</label>
@@ -295,20 +295,36 @@
 					id='webhook' 
 					translate='label' 
 					type='Dfe\TwoCheckout\Element\Webhook'
-					sortOrder='17'
+					sortOrder='16'
 					showInDefault='1' 
-					showInWebsite='1' 
-					showInStore='1'
+					showInWebsite='0'
+					showInStore='0'
 				>
 					<label>Notifications URL</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/977'>set it in your 2Checkout account</a>]]></comment>
 					<depends><field id='enable'>1</field></depends>
 				</field>
 				<field
+					id='passOrderItems'
+					translate='label'
+					type='Df\Framework\Data\Form\Element\Checkbox'
+					sortOrder='17'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Pass Order Items to the Payment Gateway?</label>
+					<backend_model>Df\Config\Backend\Checkbox</backend_model>
+					<comment><![CDATA[]]></comment>
+					<depends>
+						<field id='enable'>1</field>
+					</depends>
+				</field>
+				<field
 					id='min_order_total'
 					translate='label'
 					type='text'
-					sortOrder='20'
+					sortOrder='18'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -322,7 +338,7 @@
 					id='max_order_total'
 					translate='label'
 					type='text'
-					sortOrder='21'
+					sortOrder='19'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -336,7 +352,7 @@
 					id='country_restriction'
 					translate='label'
 					type='select'
-					sortOrder='22'
+					sortOrder='20'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -349,7 +365,7 @@
 					id='countries'
 					translate='label'
 					type='Df\Framework\Data\Form\Element\Multiselect'
-					sortOrder='23'
+					sortOrder='21'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='0'

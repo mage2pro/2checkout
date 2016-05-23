@@ -207,10 +207,10 @@ class Method extends \Df\Payment\Method {
 				]);
 				/**
 				 * 2016-05-22
-				 * Используем addCommitCallback, потому что нам нужен идентификатор возврата,
+				 * Используем @uses df_on_save(), потому что нам нужен идентификатор возврата,
 				 * а в этой точке программы возврат ещё не имеет идентификатора.
 				 */
-				$cm->getResource()->addCommitCallback(function() use($cm, $payment) {
+				df_on_save($cm, function() use($cm, $payment) {
 					\Twocheckout_Sale::comment([
 						'sale_id' => $payment->getAdditionalInformation(InfoBlock::SALE_ID)
 						, 'sale_comment' => df_credit_memo_backend_url($cm->getId())
@@ -396,7 +396,7 @@ class Method extends \Df\Payment\Method {
 			 * Используем addCommitCallback, потому что нам нужен идентификатор заказа,
 			 * а в этой точке программы (в момент платежа) заказ ещё не имеет идентификатора.
 			 */
-			$this->o()->getResource()->addCommitCallback(function() use($saleId) {
+			df_on_save($this->o(), function() use($saleId) {
 				\Twocheckout_Sale::comment([
 					'sale_id' => $saleId
 					, 'sale_comment' => implode(' ', [
