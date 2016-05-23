@@ -81,6 +81,12 @@ class Charge extends \Df\Core\O {
 			 * https://mail.google.com/mail/u/0/#sent/154d5138c541ed85
 			 * Вариант 'x_custom_username' => $this->o()->getIncrementId()
 			 * у меня не работает.
+			 *
+			 * 2016-05-23
+			 * «"Unknown parameters" are not supported with the Payment API,
+			 * as custom parameters are not supported with the payment API.
+			 * Your site needs to record any custom data with the order, and associate that data with the API's response after the sale is made.»
+			 * https://mail.google.com/mail/u/0/#inbox/154d5138c541ed85
 			 */
 		];
 		if (!S::s()->passOrderItems()) {
