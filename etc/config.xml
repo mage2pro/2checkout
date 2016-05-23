@@ -6,19 +6,6 @@
     <default>
 		<df_payment>
 			<two_checkout>
-				<!--
-2016-03-08
-https://stripe.com/docs/api/php#create_charge-description
-«An arbitrary string which you can attach to a charge object.
-It is displayed when in the web interface alongside the charge.
-Note that if you use Stripe to send automatic email receipts to your customers,
-your receipt emails will include the description of the charge(s)
-that they are describing.»
-
-Текст может иметь произвольную длину и не обрубается в интерфейсе Stripe.
-https://mage2.pro/t/903
-				-->
-				<description>{order.id}</description>
 				<title>Bank Card</title>
 				<!-- 2016-03-15 -->
 				<title_backend>2Checkout</title_backend>

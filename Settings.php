@@ -13,14 +13,6 @@ class Settings extends \Df\Core\Settings {
 	}
 
 	/**
-	 * 2016-03-09
-	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Description»
-	 * @param null|string|int|ScopeInterface $s [optional]
-	 * @return string
-	 */
-	public function description($s = null) {return $this->v(__FUNCTION__, $s);}
-
-	/**
 	 * 2016-02-27
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Enable?»
 	 * @param null|string|int|ScopeInterface $s [optional]
@@ -67,14 +59,6 @@ class Settings extends \Df\Core\Settings {
 	public function secretWord($s = null) {
 		return $this->test($s) ? $this->testSecretWord($s) : $this->liveSecretWord($s);
 	}
-
-	/**
-	 * 2016-03-14
-	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Statement for Customer»
-	 * @param null|string|int|ScopeInterface $s [optional]
-	 * @return string[]
-	 */
-	public function statement($s = null) {return $this->v(__FUNCTION__, $s);}
 
 	/**
 	 * 2016-03-02
