@@ -158,6 +158,13 @@ class Method extends \Df\Payment\Method {
 					 * Спросил у техподдержки, для чего он:
 					 * «[Payment API] How is a refund's «category» parameter used?»
 					 * https://mail.google.com/mail/u/0/#sent/154d4e34743cb87f
+					 *
+					 * 2016-05-23
+					 * Ответили:
+					 * «It should appear under the sale's comment, at the bottom of the page.
+					 * From the 2CO dashboard:
+					 * Sales tab, click on specific sale that has been refunded,
+					 * scroll to bottom of page once sale page is loaded.»
 					 */
 					,'category' => 5
 					/**
@@ -193,8 +200,16 @@ class Method extends \Df\Payment\Method {
 					 *
 					 * Сначала пытался поставить тут $cm->getBaseCurrencyCode()
 					 * но это неправильно.
+					 *
+					 * 2016-05-23
+					 * Судя по ответу техподдержки,
+					 * Похоже, что в нашем случае правильное значение — «customer»:
+					 * «It means the value can be set to a specific currency ('usd'),
+					 * the vendor's currency settings (Site Management Sub-tab inside of 2CO acct),
+					 * or the currency the customer selected at checkout (hosted checkouts).»
+					 * https://mail.google.com/mail/u/0/#inbox/154d347f4c3d79a8
 					 */
-					,'currency' => 'vendor'
+					,'currency' => 'customer'
 					/**
 					 * 2016-05-21
 					 * «The amount to refund.

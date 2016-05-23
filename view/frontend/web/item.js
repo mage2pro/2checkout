@@ -68,7 +68,7 @@ define ([
 		*/
 		getTitle: function() {
 			var result = this._super();
-			return result + (!this.config('isTest') ? '' : ' [<b>2Checkout TEST MODE</b>]');
+			return result + (!this.config('isTest') ? '' : ' [<b>2Checkout SANDBOX</b>]');
 		},
 		/**
 		 * 2016-03-02
