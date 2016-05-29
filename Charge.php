@@ -173,9 +173,6 @@ class Charge extends \Df\Core\O {
 			, $this->o()->getBaseShippingAmount()
 			, $this->o()->getShippingDescription()
 			, true
-			// 2016-05-23
-			// Например: «flatrate_flatrate»
-			, $this->o()->getShippingMethod()
 		);
 	}
 
@@ -222,7 +219,9 @@ class Charge extends \Df\Core\O {
 		/** @var float $rest */
 		$rest = $this->o()->getBaseTotalDue() - $total;
 		if (abs($rest) >= 0.01) {
-			$result[]= LineItem::buildLI($rest > 0 ? 'tax' : 'coupon', $rest, 'Correction');
+			$result[]= LineItem::buildLI(
+				$rest > 0 ? 'tax' : 'coupon', $rest, 'Correction', false, 'correction'
+			);
 		}
 		return $result;
 	}

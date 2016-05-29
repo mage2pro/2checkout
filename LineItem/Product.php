@@ -47,12 +47,26 @@ class Product extends LineItem {
 
 	/**
 	 * 2016-05-29
+	 * Изначально ставил здесь $this->p()->getSku()
+	 * Однако для использования API «Refund Lineitem» нам нужен идентификатор,
+	 * который будет надёжно идентифицировать строку заказа.
+	 * https://www.2checkout.com/documentation/api/sales/refund-lineitem
+	 *
+	 * Обратите внимание, что для «Refund Lineitem» нам нужно указывать не наш идентификатор,
+	 * а идентификатор строки заказа в 2Checkout.
+	 * Однако мы запросто можем его получить, выполнив запрос «Detail Sale»:
+	 * https://www.2checkout.com/documentation/api/sales/detail-sale
+	 * Ответ на этот запрос в массиве lineitems вернёт:
+	 * 	lineitem_id: идентификатор строки заказа в 2Checkout
+	 *  vendor_product_id: наш идентификатор.
+	 * Вот тут-то мы их и сопоставим.
+	 *
 	 * @override
 	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 * @see \Dfe\TwoCheckout\LineItem::id()
 	 * @return string
 	 */
-	protected function id() {return $this->p()->getSku();}
+	protected function id() {return $this->oi()->getQuoteItemId();}
 
 	/**
 	 * 2016-05-29

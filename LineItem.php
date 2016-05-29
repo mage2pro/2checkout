@@ -143,7 +143,7 @@ class LineItem extends \Df\Core\O {
 			, self::$P__PRICE => $price
 			, self::$P__NAME => $name
 			, self::$P__TANGIBLE => $tangible
-			, self::$P__ID => $id
+			, self::$P__ID => $id ?: $type
 		]))->build();
 	}
 
