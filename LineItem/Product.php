@@ -13,7 +13,7 @@ class Product extends LineItem {
 	 * @return array(string => string)
 	 */
 	protected function build() {
-		return parent::build() + [
+		return parent::build() + df_clean([
 			/**
 			 * 2016-05-23
 			 * «Quantity of the item passed in.
@@ -42,7 +42,7 @@ class Product extends LineItem {
 			 * такое же ограничение по длине, как и у name.
 			 */
 			,'description' => $this->description()
-		];
+		]);
 	}
 
 	/**
