@@ -29,6 +29,19 @@ class Product extends LineItem {
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 */
 			,'options' => $this->options()
+			/**
+			 * 2016-05-29
+			 * Это поле отсутствует в документации,
+			 * однако, судя по ответу сервера, оно тоже поддерживается.
+			 * Спрошу у техподдержки о его формате...
+			 *
+			 * Опытным путём установил, что теги надо удалять, иначе описание не отобразится.
+			 * Но даже в этом случае значение иногда сохраняется, иногда нет.
+			 *
+			 * Опытным путём установил, что у description
+			 * такое же ограничение по длине, как и у name.
+			 */
+			,'description' => $this->description()
 		];
 	}
 
@@ -76,6 +89,16 @@ class Product extends LineItem {
 	 * @return string
 	 */
 	protected function type() {return 'product';}
+
+	/**
+	 * 2016-05-29
+	 * @return string
+	 */
+	private function description() {
+		return self::adjustText(strip_tags(
+			$this->p()->getData('short_description') ?: $this->p()->getData('description')
+		));
+	}
 
 	/** @return OI */
 	private function oi() {return $this[self::$P__OI];}

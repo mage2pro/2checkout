@@ -7,13 +7,18 @@ class LineItem extends \Df\Core\O {
 	 * @used-by \Dfe\TwoCheckout\LineItem::buildLI()
 	 * @return array(string => string)
 	 */
-	protected function build() {return [
+	protected function build() {return df_clean([
 		'type' => $this->type()
 		, 'name' => $this->name()
 		, 'price' => $this->price()
+		/**
+		 * 2016-05-29
+		 * Почему-то пока этот параметр игнорируется для всех line items, кроме shipping.
+		 * https://mail.google.com/mail/u/0/#sent/154fa43ce41483c3
+		 */
 		, 'tangible' => $this->tangible() ? 'Y' : 'N'
 		, 'productId' => $this->id()
-	];}
+	]);}
 
 	/**
 	 * 2016-05-29
@@ -81,13 +86,7 @@ class LineItem extends \Df\Core\O {
 	 */
 	private function name() {
 		if (!isset($this->{__METHOD__})) {
-			$this->{__METHOD__} = mb_substr(
-				strtr(
-					$this->nameRaw() ?: df_ucfirst($this->type())
-					, ['<' => '«', '>' => '»']
-				)
-				, 0, 128
-			);
+			$this->{__METHOD__} = self::adjustText($this->nameRaw() ?: df_ucfirst($this->type()));
 			df_result_string_not_empty($this->{__METHOD__});
 		}
 		return $this->{__METHOD__};
@@ -148,6 +147,27 @@ class LineItem extends \Df\Core\O {
 		]))->build();
 	}
 
+	/**
+	 * 2016-05-29
+	 * В именах товаров недопустимы символы < и >:
+	 * «Name of the item passed in. (128 characters max, cannot use ‘<' or '>’,
+	 * defaults to capitalized version of ‘type’.) Required»
+	 * https://www.2checkout.com/documentation/payment-api/create-sale
+	 *
+	 * Думаю, в description они тоже недопустимы...
+	 * Похоже, description также имеет ограничения по длине, как и name.
+	 *
+	 * Опытным путём установил, что у description
+	 * такое же ограничение по длине, как и у name.
+	 *
+	 * @param string $text
+	 * @return string
+	 */
+	protected static function adjustText($text) {
+		$text = strtr($text, ['<' => '«', '>' => '»']);
+		return mb_strlen($text) <= 128 ? $text : mb_substr($text, 0, 127) . '…';
+	}
+
 	/** @var string */
 	private static $P__ID = 'id';
 
@@ -155,7 +175,7 @@ class LineItem extends \Df\Core\O {
 	private static $P__NAME = 'name';
 
 	/** @var string */
-	private static $P__PRICE = 'type';
+	private static $P__PRICE = 'price';
 
 	/** @var string */
 	private static $P__TANGIBLE = 'tangible';
