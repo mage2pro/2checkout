@@ -206,7 +206,7 @@ class Settings extends \Df\Core\Settings {
 		return $this->test($s) ? $this->testUsername($s) : $this->liveUsername($s);
 	}
 
-	/** @return $this */
+	/** @return self */
 	public static function s() {static $r; return $r ? $r : $r = df_o(__CLASS__);}
 }
 

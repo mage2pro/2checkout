@@ -148,7 +148,7 @@ class Address extends \Df\Core\O {
 	 * @return array(mixed => mixed)
 	 */
 	public static function build(A $oa, $isBilling = false) {
-		/** @var $this $a */
+		/** @var self $a */
 		$a = new self([self::$P__A => $oa]);
 		/** @var O $o */
 		$o = $oa->getOrder();
