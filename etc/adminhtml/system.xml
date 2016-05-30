@@ -294,7 +294,8 @@
 				<field 
 					id='webhook' 
 					translate='label' 
-					type='Dfe\TwoCheckout\Element\Webhook'
+					type='Df\Framework\Data\Form\Element\Webhook'
+					dfRoutePath='dfe-2checkout'
 					sortOrder='16'
 					showInDefault='1' 
 					showInWebsite='0'
