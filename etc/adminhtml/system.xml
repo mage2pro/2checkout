@@ -25,7 +25,7 @@
                 <field
                     id='enable'
                     translate='label'
-                    type='Df\Framework\Data\Form\Element\Checkbox'
+                    type='Df\Framework\Form\Element\Checkbox'
                     sortOrder='1'
 					showInDefault='1'
 					showInWebsite='1'
@@ -38,7 +38,7 @@
 				<field
 					id='test'
 					translate='label'
-					type='Df\Framework\Data\Form\Element\Checkbox'
+					type='Df\Framework\Form\Element\Checkbox'
 					sortOrder='2'
 					showInDefault='1'
 					showInWebsite='1'
@@ -294,7 +294,7 @@
 				<field 
 					id='webhook' 
 					translate='label' 
-					type='Df\Framework\Data\Form\Element\Webhook'
+					type='Df\Framework\Form\Element\Webhook'
 					dfWebhook_routePath='dfe-2checkout'
 					sortOrder='16'
 					showInDefault='1' 
@@ -308,7 +308,7 @@
 				<field
 					id='passOrderItems'
 					translate='label'
-					type='Df\Framework\Data\Form\Element\Checkbox'
+					type='Df\Framework\Form\Element\Checkbox'
 					sortOrder='17'
 					showInDefault='1'
 					showInWebsite='1'
@@ -366,7 +366,7 @@
 				<field
 					id='countries'
 					translate='label'
-					type='Df\Framework\Data\Form\Element\Multiselect'
+					type='Df\Framework\Form\Element\Multiselect'
 					sortOrder='21'
 					showInDefault='1'
 					showInWebsite='1'

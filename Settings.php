@@ -4,7 +4,6 @@ use Magento\Framework\App\ScopeInterface as S;
 class Settings extends \Df\Core\Settings {
 	/**
 	 * 2016-05-18
-	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Account Number»
 	 * @param null|string|int|S $s [optional]
 	 * @return string
 	 */
