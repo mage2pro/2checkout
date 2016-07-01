@@ -10,4 +10,9 @@
 			</argument>
 		</arguments>
 	</type>
+	<virtualType name='Dfe\TwoCheckout\Ext' type='Df\Config\Ext'>
+		<arguments>
+			<argument name='name' xsi:type='string'>mage2pro/2checkout</argument>
+		</arguments>
+	</virtualType>
 </config>
