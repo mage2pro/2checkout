@@ -8,7 +8,7 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Address as OrderAddress;
 use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Sales\Model\Order\Payment as OrderPayment;
-class Charge extends \Df\Core\O {
+class Charge extends \Df\Payment\Charge\WithToken {
 	/**
 	 * 2016-05-19
 	 * @return array(string => mixed)
@@ -66,7 +66,7 @@ class Charge extends \Df\Core\O {
 			 * Required. (Passed as a sub object to the Authorization Object.)»
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 */
-			,'billingAddr' => Address::build($this->addressBilling(), $isBilling = true)
+			,'billingAddr' => Address::build($this->addressBS(), $isBilling = true)
 			/**
 			 * 2016-05-19
 			 * «Object that defines the shipping address using the attributes specified below.
@@ -74,7 +74,7 @@ class Charge extends \Df\Core\O {
 			 * (Passed as a sub object to the Authorization Object.) »
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 */
-			,'shippingAddr' => Address::build($this->addressShipping())
+			,'shippingAddr' => Address::build($this->addressSB())
 			/**
 			 * 2016-05-21
 			 * Пока не знаю, как передавать нестандартные параметры.
@@ -113,40 +113,6 @@ class Charge extends \Df\Core\O {
 		}
 		return $result;
 	}
-
-	/**
-	 * 2016-05-19
-	 * @return OrderAddress
-	 */
-	private function addressBilling() {
-		if (!isset($this->{__METHOD__})) {
-			/** @var OrderAddress $result */
-			$result = $this->o()->getBillingAddress();
-			$this->{__METHOD__} = $result ? $result : $this->o()->getShippingAddress();
-			df_assert($this->{__METHOD__});
-		}
-		return $this->{__METHOD__};
-	}
-
-	/**
-	 * 2016-05-19
-	 * @return OrderAddress
-	 */
-	private function addressShipping() {
-		if (!isset($this->{__METHOD__})) {
-			/** @var OrderAddress $result */
-			$result = $this->o()->getShippingAddress();
-			$this->{__METHOD__} = $result ? $result : $this->o()->getBillingAddress();
-			df_assert($this->{__METHOD__});
-		}
-		return $this->{__METHOD__};
-	}
-
-	/** @return float */
-	private function amount() {return $this[self::$P__AMOUNT];}
-
-	/** @return string */
-	private function currencyCode() {return $this->o()->getBaseCurrencyCode();}
 
 	/**
 	 * 2016-05-23
@@ -226,36 +192,6 @@ class Charge extends \Df\Core\O {
 		return $result;
 	}
 
-	/** @return Order */
-	private function o() {return $this->payment()->getOrder();}
-
-	/** @return InfoInterface|Info|OrderPayment */
-	private function payment() {return $this[self::$P__PAYMENT];}
-
-	/** @return string */
-	private function token() {return $this[self::$P__TOKEN];}
-
-	/**
-	 * 2016-05-06
-	 * @override
-	 * @return void
-	 */
-	protected function _construct() {
-		parent::_construct();
-		$this
-			->_prop(self::$P__AMOUNT, RM_V_FLOAT)
-			->_prop(self::$P__PAYMENT, InfoInterface::class)
-			->_prop(self::$P__TOKEN, RM_V_STRING_NE)
-		;
-	}
-
-	/** @var string */
-	private static $P__AMOUNT = 'amount';
-	/** @var string */
-	private static $P__PAYMENT = 'payment';
-	/** @var string */
-	private static $P__TOKEN = 'token';
-
 	/**
 	 * 2016-05-19
 	 * @param InfoInterface|Info|OrderPayment $payment
@@ -265,7 +201,7 @@ class Charge extends \Df\Core\O {
 	 */
 	public static function request(InfoInterface $payment, $token, $amount = null) {
 		return \Twocheckout_Charge::auth((new self([
-			self::$P__AMOUNT => $amount ? $amount : $payment->getBaseAmountOrdered()
+			self::$P__AMOUNT => $amount
 			, self::$P__PAYMENT => $payment
 			, self::$P__TOKEN => $token
 		]))->_requestParams());
