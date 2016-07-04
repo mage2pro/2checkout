@@ -13,7 +13,7 @@ class Charge extends \Df\Payment\Charge\WithToken {
 	 * 2016-05-19
 	 * @return array(string => mixed)
 	 */
-	private function _requestParams() {
+	private function _request() {
 		/** @var array(string => mixed) $result */
 		$result = [
 			/**
@@ -204,6 +204,6 @@ class Charge extends \Df\Payment\Charge\WithToken {
 			self::$P__AMOUNT => $amount
 			, self::$P__PAYMENT => $payment
 			, self::$P__TOKEN => $token
-		]))->_requestParams());
+		]))->_request());
 	}
 }
