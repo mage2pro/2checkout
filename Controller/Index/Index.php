@@ -1,5 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout\Controller\Index;
+use Df\Framework\Controller\Result\Json;
 use Dfe\TwoCheckout\Handler;
 /**
  * 2016-03-18
@@ -17,11 +18,11 @@ class Index extends \Magento\Framework\App\Action\Action {
 	 * 2016-03-18
 	 * @override
 	 * @see \Magento\Framework\App\Action\Action::execute()
-	 * @return \Df\Framework\Controller\Result\Json
+	 * @return Json
 	 */
-	public function execute() {return df_leh(function(){
-		return df_controller_json(Handler::p($this->params()));
-	});}
+	public function execute() {
+		return df_leh(function(){return Json::i(Handler::p($this->params()));});
+	}
 
 	/**
 	 * 2016-05-22
