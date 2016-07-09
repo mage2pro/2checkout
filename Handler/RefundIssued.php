@@ -195,15 +195,4 @@ class RefundIssued extends Charge {
 	 * @return string
 	 */
 	private function itemKey($name, $index) {return implode('_', ['item', $name, $index]);}
-
-	/**
-	 * 2016-05-23
-	 * @return string[]
-	 */
-	private function keys() {
-		if (!isset($this->{__METHOD__})) {
-			$this->{__METHOD__} = array_keys($this->_data);
-		}
-		return $this->{__METHOD__};
-	}
 }
