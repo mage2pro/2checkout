@@ -24,15 +24,13 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 	}
 
 	/**
-	 * 2016-05-23
+	 * 2016-07-12
+	 * @override
+	 * @see \Df\Payment\Block\ConfigurableInfo::_isSandbox()
+	 * @used-by \Df\Payment\Block\ConfigurableInfo::isSandbox()
 	 * @return bool
 	 */
-	public function isSandbox() {
-		if (!isset($this->{__METHOD__})) {
-			$this->{__METHOD__} = $this->iia('sandbox');
-		}
-		return $this->{__METHOD__};
-	}
+	protected function _isSandbox() {return $this->iia('sandbox');}
 
 	/**
 	 * 2016-05-21

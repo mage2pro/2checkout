@@ -1,7 +1,8 @@
 <?php
 namespace Dfe\TwoCheckout;
 use Magento\Framework\App\ScopeInterface as S;
-class Settings extends \Df\Core\Settings {
+/** @method static Settings s() */
+class Settings extends \Df\Payment\Settings {
 	/**
 	 * 2016-05-18
 	 * @param null|string|int|S $s [optional]
@@ -10,14 +11,6 @@ class Settings extends \Df\Core\Settings {
 	public function accountNumber($s = null) {
 		return $this->test($s) ? $this->testAccountNumber($s) : $this->liveAccountNumber($s);
 	}
-
-	/**
-	 * 2016-02-27
-	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Enable?»
-	 * @param null|string|int|S $s [optional]
-	 * @return bool
-	 */
-	public function enable($s = null) {return $this->b(__FUNCTION__, $s);}
 
 	/**
 	 * 2016-05-19
@@ -66,14 +59,6 @@ class Settings extends \Df\Core\Settings {
 	public function secretWord($s = null) {
 		return $this->test($s) ? $this->testSecretWord($s) : $this->liveSecretWord($s);
 	}
-
-	/**
-	 * 2016-03-02
-	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Mode?»
-	 * @param null|string|int|S $s [optional]
-	 * @return bool
-	 */
-	public function test($s = null) {return $this->b(__FUNCTION__, $s);}
 
 	/**
 	 * @override
@@ -204,9 +189,6 @@ class Settings extends \Df\Core\Settings {
 	private function username($s = null) {
 		return $this->test($s) ? $this->testUsername($s) : $this->liveUsername($s);
 	}
-
-	/** @return self */
-	public static function s() {static $r; return $r ? $r : $r = df_o(__CLASS__);}
 }
 
 
