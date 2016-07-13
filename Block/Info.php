@@ -38,20 +38,24 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 			$result->setData('Sale', df_tag('a', [
 				'target' => '_blank', 'href' =>
 					(
-						$this->isSandbox()
+						$this->isTest()
 						? 'https://sandbox.2checkout.com/sandbox/'
 						: 'https://www.2checkout.com/va/'
 					) . 'sales/detail?sale_id=' . $this->iia(self::SALE_ID)
 			], $this->iia('sale_id')));
 		}
 		$result->addData(['Card Number' => $this->cardNumber()]);
-		if (!$this->getIsSecureMode()) {
-			if ($this->isSandbox()) {
-				$result->setData('Mode', 'Sandbox');
-			}
-		}
+		$this->markTestMode($result);
 		return $result;
 	}
+
+	/**
+	 * 2016-07-13
+	 * @override
+	 * @see \Df\Payment\Block\ConfigurableInfo::testModeLabel()
+	 * @return string
+	 */
+	protected function testModeLabel() {return 'Sandbox';}
 
 	/**
 	 * 2016-05-21
