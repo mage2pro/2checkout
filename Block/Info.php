@@ -24,15 +24,6 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 	}
 
 	/**
-	 * 2016-07-12
-	 * @override
-	 * @see \Df\Payment\Block\ConfigurableInfo::_isSandbox()
-	 * @used-by \Df\Payment\Block\ConfigurableInfo::isSandbox()
-	 * @return bool
-	 */
-	protected function _isSandbox() {return $this->iia('sandbox');}
-
-	/**
 	 * 2016-05-21
 	 * @override
 	 * @see \Magento\Payment\Block\ConfigurableInfo::_prepareSpecificInformation()

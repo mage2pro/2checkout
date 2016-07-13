@@ -89,18 +89,6 @@ class Method extends \Df\Payment\Method {
 	}
 
 	/**
-	 * 2016-03-08
-	 * @override
-	 * @see \Df\Payment\Method::setStore()
-	 * @param int $storeId
-	 * @return void
-	 */
-	public function setStore($storeId) {
-		parent::setStore($storeId);
-		S::s()->setScope($storeId);
-	}
-
-	/**
 	 * 2016-05-03
 	 * @override
 	 * @see \Df\Payment\Method::iiaKeys()
@@ -383,7 +371,6 @@ class Method extends \Df\Payment\Method {
 				 * Его также можно получить посредством dfa($sale, 'sale_id')
 				 */
 				InfoBlock::SALE_ID => $saleId
-				,'sandbox' => S::s()->test()
 			]);
 			$payment->unsAdditionalInformation(self::$TOKEN);
 			/**
