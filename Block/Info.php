@@ -17,6 +17,7 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 	 * 2016-05-23
 	 * @override
 	 * @see \Magento\Framework\View\Element\Template::getTemplate()
+	 * @see \Magento\Payment\Block\Info::$_template
 	 * @return string
 	 */
 	public function getTemplate() {
