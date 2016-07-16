@@ -35,7 +35,7 @@
                 >
                     <label>Enable?</label>
 					<backend_model>Df\Config\Backend\Checkbox</backend_model>
-                    <comment><![CDATA[Enable the «<a href='https://mage2.pro/c/extensions/2checkout'>2Checkout</a>» payment extension?]]></comment>
+                    <comment><![CDATA[Enable the «<a href='https://mage2.pro/c/extensions/2checkout' target='_blank'>2Checkout</a>» payment extension?]]></comment>
                 </field>
 				<field
 					id='test'
@@ -48,7 +48,7 @@
 				>
 					<label>Sandbox Mode?</label>
 					<backend_model>Df\Config\Backend\Checkbox</backend_model>
-					<comment><![CDATA[<a href='https://sandbox.2checkout.com/sandbox/signup'>How to create a sandbox account?</a>]]></comment>
+					<comment><![CDATA[<a href='https://sandbox.2checkout.com/sandbox/signup' target='_blank'>How to create a sandbox account?</a>]]></comment>
 					<depends><field id='enable'>1</field></depends>
 				</field>
 				<field
@@ -61,7 +61,7 @@
 					showInStore='1'
 				>
 					<label>Sandbox Account Number</label>
-					<comment><![CDATA[<a href="https://mage2.pro/t/topic/1629">Where to find it?</a>
+					<comment><![CDATA[<a href="https://mage2.pro/t/topic/1629" target='_blank'>Where to find it?</a>
 <br/>The number should start with <b>9</b>.]]></comment>
 					<validate>validate-digits</validate>
 					<depends>
@@ -79,7 +79,7 @@
 					showInStore='1'
 				>
 					<label>Sandbox Publishable Key</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>How to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1628' target='_blank'>How to get it?</a>]]></comment>
 					<validate>validate-length maximum-length-36 minimum-length-36</validate>
 					<depends>
 						<field id='enable'>1</field>
@@ -96,7 +96,7 @@
 					showInStore='1'
 				>
 					<label>Sandbox Private Key</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>How to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1628' target='_blank'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
 					<validate>validate-length maximum-length-36 minimum-length-36</validate>
 					<depends>
@@ -114,7 +114,7 @@
 					showInStore='1'
 				>
 					<label>Sandbox API Username</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>How to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1637' target='_blank'>How to get it?</a>]]></comment>
 					<validate>required-entry</validate>
 					<depends>
 						<field id='enable'>1</field>
@@ -131,7 +131,7 @@
 					showInStore='1'
 				>
 					<label>Sandbox API Password</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>How to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1637' target='_blank'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
 					<validate>required-entry</validate>
 					<depends>
@@ -149,7 +149,7 @@
 					showInStore='1'
 				>
 					<label>Sandbox Secret Word</label>
-					<comment><![CDATA[It is used for Notifications. <a href='https://mage2.pro/t/1646'>How to get it?</a>]]></comment>
+					<comment><![CDATA[It is used for Notifications. <a href='https://mage2.pro/t/1646' target='_blank'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
 					<validate>required-entry</validate>
 					<depends>
@@ -168,7 +168,7 @@
 				>
 					<label>Prefill the Payment Form with Test Data?</label>
 					<source_model>Dfe\TwoCheckout\Source\Prefill</source_model>
-					<comment><![CDATA[If you do not want it, then please use the following <a href='https://mage2.pro/t/1631'>test card numbers</a>.]]></comment>
+					<comment><![CDATA[If you do not want it, then please use the following <a href='https://mage2.pro/t/1631' target='_blank'>test card numbers</a>.]]></comment>
 					<depends>
 						<field id='enable'>1</field>
 						<field id='test'>1</field>
@@ -184,7 +184,7 @@
 					showInStore='1'
 				>
 					<label>Live Account Number</label>
-					<comment><![CDATA[<a href="https://mage2.pro/t/topic/1629">Where to find it?</a>
+					<comment><![CDATA[<a href="https://mage2.pro/t/topic/1629" target='_blank'>Where to find it?</a>
 <br/>The number should not start with <b>9</b>, because the such numbers are for sandbox accounts, not live.]]></comment>
 					<validate>validate-digits</validate>
 					<depends>
@@ -202,7 +202,7 @@
 					showInStore='1'
 				>
 					<label>Live Publishable Key</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>How to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1628' target='_blank'>How to get it?</a>]]></comment>
 					<validate>validate-length maximum-length-36 minimum-length-36</validate>
 					<depends>
 						<field id='enable'>1</field>
@@ -219,7 +219,7 @@
 					showInStore='1'
 				>
 					<label>Live Private Key</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1628'>How to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1628' target='_blank'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
 					<validate>validate-length maximum-length-36 minimum-length-36</validate>
 					<depends>
@@ -237,7 +237,7 @@
 					showInStore='1'
 				>
 					<label>Live API Username</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>How to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1637' target='_blank'>How to get it?</a>]]></comment>
 					<validate>required-entry</validate>
 					<depends>
 						<field id='enable'>1</field>
@@ -254,7 +254,7 @@
 					showInStore='1'
 				>
 					<label>Live API Password</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1637'>How to get it?</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1637' target='_blank'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
 					<validate>required-entry</validate>
 					<depends>
@@ -272,7 +272,7 @@
 					showInStore='1'
 				>
 					<label>Live Secret Word</label>
-					<comment><![CDATA[It is used for Notifications. <a href='https://mage2.pro/t/1646'>How to get it?</a>]]></comment>
+					<comment><![CDATA[It is used for Notifications. <a href='https://mage2.pro/t/1646' target='_blank'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
 					<validate>required-entry</validate>
 					<depends>
@@ -304,7 +304,7 @@
 					showInStore='1'
 				>
 					<label>Notifications URL</label>
-					<comment><![CDATA[<a href='https://mage2.pro/t/1632'>Set it in your 2Checkout account.</a>]]></comment>
+					<comment><![CDATA[<a href='https://mage2.pro/t/1632' target='_blank'>Set it in your 2Checkout account.</a>]]></comment>
 					<depends><field id='enable'>1</field></depends>
 				</field>
 				<field
