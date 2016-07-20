@@ -29,7 +29,7 @@ class Index extends \Magento\Framework\App\Action\Action {
 	 * @return array(string => string)
 	 */
 	private function params() {
-		return df_is_it_my_local_pc() ? $this->paramsLocal() : $this->getRequest()->getParams();
+		return df_my_local() ? $this->paramsLocal() : $this->getRequest()->getParams();
 	}
 
 	/**
