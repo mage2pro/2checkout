@@ -59,6 +59,14 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 	protected function testModeLabel() {return 'Sandbox';}
 
 	/**
+	 * 2016-07-29
+	 * @override
+	 * @see \Df\Payment\Block\ConfigurableInfo::testModeLabelLong()
+	 * @return string
+	 */
+	protected function testModeLabelLong() {return 'Sandbox Mode';}
+
+	/**
 	 * 2016-05-21
 	 * @used-by \Dfe\TwoCheckout\Method::charge()
 	 * @used-by \Dfe\TwoCheckout\Block\Info::_prepareSpecificInformation()
