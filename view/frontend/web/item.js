@@ -8,11 +8,7 @@ define ([
 ], function(Component, $, df, $t, _, TCO) {
 	'use strict';
 	return Component.extend({
-		defaults: {
-			clientConfig: {id: 'dfe-2checkout'}
-			,code: 'dfe_two_checkout'
-			,template: 'Dfe_TwoCheckout/item'
-		},
+		defaults: {clientConfig: {id: 'dfe-2checkout'}},
 		/**
 		 * 2016-03-01
 		 * 2016-03-08
@@ -81,8 +77,6 @@ define ([
 			return this;
 		},
 		pay: function() {
-			/** @type {jQuery} HTMLFormElement */
-			var $form = $('form.dfe-2checkout');
 			var _this = this;
 			/**
 			 * 2016-05-18
@@ -96,7 +90,6 @@ define ([
 					_this.placeOrder();
 				},
 				function(data){
-					debugger;
 					_this.messageContainer.addErrorMessage({
 						'message': $t(
 							// 2016-05-18
@@ -110,10 +103,10 @@ define ([
 					});
 				},
 				{
-					cvv: $('[data="cvv"]', $form).val()
-					,expMonth: $('[data="expiryMonth"]', $form).val()
-					,expYear: $('[data="expiryYear"]', $form).val()
-					,ccNo: $('[data="number"]', $form).val()
+					cvv: this.dfCardVerification()
+					,expMonth: this.dfCardExpirationMonth()
+					,expYear: this.dfCardExpirationYear()
+					,ccNo: this.dfCardNumber()
 					,publishableKey: this.config('publishableKey')
 					,sellerId: this.config('accountNumber')
 				}
