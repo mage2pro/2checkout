@@ -56,6 +56,7 @@ class Settings extends \Df\Payment\Settings {
 
 	/**
 	 * @override
+	 * @see \Df\Core\Settings::prefix()
 	 * @used-by \Df\Core\Settings::v()
 	 * @return string
 	 */
