@@ -1,6 +1,6 @@
 {
 	"name": "mage2pro/2checkout"
-	,"version": "1.0.9"
+	,"version": "1.0.10"
 	,"description": "The «2Checkout» payment extension."
 	,"type": "magento2-module"
 	,"homepage": "https://mage2.pro/c/extensions/2checkout"
@@ -12,7 +12,7 @@
 		"role": "Developer"
 	}]
 	,"require": {
-		"mage2pro/core": "^1.4.28"
+		"mage2pro/core": "^1.5.14"
 		, "2checkout/2checkout-php": "*"
 	}
 	,"autoload": {"files": ["registration.php"], "psr-4": {"Dfe\\TwoCheckout\\": ""}}
