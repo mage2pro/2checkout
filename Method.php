@@ -422,8 +422,9 @@ class Method extends \Df\Payment\Method {
 
 	/**
 	 * 2016-02-29
-	 * @used-by Dfe/Stripe/etc/frontend/di.xml
-	 * @used-by \Dfe\TwoCheckout\ConfigProvider::getConfig()
+	 * @used-by mage2pro/2checkout/etc/di.xml
+	 * @used-by mage2pro/2checkout/etc/frontend/di.xml
+	 * @used-by \Df\Payment\Method::codeS()
 	 */
 	const CODE = 'dfe_two_checkout';
 	/**

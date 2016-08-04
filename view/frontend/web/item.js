@@ -118,11 +118,6 @@ define ([
 					,sellerId: this.config('accountNumber')
 				}
 			);
-		},
-		/**
-		 * 2016-04-11
-		 * @return {Boolean}
-		*/
-		isTest: function() {return this.config('isTest');}
+		}
 	});
 });

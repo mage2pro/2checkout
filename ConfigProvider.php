@@ -1,22 +1,17 @@
 <?php
 namespace Dfe\TwoCheckout;
-use Dfe\TwoCheckout\Settings as S;
-use Magento\Checkout\Model\ConfigProviderInterface;
-class ConfigProvider implements ConfigProviderInterface {
+/** @method Settings s() */
+class ConfigProvider extends \Df\Payment\ConfigProvider {
 	/**
-	 * 2016-02-27
+	 * 2016-08-04
 	 * @override
-	 * @see \Magento\Checkout\Model\ConfigProviderInterface::getConfig()
-	 * https://github.com/magento/magento2/blob/cf7df72/app/code/Magento/Checkout/Model/ConfigProviderInterface.php#L15-L20
+	 * @see \Df\Payment\ConfigProvider::custom()
+	 * @used-by \Df\Payment\ConfigProvider::getConfig()
 	 * @return array(string => mixed)
 	 */
-	public function getConfig() {
-		return ['payment' => [Method::CODE => [
-			'accountNumber' => S::s()->accountNumber()
-			,'isActive' => S::s()->enable()
-			,'isTest' => S::s()->test()
-			,'prefill' => S::s()->prefill()
-			,'publishableKey' => S::s()->publishableKey()
-		]]];
-	}
+	protected function custom() {return [
+		'accountNumber' => $this->s()->accountNumber()
+		,'prefill' => $this->s()->prefill()
+		,'publishableKey' => $this->s()->publishableKey()
+	];}
 }
