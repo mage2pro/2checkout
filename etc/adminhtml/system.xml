@@ -98,7 +98,14 @@
 					<label>Sandbox Private Key</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1628' target='_blank'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-					<validate>validate-length maximum-length-36 minimum-length-36</validate>
+					<!--
+						2016-08-06
+						Раньше здесь стояло:
+						<validate>validate-length maximum-length-36 minimum-length-36</validate>
+						Однако после последнего обновления Magento
+						валидатор стал ложно срабатывать на звёздочки (маску),
+						требуя, чтобы этих звёздочек было 36 штук.
+					-->
 					<depends>
 						<field id='enable'>1</field>
 						<field id='test'>1</field>
@@ -221,7 +228,14 @@
 					<label>Live Private Key</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1628' target='_blank'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-					<validate>validate-length maximum-length-36 minimum-length-36</validate>
+					<!--
+						2016-08-06
+						Раньше здесь стояло:
+						<validate>validate-length maximum-length-36 minimum-length-36</validate>
+						Однако после последнего обновления Magento
+						валидатор стал ложно срабатывать на звёздочки (маску),
+						требуя, чтобы этих звёздочек было 36 штук.
+					-->
 					<depends>
 						<field id='enable'>1</field>
 						<field id='test'>0</field>

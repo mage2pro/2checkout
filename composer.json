@@ -1,6 +1,6 @@
 {
 	"name": "mage2pro/2checkout"
-	,"version": "1.0.14"
+	,"version": "1.0.15"
 	,"description": "The «2Checkout» payment extension."
 	,"type": "magento2-module"
 	,"homepage": "https://mage2.pro/c/extensions/2checkout"
