@@ -14,4 +14,13 @@ class ConfigProvider extends \Df\Payment\ConfigProvider {
 		,'prefill' => $this->s()->prefill()
 		,'publishableKey' => $this->s()->publishableKey()
 	];}
+
+	/**
+	 * 2016-08-06
+	 * @override
+	 * @see \Df\Payment\ConfigProvider::route()
+	 * @used-by \Df\Payment\ConfigProvider::getConfig()
+	 * @return string
+	 */
+	protected function route() {return 'dfe-2checkout';}
 }
