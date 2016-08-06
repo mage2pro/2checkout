@@ -22,23 +22,6 @@ define ([
 	 */
 	getCardTypes: function() {return ['VI', 'MC', 'AE', 'JCB', 'DI', 'DN'];},
 	/**
-	 * 2016-03-06
-	 * @override
-	 */
-	getData: function () {
-		return {
-			/**
-			 * 2016-05-03
-			 * Если не засунуть «token» внутрь «additional_data»,
-			 * то получим сбой:
-			 * «Property "Token" does not have corresponding setter
-			 * in class "Magento\Quote\Api\Data\PaymentInterface»
-			 */
-			additional_data: {token: this.token}
-			,method: this.item.method
-		};
-	},
-	/**
 	 * 2016-03-02
 	 * @return {Object}
 	*/
