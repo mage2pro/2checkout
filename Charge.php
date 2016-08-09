@@ -122,7 +122,7 @@ class Charge extends \Df\Payment\Charge\WithToken {
 		return !$this->o()->getBaseDiscountAmount() ? null : LineItem::buildLI(
 			'coupon'
 			, $this->o()->getBaseDiscountAmount()
-			, df_cc_clean(': ',
+			, df_ccc(': ',
 				$this->o()->getDiscountDescription() === $this->o()->getCouponCode()
 					? $this->o()['coupon_rule_name'] : null
 				,$this->o()->getDiscountDescription())
