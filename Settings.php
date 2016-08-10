@@ -28,7 +28,7 @@ class Settings extends \Df\Payment\Settings {
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Pass Order Items to the Payment Gateway?»
 	 * @return bool
 	 */
-	public function passOrderItems() {return $this->b(__FUNCTION__);}
+	public function passOrderItems() {return $this->b();}
 
 	/**
 	 * 2016-03-09
@@ -36,7 +36,7 @@ class Settings extends \Df\Payment\Settings {
 	 * @see \Dfe\TwoCheckout\Source\Prefill::map()
 	 * @return string|false
 	 */
-	public function prefill() {return $this->bv(__FUNCTION__);}
+	public function prefill() {return $this->bv();}
 
 	/**
 	 * 2016-03-02
@@ -67,42 +67,42 @@ class Settings extends \Df\Payment\Settings {
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Account Number»
 	 * @return string
 	 */
-	private function liveAccountNumber() {return $this->v(__FUNCTION__);}
+	private function liveAccountNumber() {return $this->v();}
 
 	/**
 	 * 2016-05-20
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live API Password»
 	 * @return string
 	 */
-	private function livePassword() {return $this->p(__FUNCTION__);}
+	private function livePassword() {return $this->p();}
 
 	/**
 	 * 2016-03-02
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Publishable Key»
 	 * @return string
 	 */
-	private function livePublishableKey() {return $this->v(__FUNCTION__);}
+	private function livePublishableKey() {return $this->v();}
 
 	/**
 	 * 2016-03-02
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Secret Key»
 	 * @return string
 	 */
-	private function liveSecretKey() {return $this->p(__FUNCTION__);}
+	private function liveSecretKey() {return $this->p();}
 
 	/**
 	 * 2016-05-22
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Secret Word»
 	 * @return string
 	 */
-	private function liveSecretWord() {return $this->p(__FUNCTION__);}
+	private function liveSecretWord() {return $this->p();}
 
 	/**
 	 * 2016-05-20
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live API Username»
 	 * @return string
 	 */
-	private function liveUsername() {return $this->v(__FUNCTION__);}
+	private function liveUsername() {return $this->v();}
 
 	/**
 	 * 2016-05-20
@@ -125,42 +125,42 @@ class Settings extends \Df\Payment\Settings {
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Account Number»
 	 * @return string
 	 */
-	private function testAccountNumber() {return $this->v(__FUNCTION__);}
+	private function testAccountNumber() {return $this->v();}
 
 	/**
 	 * 2016-05-20
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Sandbox API Password»
 	 * @return string
 	 */
-	private function testPassword() {return $this->p(__FUNCTION__);}
+	private function testPassword() {return $this->p();}
 
 	/**
 	 * 2016-03-02
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Publishable Key»
 	 * @return string
 	 */
-	private function testPublishableKey() {return $this->v(__FUNCTION__);}
+	private function testPublishableKey() {return $this->v();}
 
 	/**
 	 * 2016-03-02
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Secret Key»
 	 * @return string
 	 */
-	private function testSecretKey() {return $this->p(__FUNCTION__);}
+	private function testSecretKey() {return $this->p();}
 
 	/**
 	 * 2016-05-22
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Sandbox Secret Word»
 	 * @return string
 	 */
-	private function testSecretWord() {return $this->p(__FUNCTION__);}
+	private function testSecretWord() {return $this->p();}
 
 	/**
 	 * 2016-05-20
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Sandbox API Username»
 	 * @return string
 	 */
-	private function testUsername() {return $this->v(__FUNCTION__);}
+	private function testUsername() {return $this->v();}
 
 	/**
 	 * 2016-05-20
