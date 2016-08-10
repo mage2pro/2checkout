@@ -401,11 +401,11 @@ class Method extends \Df\Payment\Method {
 			df_on_save($this->o(), function() use($saleId) {
 				\Twocheckout_Sale::comment([
 					'sale_id' => $saleId
-					, 'sale_comment' => implode(' ', [
+					, 'sale_comment' => df_cc_s(
 						'Magento Order:'
 						, $this->o()->getIncrementId()
 						, df_order_backend_url($this->o()->getId())
-					])
+					)
 				]);
 			});
 		});

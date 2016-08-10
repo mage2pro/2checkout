@@ -69,7 +69,7 @@ abstract class Handler extends \Df\Core\O {
 			 * REFUND_ISSUED => Handler\RefundIssued
 			 * @var string $suffix
 			 */
-			$suffix = df_implode_class('handler', implode(df_ucfirst(explode('_', strtolower($type)))));
+			$suffix = df_cc_class('Handler', df_underscore_to_camel($type));
 			$class = df_convention(__CLASS__, $suffix, DefaultT::class);
 			/** @var Handler $i */
 			$i = df_create($class, $request);

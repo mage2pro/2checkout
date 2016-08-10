@@ -71,13 +71,13 @@ class Address extends \Df\Core\O {
 			}
 			else {
 				/** @var string[] $words */
-				$words = df_clean(df_trim(explode(' ', implode(' ', $this->a()->getStreet()))));
+				$words = df_clean(df_trim(explode(' ', df_cc_s($this->a()->getStreet()))));
 				/** @var int $wordsCount */
 				$wordsCount = count($words);
 				/** @var int $wordsCount1 */
 				$wordsCount1 = round($wordsCount / 2);
-				$line1 = implode(' ', array_slice($words, 0, $wordsCount1));
-				$line2 = implode(' ', array_slice($words, $wordsCount1));
+				$line1 = df_cc_s(array_slice($words, 0, $wordsCount1));
+				$line2 = df_cc_s(array_slice($words, $wordsCount1));
 			}
 			$this->{__METHOD__} = [$line1, $line2];
 		}
