@@ -38,25 +38,6 @@ class Method extends \Df\Payment\Method {
 	public function canRefundPartialPerInvoice() {return true;}
 
 	/**
-	 * 2016-03-06
-	 * @override
-	 * @see \Df\Payment\Method::capture()
-	 *
-	 * $amount содержит значение в учётной валюте системы.
-	 * https://github.com/magento/magento2/blob/6ce74b2/app/code/Magento/Sales/Model/Order/Payment/Operations/CaptureOperation.php#L37-L37
-	 * https://github.com/magento/magento2/blob/6ce74b2/app/code/Magento/Sales/Model/Order/Payment/Operations/CaptureOperation.php#L76-L82
-	 *
-	 * @param II|I|OP $payment
-	 * @param float $amount
-	 * @return $this
-	 * @throws \Stripe\Error\Card
-	 */
-	public function capture(II $payment, $amount) {
-		$this->charge($payment, $amount);
-		return $this;
-	}
-
-	/**
 	 * 2016-05-20
 	 * «Once you have passed the token to your server,
 	 * you can use it along with your private key to charge the credit card
@@ -74,37 +55,14 @@ class Method extends \Df\Payment\Method {
 	public function getConfigPaymentAction() {return M::ACTION_AUTHORIZE_CAPTURE;}
 
 	/**
-	 * 2016-03-15
-	 * @override
-	 * @see \Df\Payment\Method::refund()
-	 * @param II|I|OP  $payment
-	 * @param float $amount
-	 * @return $this
-	 */
-	public function refund(II $payment, $amount) {
-		if (!$payment[self::WEBHOOK_CASE]) {
-			$this->_refund($payment, $amount);
-		}
-		return $this;
-	}
-
-	/**
-	 * 2016-05-03
-	 * @override
-	 * @see \Df\Payment\Method::iiaKeys()
-	 * @used-by \Df\Payment\Method::assignData()
-	 * @return string[]
-	 */
-	protected function iiaKeys() {return [self::$TOKEN];}
-
-	/**
 	 * 2016-05-21
-	 * @param II|I|OP $payment
-	 * @param float|null $amount [optional]
+	 * @override
+	 * @see \Df\Payment\Method::_refund()
+	 * @param float $amount
 	 * @return void
 	 */
-	private function _refund(II $payment, $amount = null) {
-		$this->api(function() use($payment, $amount) {
+	protected function _refund($amount) {
+		$this->api(function() use($amount) {
 			/**
 			 * 2016-03-17
 			 * Метод @uses \Magento\Sales\Model\Order\Payment::getAuthorizationTransaction()
@@ -115,10 +73,10 @@ class Method extends \Df\Payment\Method {
 			 * без предварительной транзакции типа «авторизация».
 			 */
 			/** @var Transaction $tCapture */
-			$tCapture = $payment->getAuthorizationTransaction();
+			$tCapture = $this->ii()->getAuthorizationTransaction();
 			if ($tCapture) {
 				/** @var Creditmemo $cm */
-				$cm = $payment->getCreditmemo();
+				$cm = $this->ii()->getCreditmemo();
 				/**
 				 * 2016-03-24
 				 * Credit Memo и Invoice отсутствуют в сценарии Authorize / Capture
@@ -213,9 +171,9 @@ class Method extends \Df\Payment\Method {
 				 * Используем @uses df_on_save(), потому что нам нужен идентификатор возврата,
 				 * а в этой точке программы возврат ещё не имеет идентификатора.
 				 */
-				df_on_save($cm, function() use($cm, $payment) {
+				df_on_save($cm, function() use($cm) {
 					\Twocheckout_Sale::comment([
-						'sale_id' => $payment->getAdditionalInformation(InfoBlock::SALE_ID)
+						'sale_id' => $this->ii()->getAdditionalInformation(InfoBlock::SALE_ID)
 						, 'sale_comment' => df_credit_memo_backend_url($cm->getId())
 					]);
 				});
@@ -224,40 +182,22 @@ class Method extends \Df\Payment\Method {
 	}
 
 	/**
-	 * 2016-03-17
-	 * Чтобы система показала наше сообщение вместо общей фразы типа
-	 * «We can't void the payment right now» надо вернуть объект именно класса
-	 * @uses \Magento\Framework\Exception\LocalizedException
-	 * https://mage2.pro/t/945
-	 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Controller/Adminhtml/Order/VoidPayment.php#L20-L30
-	 * @param callable $function
-	 * @throws LE
-	 */
-	private function api($function) {
-		df_leh(function() use($function) {S::s()->init(); $function();});
-	}
-
-	/**
-	 * 2016-03-07
+	 * 2016-08-14
 	 * @override
-	 * @see https://stripe.com/docs/charges
-	 * @see \Df\Payment\Method::capture()
-	 * @param II|I|OP $payment
-	 * @param float|null $amount [optional]
-	 * @param bool|null $capture [optional]
+	 * @see \Df\Payment\Method::charge()
+	 * @param float $amount		в учётной валюте системы
+	 * @param bool $capture [optional]
 	 * @return $this
-	 * @throws \Stripe\Error\Card
 	 */
-	private function charge(II $payment, $amount = null, $capture = true) {
-		$this->api(function() use($payment, $amount, $capture) {
-			df_assert($capture);
+	protected function charge($amount, $capture = true) {
+		$this->api(function() use($amount) {
 			/**
 			 * 2016-05-20
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 * https://github.com/2Checkout/2checkout-php/wiki/Charge_Authorize#example-usage
 			 * @var array(string => mixed) $r
 			 */
-			$r = Charge::request($payment, $this->iia(self::$TOKEN), $amount);
+			$r = Charge::request($this->ii(), $this->iia(self::$TOKEN), $amount);
 			/**
 			 * 2016-05-20
 			 * «If an error occurs when attempting to authorize the sale,
@@ -314,7 +254,7 @@ class Method extends \Df\Payment\Method {
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 * «2Checkout Invoice ID»
 			 */
-			$payment->setTransactionId($id);
+			$this->ii()->setTransactionId($id);
 			/**
 			 * 2016-05-20
 			 * https://www.2checkout.com/documentation/api/sales/detail-sale
@@ -359,7 +299,7 @@ class Method extends \Df\Payment\Method {
 			 * Мы не можем получить 4 последние цифры карты,
 			 * вместо этого получаем 4 первых и 2 последних.
 			 */
-			df_order_payment_add($payment, dfa_select_ordered($card, [
+			$this->iiaAdd(dfa_select_ordered($card, [
 				InfoBlock::CARD_F6, InfoBlock::CARD_L2
 			]) + [
 				/**
@@ -372,7 +312,7 @@ class Method extends \Df\Payment\Method {
 				 */
 				InfoBlock::SALE_ID => $saleId
 			]);
-			$payment->unsAdditionalInformation(self::$TOKEN);
+			$this->iiaUnset(self::$TOKEN);
 			/**
 			 * 2016-03-15
 			 * Аналогично, иначе операция «void» (отмена авторизации платежа) будет недоступна:
@@ -380,7 +320,7 @@ class Method extends \Df\Payment\Method {
 			 * @used-by \Magento\Sales\Model\Order\Payment::canVoid()
 			 * Транзакция ситается завершённой, если явно не указать «false».
 			 */
-			$payment->setIsTransactionClosed(true);
+			$this->iia()->setIsTransactionClosed(true);
 			/**
 			 * 2016-05-21
 			 * Пока не знаю, как передавать нестандартные параметры нормальным способом.
@@ -413,12 +353,27 @@ class Method extends \Df\Payment\Method {
 	}
 
 	/**
-	 * 2016-03-26
-	 * @used-by \Dfe\TwoCheckout\Method::capture()
-	 * @used-by \Dfe\TwoCheckout\Method::refund()
-	 * @used-by \Dfe\TwoCheckout\Handler\Charge::payment()
+	 * 2016-05-03
+	 * @override
+	 * @see \Df\Payment\Method::iiaKeys()
+	 * @used-by \Df\Payment\Method::assignData()
+	 * @return string[]
 	 */
-	const WEBHOOK_CASE = 'dfe_webhook_case';
+	protected function iiaKeys() {return [self::$TOKEN];}
+
+	/**
+	 * 2016-03-17
+	 * Чтобы система показала наше сообщение вместо общей фразы типа
+	 * «We can't void the payment right now» надо вернуть объект именно класса
+	 * @uses \Magento\Framework\Exception\LocalizedException
+	 * https://mage2.pro/t/945
+	 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Controller/Adminhtml/Order/VoidPayment.php#L20-L30
+	 * @param callable $function
+	 * @throws LE
+	 */
+	private function api($function) {
+		df_leh(function() use($function) {S::s()->init(); $function();});
+	}
 
 	/**
 	 * 2016-02-29
