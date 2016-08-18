@@ -1,7 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout\Handler;
 use Dfe\TwoCheckout\Handler;
-use Dfe\TwoCheckout\Method;
 use Df\Sales\Model\Order as DfOrder;
 use Df\Sales\Model\Order\Payment as DfPayment;
 use Magento\Framework\Exception\LocalizedException as LE;

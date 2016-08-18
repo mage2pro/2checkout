@@ -119,9 +119,9 @@ class Charge extends \Df\Payment\Charge\WithToken {
 	 * @return array(string => string)|null
 	 */
 	private function lineItem_discount() {
-		return !$this->o()->getBaseDiscountAmount() ? null : LineItem::buildLI(
+		return !$this->o()->getDiscountAmount() ? null : LineItem::buildLI(
 			'coupon'
-			, $this->o()->getBaseDiscountAmount()
+			, $this->o()->getDiscountAmount()
 			, df_ccc(': ',
 				$this->o()->getDiscountDescription() === $this->o()->getCouponCode()
 					? $this->o()['coupon_rule_name'] : null
@@ -134,9 +134,9 @@ class Charge extends \Df\Payment\Charge\WithToken {
 	 * @return array(string => string)|null
 	 */
 	private function lineItem_shipping() {
-		return !$this->o()->getBaseShippingAmount() ? null : LineItem::buildLI(
+		return !$this->o()->getShippingAmount() ? null : LineItem::buildLI(
 			'shipping'
-			, $this->o()->getBaseShippingAmount()
+			, $this->o()->getShippingAmount()
 			, $this->o()->getShippingDescription()
 			, true
 		);
@@ -147,8 +147,8 @@ class Charge extends \Df\Payment\Charge\WithToken {
 	 * @return array(string => string)|null
 	 */
 	private function lineItem_tax() {
-		return !$this->o()->getBaseTaxAmount() ? null : LineItem::buildLI(
-			'tax', $this->o()->getBaseTaxAmount()
+		return !$this->o()->getTaxAmount() ? null : LineItem::buildLI(
+			'tax', $this->o()->getTaxAmount()
 		);
 	}
 	
@@ -183,7 +183,7 @@ class Charge extends \Df\Payment\Charge\WithToken {
 			$total += $item['price'] * dfa($item, 'quantity', 1) * ('coupon' === $item['type'] ? -1 : 1);
 		}
 		/** @var float $rest */
-		$rest = $this->o()->getBaseTotalDue() - $total;
+		$rest = $this->o()->getTotalDue() - $total;
 		if (abs($rest) >= 0.01) {
 			$result[]= LineItem::buildLI(
 				$rest > 0 ? 'tax' : 'coupon', $rest, 'Correction', false, 'correction'
@@ -196,12 +196,12 @@ class Charge extends \Df\Payment\Charge\WithToken {
 	 * 2016-05-19
 	 * @param InfoInterface|Info|OrderPayment $payment
 	 * @param string $token
-	 * @param float|null $amount [optional]
+	 * @param float|null $amountBase [optional]
 	 * @return array(string => mixed)
 	 */
-	public static function request(InfoInterface $payment, $token, $amount = null) {
+	public static function request(InfoInterface $payment, $token, $amountBase = null) {
 		return \Twocheckout_Charge::auth((new self([
-			self::$P__AMOUNT => $amount
+			self::$P__AMOUNT_BASE => $amountBase
 			, self::$P__PAYMENT => $payment
 			, self::$P__TOKEN => $token
 		]))->_request());
