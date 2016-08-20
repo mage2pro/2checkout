@@ -196,12 +196,12 @@ class Charge extends \Df\Payment\Charge\WithToken {
 	 * 2016-05-19
 	 * @param InfoInterface|Info|OrderPayment $payment
 	 * @param string $token
-	 * @param float|null $amountBase [optional]
+	 * @param float|null $amount [optional]
 	 * @return array(string => mixed)
 	 */
-	public static function request(InfoInterface $payment, $token, $amountBase = null) {
+	public static function request(InfoInterface $payment, $token, $amount = null) {
 		return \Twocheckout_Charge::auth((new self([
-			self::$P__AMOUNT_BASE => $amountBase
+			self::$P__AMOUNT => $amount
 			, self::$P__PAYMENT => $payment
 			, self::$P__TOKEN => $token
 		]))->_request());
