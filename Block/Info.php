@@ -35,7 +35,7 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 	protected function _prepareSpecificInformation($transport = null) {
 		/** @var DataObject $result */
 		$result = parent::_prepareSpecificInformation($transport);
-		if (!$this->getIsSecureMode()) {
+		if ($this->isBackend()) {
 			$result->setData('Sale', df_tag('a', [
 				'target' => '_blank', 'href' =>
 					(
