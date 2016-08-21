@@ -5,8 +5,6 @@ use Dfe\TwoCheckout\Settings as S;
 use Magento\Payment\Model\Method\AbstractMethod as M;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException as LE;
-use Magento\Payment\Model\Info as I;
-use Magento\Payment\Model\InfoInterface as II;
 use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
@@ -191,13 +189,26 @@ class Method extends \Df\Payment\Method {
 	 */
 	protected function charge($amount, $capture = true) {
 		$this->api(function() use($amount) {
+			/** @var array(string => mixed) $request */
+			$request = Charge::request($this->ii(), $this->iia(self::$TOKEN), $amount);
+			$request['api'] = 'checkout';
+			/** @var \Twocheckout_Api_Requester $requester */
+			$requester = new \Twocheckout_Api_Requester;
 			/**
-			 * 2016-05-20
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 * https://github.com/2Checkout/2checkout-php/wiki/Charge_Authorize#example-usage
+			 * 2016-08-21
+			 * По аналогии с @see \Twocheckout_Charge::auth()
 			 * @var array(string => mixed) $r
 			 */
-			$r = Charge::request($this->ii(), $this->iia(self::$TOKEN), $amount);
+			$r = df_json_decode($requester->doCall(
+				'/checkout/api/1/'.\Twocheckout_Charge::$sid.'/rs/authService', $request
+			));
+			/**
+			 * 2016-08-21
+			 * По аналогии с @see \Twocheckout_Util::checkError()
+			 */
+			if (isset($r['errors']) || isset($r['exception'])) {
+				throw new Exception($r, $request);
+			}
 			/**
 			 * 2016-05-20
 			 * «If an error occurs when attempting to authorize the sale,
@@ -369,10 +380,13 @@ class Method extends \Df\Payment\Method {
 	 * https://mage2.pro/t/945
 	 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Controller/Adminhtml/Order/VoidPayment.php#L20-L30
 	 * @param callable $function
+	 * @return mixed
 	 * @throws LE
 	 */
 	private function api($function) {
-		df_leh(function() use($function) {S::s()->init(); $function();});
+		try {S::s()->init(); return $function();}
+		catch (Exception $e) {throw $e;}
+		catch (\Exception $e) {throw df_le($e);}
 	}
 
 	/**

@@ -8,6 +8,11 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Address as OrderAddress;
 use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Sales\Model\Order\Payment as OrderPayment;
+/**
+ * 2016-05-20
+ * https://www.2checkout.com/documentation/payment-api/create-sale
+ * https://github.com/2Checkout/2checkout-php/wiki/Charge_Authorize#example-usage
+ */
 class Charge extends \Df\Payment\Charge\WithToken {
 	/**
 	 * 2016-05-19
@@ -200,10 +205,10 @@ class Charge extends \Df\Payment\Charge\WithToken {
 	 * @return array(string => mixed)
 	 */
 	public static function request(InfoInterface $payment, $token, $amount = null) {
-		return \Twocheckout_Charge::auth((new self([
+		return (new self([
 			self::$P__AMOUNT => $amount
 			, self::$P__PAYMENT => $payment
 			, self::$P__TOKEN => $token
-		]))->_request());
+		]))->_request();
 	}
 }
