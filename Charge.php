@@ -23,6 +23,7 @@ class Charge extends \Df\Payment\Charge\WithToken {
 		$result = [
 			/**
 			 * 2016-05-19
+			 * «sellerId»
 			 * «Your 2Checkout account number. Required»
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 * 'sellerId' => S::s()->accountNumber()
@@ -32,7 +33,7 @@ class Charge extends \Df\Payment\Charge\WithToken {
 			 * заданным при вызове @see \Twocheckout::sellerId()
 			 * https://github.com/2Checkout/2checkout-php/blob/cbac8da/lib/Twocheckout/Api/TwocheckoutApi.php#L28
 			 *
-			 * privateKey указывать не нужно и нет смысла по той же причине:
+			 * «privateKey» указывать не нужно и нет смысла по той же причине:
 			 * https://github.com/2Checkout/2checkout-php/blob/cbac8da/lib/Twocheckout/Api/TwocheckoutApi.php#L27
 			 */
 			/**

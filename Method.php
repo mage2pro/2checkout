@@ -10,6 +10,7 @@ use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\Payment as OP;
 use Magento\Sales\Model\Order\Payment\Transaction;
+/** @method Settings s() */
 class Method extends \Df\Payment\Method {
 	/**
 	 * 2016-03-07
@@ -191,17 +192,22 @@ class Method extends \Df\Payment\Method {
 		$this->api(function() use($amount) {
 			/** @var array(string => mixed) $request */
 			$request = Charge::request($this->ii(), $this->iia(self::$TOKEN), $amount);
+			/**
+			 * 2016-08-21
+			 * @see \Twocheckout_Api_Requester::doCall()
+			 * https://github.com/2Checkout/2checkout-php/blob/0.3.1/lib/Twocheckout/Api/TwocheckoutApi.php#L25-L31
+			 */
 			$request['api'] = 'checkout';
 			/** @var \Twocheckout_Api_Requester $requester */
 			$requester = new \Twocheckout_Api_Requester;
 			/**
 			 * 2016-08-21
 			 * По аналогии с @see \Twocheckout_Charge::auth()
-			 * @var array(string => mixed) $r
 			 */
-			$r = df_json_decode($requester->doCall(
-				'/checkout/api/1/'.\Twocheckout_Charge::$sid.'/rs/authService', $request
-			));
+			/** @var string $url */
+			$url = "/checkout/api/1/{$this->s()->accountNumber()}/rs/authService";
+			/** @var array(string => mixed) $r */
+			$r = df_json_decode($requester->doCall($url, $request));
 			/**
 			 * 2016-08-21
 			 * По аналогии с @see \Twocheckout_Util::checkError()
