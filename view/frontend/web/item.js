@@ -1,5 +1,5 @@
 define ([
-	'Df_Payment/js/view/payment/cc-form'
+	'Df_Payment/card'
 	,'Dfe_TwoCheckout/API'
 ], function(parent, TCO) {'use strict'; return parent.extend({
 	defaults: {df: {test: {suffix: 'SANDBOX'}}},
