@@ -172,8 +172,8 @@ class Method extends \Df\Payment\Method {
 				 */
 				df_on_save($cm, function() use($cm) {
 					\Twocheckout_Sale::comment([
-						'sale_id' => $this->ii()->getAdditionalInformation(InfoBlock::SALE_ID)
-						, 'sale_comment' => df_credit_memo_backend_url($cm->getId())
+						'sale_id' => $this->iia(InfoBlock::SALE_ID)
+						,'sale_comment' => df_credit_memo_backend_url($cm)
 					]);
 				});
 			}
@@ -361,7 +361,7 @@ class Method extends \Df\Payment\Method {
 					, 'sale_comment' => df_cc_s(
 						'Magento Order:'
 						, $this->o()->getIncrementId()
-						, df_order_backend_url($this->o()->getId())
+						, df_order_backend_url($this->o())
 					)
 				]);
 			});
