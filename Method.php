@@ -337,7 +337,7 @@ class Method extends \Df\Payment\Method {
 			 * @used-by \Magento\Sales\Model\Order\Payment::canVoid()
 			 * Транзакция ситается завершённой, если явно не указать «false».
 			 */
-			$this->iia()->setIsTransactionClosed(true);
+			$this->ii()->setIsTransactionClosed(true);
 			/**
 			 * 2016-05-21
 			 * Пока не знаю, как передавать нестандартные параметры нормальным способом.
