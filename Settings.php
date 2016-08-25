@@ -1,7 +1,7 @@
 <?php
 namespace Dfe\TwoCheckout;
 /** @method static Settings s() */
-class Settings extends \Df\Payment\Settings {
+final class Settings extends \Df\Payment\Settings {
 	/**
 	 * 2016-05-18
 	 * @return string
@@ -53,14 +53,6 @@ class Settings extends \Df\Payment\Settings {
 	public function secretWord() {
 		return $this->test() ? $this->testSecretWord() : $this->liveSecretWord();
 	}
-
-	/**
-	 * @override
-	 * @see \Df\Core\Settings::prefix()
-	 * @used-by \Df\Core\Settings::v()
-	 * @return string
-	 */
-	protected function prefix() {return 'df_payment/two_checkout/';}
 
 	/**
 	 * 2016-05-18

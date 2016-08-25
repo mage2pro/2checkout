@@ -35,7 +35,7 @@ class Exception extends \Df\Payment\Exception {
 	 * @return string
 	 */
 	public function messageForCustomer() {
-		return df_payment_error_message(df_first(df_clean($this->_res->a([
+		return dfp_error_message(df_first(df_clean($this->_res->a([
 			'errors/0/message', 'exception/errorMsg'
 		]))));
 	}
