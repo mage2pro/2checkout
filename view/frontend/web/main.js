@@ -1,7 +1,33 @@
 define ([
-	'Df_Payment/card'
+	'df'
+	,'Df_Payment/card'
 	,'Dfe_TwoCheckout/API'
-], function(parent, TCO) {'use strict'; return parent.extend({
+], function(df, parent, TCO) {'use strict'; return parent.extend({
+	/**
+	 * 2016-08-25
+	 * https://mail.google.com/mail/u/0/#inbox/156ae0f52f7e5964
+	 * @override
+	 * @see mage2pro/core/Payment/view/frontend/web/js/view/payment/mixin.js
+	 * @returns {String}
+	 */
+	debugMessage: df.c(function() {
+		/**
+		 * 2016-08-25
+		 * The list of currencies supported by 2Checkout sandbox environment.
+		 * @type {String[]}
+		 */
+		var codes = ['AED', 'ARS', 'AUD', 'BRL', 'CAD', 'CHF', 'DKK', 'EUR', 'GBP', 'HKD',
+			'ILS', 'INR', 'JPY', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'RON', 'RUB',
+			 'SEK', 'SGD', 'TRY', 'USD', 'ZAR'
+		];
+		return -1 < codes.indexOf(this.dfc.currency) ? '' : df.t(
+			'The transaction will <b><a href="{url}" target="_blank">fail</a></b> with the message «<b>Bad request - parameter error</b>», because 2Checkout does not support the «<b>{currency}</b>» in the sandbox mode (but supports it in the production mode).'
+			,{
+				currency: this.dfc.currency
+				,url: 'https://mage2.pro/t/1986'
+			}
+		);
+	}),
 	defaults: {df: {test: {suffix: 'SANDBOX'}}},
 	/**
 	 * 2016-03-01
