@@ -1,7 +1,8 @@
 <?php
 namespace Dfe\TwoCheckout;
+use \Twocheckout as T;
 /** @method static Settings s() */
-final class Settings extends \Df\Payment\Settings {
+final class Settings extends \Df\Payment\Settings\BankCard {
 	/**
 	 * 2016-05-18
 	 * @return string
@@ -16,11 +17,11 @@ final class Settings extends \Df\Payment\Settings {
 	 * @return void
 	 */
 	public function init() {
-		\Twocheckout::sandbox($this->test());
-		\Twocheckout::username($this->username());
-		\Twocheckout::password($this->password());
-		\Twocheckout::privateKey($this->secretKey());
-		\Twocheckout::sellerId($this->accountNumber());
+		T::sandbox($this->test());
+		T::username($this->username());
+		T::password($this->password());
+		T::privateKey($this->secretKey());
+		T::sellerId($this->accountNumber());
 	}
 
 	/**

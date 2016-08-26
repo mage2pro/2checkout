@@ -65,8 +65,7 @@ define ([
 		var prefill = this.config('prefill');
 		if (prefill) {
 			this.creditCardNumber(prefill);
-			this.creditCardExpMonth(7);
-			this.creditCardExpYear(2019);
+			this.prefillWithAFutureData();
 			this.creditCardVerificationNumber(123);
 		}
 		return this;
