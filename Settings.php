@@ -7,9 +7,7 @@ final class Settings extends \Df\Payment\Settings\BankCard {
 	 * 2016-05-18
 	 * @return string
 	 */
-	public function accountNumber() {
-		return $this->test() ? $this->testAccountNumber() : $this->liveAccountNumber();
-	}
+	public function accountNumber() {return $this->testable();}
 
 	/**
 	 * 2016-05-19
@@ -41,127 +39,118 @@ final class Settings extends \Df\Payment\Settings\BankCard {
 
 	/**
 	 * 2016-03-02
+	 * @used-by \Dfe\TwoCheckout\Handler::p()
 	 * @return string
 	 */
-	public function publishableKey() {
-		return $this->test() ? $this->testPublishableKey() : $this->livePublishableKey();
-	}
+	public function publishableKey() {return $this->testable();}
 
 	/**
 	 * 2016-05-22
 	 * @return string
 	 */
-	public function secretWord() {
-		return $this->test() ? $this->testSecretWord() : $this->liveSecretWord();
-	}
+	public function secretWord() {return $this->testable();}
 
 	/**
 	 * 2016-05-18
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Account Number»
 	 * @return string
 	 */
-	private function liveAccountNumber() {return $this->v();}
+	protected function liveAccountNumber() {return $this->v();}
 
 	/**
 	 * 2016-05-20
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live API Password»
 	 * @return string
 	 */
-	private function livePassword() {return $this->p();}
+	protected function livePassword() {return $this->p();}
 
 	/**
 	 * 2016-03-02
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Publishable Key»
 	 * @return string
 	 */
-	private function livePublishableKey() {return $this->v();}
+	protected function livePublishableKey() {return $this->v();}
 
 	/**
 	 * 2016-03-02
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Secret Key»
 	 * @return string
 	 */
-	private function liveSecretKey() {return $this->p();}
+	protected function liveSecretKey() {return $this->p();}
 
 	/**
 	 * 2016-05-22
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live Secret Word»
 	 * @return string
 	 */
-	private function liveSecretWord() {return $this->p();}
+	protected function liveSecretWord() {return $this->p();}
 
 	/**
 	 * 2016-05-20
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Live API Username»
 	 * @return string
 	 */
-	private function liveUsername() {return $this->v();}
-
-	/**
-	 * 2016-05-20
-	 * @return string
-	 */
-	private function password() {
-		return $this->test() ? $this->testPassword() : $this->livePassword();
-	}
-
-	/**
-	 * 2016-03-02
-	 * @return string
-	 */
-	private function secretKey() {
-		return $this->test() ? $this->testSecretKey() : $this->liveSecretKey();
-	}
+	protected function liveUsername() {return $this->v();}
 
 	/**
 	 * 2016-05-18
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Account Number»
 	 * @return string
 	 */
-	private function testAccountNumber() {return $this->v();}
+	protected function testAccountNumber() {return $this->v();}
 
 	/**
 	 * 2016-05-20
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Sandbox API Password»
 	 * @return string
 	 */
-	private function testPassword() {return $this->p();}
+	protected function testPassword() {return $this->p();}
 
 	/**
 	 * 2016-03-02
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Publishable Key»
 	 * @return string
 	 */
-	private function testPublishableKey() {return $this->v();}
+	protected function testPublishableKey() {return $this->v();}
 
 	/**
 	 * 2016-03-02
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Test Secret Key»
 	 * @return string
 	 */
-	private function testSecretKey() {return $this->p();}
+	protected function testSecretKey() {return $this->p();}
 
 	/**
 	 * 2016-05-22
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Sandbox Secret Word»
 	 * @return string
 	 */
-	private function testSecretWord() {return $this->p();}
+	protected function testSecretWord() {return $this->p();}
 
 	/**
 	 * 2016-05-20
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Sandbox API Username»
 	 * @return string
 	 */
-	private function testUsername() {return $this->v();}
+	protected function testUsername() {return $this->v();}
 
 	/**
 	 * 2016-05-20
 	 * @return string
 	 */
-	private function username() {
-		return $this->test() ? $this->testUsername() : $this->liveUsername();
-	}
+	private function password() {return $this->testable();}
+
+	/**
+	 * 2016-03-02
+	 * @return string
+	 */
+	private function secretKey() {return $this->testable();}
+
+	/**
+	 * 2016-05-20
+	 * @return string
+	 */
+	private function username() {return $this->testable();}
 }
 
 
