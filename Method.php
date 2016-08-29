@@ -173,7 +173,7 @@ class Method extends \Df\Payment\Method {
 				df_on_save($cm, function() use($cm) {
 					\Twocheckout_Sale::comment([
 						'sale_id' => $this->iia(InfoBlock::SALE_ID)
-						,'sale_comment' => df_credit_memo_backend_url($cm)
+						,'sale_comment' => df_cm_backend_url($cm)
 					]);
 				});
 			}
