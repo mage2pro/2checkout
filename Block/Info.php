@@ -1,7 +1,7 @@
 <?php
 namespace Dfe\TwoCheckout\Block;
 use Magento\Framework\DataObject;
-class Info extends \Df\Payment\Block\ConfigurableInfo {
+class Info extends \Df\Payment\Block\Info {
 	/**
 	 * 2016-05-23
 	 * @return string
@@ -53,7 +53,7 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 	/**
 	 * 2016-07-13
 	 * @override
-	 * @see \Df\Payment\Block\ConfigurableInfo::testModeLabel()
+	 * @see \Df\Payment\Block\Info::testModeLabel()
 	 * @return string
 	 */
 	protected function testModeLabel() {return 'Sandbox';}
@@ -61,7 +61,7 @@ class Info extends \Df\Payment\Block\ConfigurableInfo {
 	/**
 	 * 2016-07-29
 	 * @override
-	 * @see \Df\Payment\Block\ConfigurableInfo::testModeLabelLong()
+	 * @see \Df\Payment\Block\Info::testModeLabelLong()
 	 * @return string
 	 */
 	protected function testModeLabelLong() {return 'Sandbox Mode';}

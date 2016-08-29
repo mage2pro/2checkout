@@ -70,9 +70,8 @@ abstract class Handler extends \Df\Core\O {
 			 * @var string $suffix
 			 */
 			$suffix = df_cc_class('Handler', df_underscore_to_camel($type));
-			$class = df_con(__CLASS__, $suffix, DefaultT::class);
 			/** @var Handler $i */
-			$i = df_create($class, $request);
+			$i = df_create(df_con(__CLASS__, $suffix, DefaultT::class), $request);
 			$result = $i->eligible() ? $i->process() : 'The event is not for our store.';
 		}
 		catch (E $e) {
