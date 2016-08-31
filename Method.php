@@ -191,7 +191,7 @@ class Method extends \Df\Payment\Method {
 	protected function charge($amount, $capture = true) {
 		$this->api(function() use($amount) {
 			/** @var array(string => mixed) $request */
-			$request = Charge::request($this->ii(), $this->iia(self::$TOKEN), $amount);
+			$request = Charge::request($this, $this->iia(self::$TOKEN), $amount);
 			/**
 			 * 2016-08-21
 			 * @see \Twocheckout_Api_Requester::doCall()
@@ -389,7 +389,7 @@ class Method extends \Df\Payment\Method {
 	 * @return mixed
 	 * @throws LE
 	 */
-	private function api($function) {
+	private function api(callable $function) {
 		try {S::s()->init(); return $function();}
 		catch (Exception $e) {throw $e;}
 		catch (\Exception $e) {throw df_le($e);}

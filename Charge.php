@@ -200,15 +200,15 @@ class Charge extends \Df\Payment\Charge\WithToken {
 
 	/**
 	 * 2016-05-19
-	 * @param InfoInterface|Info|OrderPayment $payment
+	 * @param Method $method
 	 * @param string $token
 	 * @param float|null $amount [optional]
 	 * @return array(string => mixed)
 	 */
-	public static function request(InfoInterface $payment, $token, $amount = null) {
+	public static function request(Method $method, $token, $amount = null) {
 		return (new self([
 			self::$P__AMOUNT => $amount
-			, self::$P__PAYMENT => $payment
+			, self::$P__METHOD => $method
 			, self::$P__TOKEN => $token
 		]))->_request();
 	}

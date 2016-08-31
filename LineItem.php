@@ -121,11 +121,11 @@ class LineItem extends \Df\Core\O {
 	protected function _construct() {
 		parent::_construct();
 		$this
-			->_prop(self::$P__ID, RM_V_STRING, false)
-			->_prop(self::$P__NAME, RM_V_STRING, false)
-			->_prop(self::$P__PRICE, RM_V_FLOAT)
-			->_prop(self::$P__TANGIBLE, RM_V_BOOL, false)
-			->_prop(self::$P__TYPE, RM_V_STRING_NE)
+			->_prop(self::$P__ID, DF_V_STRING, false)
+			->_prop(self::$P__NAME, DF_V_STRING, false)
+			->_prop(self::$P__PRICE, DF_V_FLOAT)
+			->_prop(self::$P__TANGIBLE, DF_V_BOOL, false)
+			->_prop(self::$P__TYPE, DF_V_STRING_NE)
 		;
 	}
 
