@@ -12,38 +12,36 @@ class Product extends LineItem {
 	 * @used-by \Dfe\TwoCheckout\LineItem::buildLI()
 	 * @return array(string => string)
 	 */
-	protected function build() {
-		return parent::build() + df_clean([
-			/**
-			 * 2016-05-23
-			 * «Quantity of the item passed in.
-			 * (0-999, defaults to 1 if not passed in or incorrectly formatted.) Optional»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			'quantity' => $this->oi()->getQtyOrdered()
-			/**
-			 * 2016-05-23
-			 * «Array of option objects using the attributes specified below. Optional
-			 * Will be returned in the order that they are passed in.
-			 * (Passed as a sub object of a lineItem object.)»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			,'options' => $this->options()
-			/**
-			 * 2016-05-29
-			 * Это поле отсутствует в документации,
-			 * однако, судя по ответу сервера, оно тоже поддерживается.
-			 * Спрошу у техподдержки о его формате...
-			 *
-			 * Опытным путём установил, что теги надо удалять, иначе описание не отобразится.
-			 * Но даже в этом случае значение иногда сохраняется, иногда нет.
-			 *
-			 * Опытным путём установил, что у description
-			 * такое же ограничение по длине, как и у name.
-			 */
-			,'description' => $this->description()
-		]);
-	}
+	protected function build() {return parent::build() + df_clean([
+		/**
+		 * 2016-05-23
+		 * «Quantity of the item passed in.
+		 * (0-999, defaults to 1 if not passed in or incorrectly formatted.) Optional»
+		 * https://www.2checkout.com/documentation/payment-api/create-sale
+		 */
+		'quantity' => $this->oi()->getQtyOrdered()
+		/**
+		 * 2016-05-23
+		 * «Array of option objects using the attributes specified below. Optional
+		 * Will be returned in the order that they are passed in.
+		 * (Passed as a sub object of a lineItem object.)»
+		 * https://www.2checkout.com/documentation/payment-api/create-sale
+		 */
+		,'options' => $this->options()
+		/**
+		 * 2016-05-29
+		 * Это поле отсутствует в документации,
+		 * однако, судя по ответу сервера, оно тоже поддерживается.
+		 * Спрошу у техподдержки о его формате...
+		 *
+		 * Опытным путём установил, что теги надо удалять, иначе описание не отобразится.
+		 * Но даже в этом случае значение иногда сохраняется, иногда нет.
+		 *
+		 * Опытным путём установил, что у description
+		 * такое же ограничение по длине, как и у name.
+		 */
+		,'description' => $this->description()
+	]);}
 
 	/**
 	 * 2016-05-29

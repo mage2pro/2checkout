@@ -34,11 +34,9 @@ class Exception extends \Df\Payment\Exception {
 	 * @see \Df\Payment\Exception::messageForCustomer()
 	 * @return string
 	 */
-	public function messageForCustomer() {
-		return dfp_error_message(df_first(df_clean($this->_res->a([
-			'errors/0/message', 'exception/errorMsg'
-		]))));
-	}
+	public function messageForCustomer() {return
+		dfp_error_message(df_first(df_clean($this->_res->a(['errors/0/message', 'exception/errorMsg']))))
+	;}
 
 	/**
 	 * 2016-08-21
