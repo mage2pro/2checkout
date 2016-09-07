@@ -1,10 +1,12 @@
 <?php
 namespace Dfe\TwoCheckout\LineItem;
+use Dfe\TwoCheckout\Charge;
 use Dfe\TwoCheckout\LineItem;
+use Dfe\TwoCheckout\Method as M;
 use Magento\Catalog\Model\Product as P;
 use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Item as OI;
-class Product extends LineItem {
+final class Product extends LineItem {
 	/**
 	 * 2016-05-29
 	 * @override
@@ -78,11 +80,11 @@ class Product extends LineItem {
 	/**
 	 * 2016-05-29
 	 * @override
-	 * @see \Dfe\TwoCheckout\LineItem::priceRaw()
-	 * @used-by \Dfe\TwoCheckout\LineItem::price()
+	 * @see \Dfe\TwoCheckout\LineItem::price()
+	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 * @return string
 	 */
-	protected function priceRaw() {return df_order_item_price($this->oi());}
+	protected function price() {return $this->charge()->cFromOrderF(df_oi_price($this->oi()));}
 
 	/**
 	 * 2016-05-23
@@ -102,6 +104,9 @@ class Product extends LineItem {
 	 */
 	protected function type() {return 'product';}
 
+	/** @return Charge */
+	private function charge() {return $this[self::$P__C];}
+
 	/**
 	 * 2016-05-29
 	 * @return string
@@ -111,6 +116,9 @@ class Product extends LineItem {
 			$this->p()->getData('short_description') ?: $this->p()->getData('description')
 		));
 	}
+
+	/** @return M */
+	private function m() {return $this->charge()->m();}
 
 	/** @return OI */
 	private function oi() {return $this[self::$P__OI];}
@@ -165,12 +173,9 @@ class Product extends LineItem {
 	 * 2016-05-23
 	 * @return OI
 	 */
-	private function top() {
-		if (!isset($this->{__METHOD__})) {
-			$this->{__METHOD__} = $this->oi()->getParentItem() ?: $this->oi();
-		}
-		return $this->{__METHOD__};
-	}
+	private function top() {return dfc($this, function() {return
+		$this->oi()->getParentItem() ?: $this->oi()
+	;});}
 
 	/**
 	 * 2016-05-23
@@ -179,15 +184,24 @@ class Product extends LineItem {
 	 */
 	protected function _construct() {
 		parent::_construct();
-		$this->_prop(self::$P__OI, OI::class);
+		$this
+			->_prop(self::$P__C, Charge::class)
+			->_prop(self::$P__OI, OI::class)
+		;
 	}
 
 	/**
 	 * 2016-05-23
+	 * @param Charge $c
 	 * @param OI $oi
 	 * @return array(string => string)
 	 */
-	public static function buildP(OI $oi) {return (new self([self::$P__OI => $oi]))->build();}
+	public static function buildP(Charge $c, OI $oi) {return
+		(new self([self::$P__C => $c, self::$P__OI => $oi]))->build();
+	}
+
+	/** @var string */
+	private static $P__C = 'c';
 
 	/** @var string */
 	private static $P__OI = 'oi';

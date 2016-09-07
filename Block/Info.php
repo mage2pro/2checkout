@@ -6,12 +6,9 @@ class Info extends \Df\Payment\Block\Info {
 	 * 2016-05-23
 	 * @return string
 	 */
-	public function cardNumber() {
-		if (!isset($this->{__METHOD__})) {
-			$this->{__METHOD__} = implode('********', $this->iia(self::CARD_F6, self::CARD_L2));
-		}
-		return $this->{__METHOD__};
-	}
+	public function cardNumber() {return dfc($this, function() {return
+		implode('********', $this->iia(self::CARD_F6, self::CARD_L2))
+	;});}
 
 	/**
 	 * 2016-05-23
@@ -20,9 +17,9 @@ class Info extends \Df\Payment\Block\Info {
 	 * @see \Magento\Payment\Block\Info::$_template
 	 * @return string
 	 */
-	public function getTemplate() {
-		return 'frontend' === $this->getArea() ? 'Dfe_TwoCheckout::info.phtml' : parent::getTemplate();
-	}
+	public function getTemplate() {return
+		'frontend' === $this->getArea() ? 'Dfe_TwoCheckout::info.phtml' : parent::getTemplate()
+	;}
 
 	/**
 	 * 2016-05-21
@@ -90,5 +87,3 @@ class Info extends \Df\Payment\Block\Info {
 	 */
 	const SALE_ID = 'sale_id';
 }
-
-

@@ -20,23 +20,23 @@ class Index extends \Magento\Framework\App\Action\Action {
 	 * @see \Magento\Framework\App\Action\Action::execute()
 	 * @return Json
 	 */
-	public function execute() {
-		return df_leh(function(){return Json::i(Handler::p($this->params()));});
-	}
+	public function execute() {return df_leh(function(){return
+		Json::i(Handler::p($this->params()))
+	;});}
 
 	/**
 	 * 2016-05-22
 	 * @return array(string => string)
 	 */
-	private function params() {
-		return df_my_local() ? $this->paramsLocal() : $this->getRequest()->getParams();
-	}
+	private function params() {return
+		df_my_local() ? $this->paramsLocal() : $this->getRequest()->getParams()
+	;}
 
 	/**
 	 * 2016-05-22
 	 * @return array(string => string)
 	 */
-	private function paramsLocal() {
-		return df_json_decode(file_get_contents(BP . '/_my/test/2Checkout/3/4.REFUND_ISSUED.json'));
-	}
+	private function paramsLocal() {return
+		df_json_decode(file_get_contents(BP . '/_my/test/2Checkout/3/4.REFUND_ISSUED.json'))
+	;}
 }

@@ -322,10 +322,22 @@
 					<depends><field id='enable'>1</field></depends>
 				</field>
 				<field
+					id='currency'
+					translate='label'
+					type='Df\Payment\FormElement\Currency'
+					sortOrder='17'
+					showInDefault='1'
+					showInWebsite='1'
+					showInStore='1'
+				>
+					<label>Payment Currency</label>
+					<depends><field id='enable'>1</field></depends>
+				</field>
+				<field
 					id='passOrderItems'
 					translate='label'
 					type='Df\Framework\Form\Element\Checkbox'
-					sortOrder='17'
+					sortOrder='18'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -342,7 +354,7 @@
 					id='min_order_total'
 					translate='label'
 					type='text'
-					sortOrder='18'
+					sortOrder='19'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -356,7 +368,7 @@
 					id='max_order_total'
 					translate='label'
 					type='text'
-					sortOrder='19'
+					sortOrder='20'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -370,7 +382,7 @@
 					id='country_restriction'
 					translate='label'
 					type='select'
-					sortOrder='20'
+					sortOrder='21'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
@@ -383,7 +395,7 @@
 					id='countries'
 					translate='label'
 					type='Df\Framework\Form\Element\Multiselect'
-					sortOrder='21'
+					sortOrder='22'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'

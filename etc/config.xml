@@ -6,6 +6,7 @@
     <default>
 		<df_payment>
 			<two_checkout>
+				<currency>order</currency>
 				<passOrderItems>1</passOrderItems>
 				<title>Bank Card</title>
 				<!-- 2016-03-15 -->

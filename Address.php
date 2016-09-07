@@ -31,20 +31,17 @@ class Address extends \Df\Core\O {
 	 *
 	 * @return string|null
 	 */
-	private function country() {
-		return df_country_2_to_3($this->a()->getCountryId() ?: $this->visitor()->iso2());
-	}
+	private function country() {return
+		df_country_2_to_3($this->a()->getCountryId() ?: $this->visitor()->iso2())
+	;}
 
 	/**
 	 * 2016-05-20
 	 * @return string
 	 */
-	private function countryIso3() {
-		if (!isset($this->{__METHOD__})) {
-			$this->{__METHOD__} = df_country_2_to_3($this->a()->getCountryId());
-		}
-		return $this->{__METHOD__};
-	}
+	private function countryIso3() {return dfc($this, function() {return
+		df_country_2_to_3($this->a()->getCountryId())
+	;});}
 
 	/**
 	 * 2016-05-20
@@ -93,8 +90,9 @@ class Address extends \Df\Core\O {
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * @return string|null
 	 */
-	private function postcode() {
-		return $this->a()->getPostcode() ?: ($this->req() ? $this->visitor()->postCode() : null);}
+	private function postcode() {return
+		$this->a()->getPostcode() ?: ($this->req() ? $this->visitor()->postCode() : null);
+	}
 
 	/**
 	 * 2016-05-20
@@ -105,31 +103,23 @@ class Address extends \Df\Core\O {
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * @return string|null
 	 */
-	private function region() {
-		return $this->a()->getRegion() ?: ($this->req() ? $this->visitor()->regionName() : null);
-	}
+	private function region() {return
+		$this->a()->getRegion() ?: ($this->req() ? $this->visitor()->regionName() : null)
+	;}
 
 	/**
 	 * 2016-05-20
 	 * @return bool
 	 */
-	private function req() {
-		if (!isset($this->{__METHOD__})) {
-			$this->{__METHOD__} = in_array($this->countryIso3(), self::$req);
-		}
-		return $this->{__METHOD__};
-	}
+	private function req() {return dfc($this, function() {return
+		in_array($this->countryIso3(), self::$req)
+	;});}
 
 	/**
 	 * 2016-05-20
 	 * @return Visitor
 	 */
-	private function visitor() {
-		if (!isset($this->{__METHOD__})) {
-			$this->{__METHOD__} = df_visitor($this->o());
-		}
-		return $this->{__METHOD__};
-	}
+	private function visitor() {return dfc($this, function() {return df_visitor($this->o());});}
 
 	/**
 	 * 2016-05-20

@@ -1,12 +1,11 @@
 <?php
 namespace Dfe\TwoCheckout\Handler;
-use Dfe\TwoCheckout\Handler;
+use Dfe\TwoCheckout\Settings as S;
 use Magento\Sales\Api\CreditmemoManagementInterface as ICreditmemoService;
 use Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice;
-use Magento\Sales\Model\Order\Payment;
 use Magento\Sales\Model\Service\CreditmemoService;
 /**
  * 2016-05-22
@@ -63,60 +62,51 @@ class RefundIssued extends Charge {
 	 * 2016-03-27
 	 * @return Creditmemo
 	 */
-	private function cm() {
-		if (!isset($this->{__METHOD__})) {
-			/** @var CreditmemoLoader $cmLoader */
-			$cmLoader = df_o(CreditmemoLoader::class);
-			$cmLoader->setOrderId($this->order()->getId());
-			$cmLoader->setInvoiceId($this->invoice()->getId());
-			/** @var float|null $refundAmount */
-			$refundAmount = $this->item('refund');
-			/** @var float|null $invoiceAmount */
-			$invoiceAmount = $this->item('bill', $refundAmount);
-			if ($refundAmount !== $invoiceAmount) {
-				/**
-				 * 2016-05-23
-				 * https://mage2.pro/tags/credit-memo-adjustment
-				 *
-				 * 1)
-				 * @used-by \Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader::load()
-				 * https://github.com/magento/magento2/blob/b366da/app/code/Magento/Sales/Controller/Adminhtml/Order/CreditmemoLoader.php#L186-L186
-				 *
-				 * 2)
-				 * @used-by \Magento\Sales\Model\Order\CreditmemoFactory::createByInvoice()
-				 * https://github.com/magento/magento2/blob/b366da/app/code/Magento/Sales/Model/Order/CreditmemoFactory.php#L155-L155
-				 *
-				 * 3)
-				 * @used-by \Magento\Sales\Model\Order\CreditmemoFactory::initData()
-				 * https://github.com/magento/magento2/blob/b366da/app/code/Magento/Sales/Model/Order/CreditmemoFactory.php#L244-L246
-				 */
-				$cmLoader->setCreditmemo(['adjustment_negative' => $invoiceAmount - $refundAmount]);
-			}
-			/** @varCreditmemo  $result */
-			$result = $cmLoader->load();
-			df_assert($result);
+	private function cm() {return dfc($this, function() {
+		/** @var CreditmemoLoader $cmLoader */
+		$cmLoader = df_o(CreditmemoLoader::class);
+		$cmLoader->setOrderId($this->order()->getId());
+		$cmLoader->setInvoiceId($this->invoice()->getId());
+		/** @var float|null $refundAmount */
+		$refundAmount = $this->item('refund');
+		/** @var float|null $invoiceAmount */
+		$invoiceAmount = $this->item('bill', $refundAmount);
+		if ($refundAmount !== $invoiceAmount) {
 			/**
-			 * 2016-03-28
-			 * Важно! Иначе order загрузит payment автоматически вместо нашего,
-			 * и флаг @see \Dfe\CheckoutCom\Method::WEBHOOK_CASE будет утерян
+			 * 2016-05-23
+			 * https://mage2.pro/tags/credit-memo-adjustment
+			 *
+			 * Стек вызова:
+			 * 1) @used-by \Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader::load()
+			 * https://github.com/magento/magento2/blob/b366da/app/code/Magento/Sales/Controller/Adminhtml/Order/CreditmemoLoader.php#L186
+			 * 2) @used-by \Magento\Sales\Model\Order\CreditmemoFactory::createByInvoice()
+			 * https://github.com/magento/magento2/blob/b366da/app/code/Magento/Sales/Model/Order/CreditmemoFactory.php#L155
+			 * 3) @used-by \Magento\Sales\Model\Order\CreditmemoFactory::initData()
+			 * https://github.com/magento/magento2/blob/b366da/app/code/Magento/Sales/Model/Order/CreditmemoFactory.php#L244-L246
 			 */
-			$result->getOrder()->setData(Order::PAYMENT, $this->payment());
-			$this->{__METHOD__} = $result;
+			$cmLoader->setCreditmemo(['adjustment_negative' =>
+				S::s()->cToOrder($invoiceAmount - $refundAmount, $this->order())
+			]);
 		}
-		return $this->{__METHOD__};
-	}
+		/** @varCreditmemo  $result */
+		$result = $cmLoader->load();
+		df_assert($result);
+		/**
+		 * 2016-03-28
+		 * Важно! Иначе order загрузит payment автоматически вместо нашего,
+		 * и флаг @see \Dfe\CheckoutCom\Method::WEBHOOK_CASE будет утерян
+		 */
+		$result->getOrder()->setData(Order::PAYMENT, $this->payment());
+		return $result;
+	});}
 
 	/**
 	 * 2016-03-27
 	 * @return Invoice
 	 */
-	private function invoice() {
-		if (!isset($this->{__METHOD__})) {
-			$this->{__METHOD__} = df_invoice_by_transaction($this->order(), $this->parentId());
-			df_assert($this->{__METHOD__});
-		}
-		return $this->{__METHOD__};
-	}
+	private function invoice() {return dfc($this, function() {return
+		df_invoice_by_transaction($this->order(), $this->parentId())
+	;});}
 
 	/**
 	 * 2016-05-23

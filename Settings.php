@@ -152,5 +152,3 @@ final class Settings extends \Df\Payment\Settings\BankCard {
 	 */
 	private function username() {return $this->testable();}
 }
-
-

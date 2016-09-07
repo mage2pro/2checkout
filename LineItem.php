@@ -9,15 +9,15 @@ class LineItem extends \Df\Core\O {
 	 */
 	protected function build() {return df_clean([
 		'type' => $this->type()
-		, 'name' => $this->name()
-		, 'price' => $this->price()
+		,'name' => $this->name()
+		,'price' => $this->price()
 		/**
 		 * 2016-05-29
 		 * Почему-то пока этот параметр игнорируется для всех line items, кроме shipping.
 		 * https://mail.google.com/mail/u/0/#sent/154fa43ce41483c3
 		 */
-		, 'tangible' => $this->tangible() ? 'Y' : 'N'
-		, 'productId' => $this->id()
+		,'tangible' => $this->tangible() ? 'Y' : 'N'
+		,'productId' => $this->id()
 	]);}
 
 	/**
@@ -45,12 +45,11 @@ class LineItem extends \Df\Core\O {
 	 * (use positive values for coupons). Required»
 	 *
 	 * Здесь нужно указывать именно цену товара, а не цену строки заказа.
-	 * Т.е. умножать на количество здесь не надо: проверил опытным путём.
-	 * @used-by \Dfe\TwoCheckout\LineItem::price()
-	 * @see \Dfe\TwoCheckout\LineItem\Product::priceRaw()
-	 * @return float
+	 * Т.е. умножать на количество здесь не надо: проверил опытным путём. 
+	 * @used-by \Dfe\TwoCheckout\LineItem::build()
+	 * @return string
 	 */
-	protected function priceRaw() {return $this[self::$P__PRICE];}
+	protected function price() {return $this[self::$P__PRICE];}
 
 	/**
 	 * 2016-05-23
@@ -84,34 +83,9 @@ class LineItem extends \Df\Core\O {
 	 * https://mail.google.com/mail/u/0/#sent/154f4ade595abd5b
 	 * @return string
 	 */
-	private function name() {
-		if (!isset($this->{__METHOD__})) {
-			$this->{__METHOD__} = self::adjustText($this->nameRaw() ?: df_ucfirst($this->type()));
-			df_result_string_not_empty($this->{__METHOD__});
-		}
-		return $this->{__METHOD__};
-	}
-
-	/**
-	 * 2016-05-23
-	 * «Price of the line item.
-	 * Format: 0.00-99999999.99, defaults to 0 if a value isn’t passed in
-	 * or if value is incorrectly formatted, no negatives
-	 * (use positive values for coupons). Required»
-	 *
-	 * Здесь нужно указывать именно цену товара, а не цену строки заказа.
-	 * Т.е. умножать на количество здесь не надо: проверил опытным путём.
-	 * @return string
-	 */
-	private function price() {
-		if (!isset($this->{__METHOD__})) {
-			/** @var float $price */
-			$price = abs($this->priceRaw());
-			df_assert_le(99999999.99, $price);
-			$this->{__METHOD__} = number_format($price, 2, '.', '');
-		}
-		return $this->{__METHOD__};
-	}
+	private function name() {return dfc($this, function() {return
+		self::adjustText($this->nameRaw() ?: df_ucfirst($this->type()))
+	;});}
 
 	/**
 	 * 2016-05-29
@@ -123,7 +97,7 @@ class LineItem extends \Df\Core\O {
 		$this
 			->_prop(self::$P__ID, DF_V_STRING, false)
 			->_prop(self::$P__NAME, DF_V_STRING, false)
-			->_prop(self::$P__PRICE, DF_V_FLOAT)
+			->_prop(self::$P__PRICE, DF_V_STRING_NE)
 			->_prop(self::$P__TANGIBLE, DF_V_BOOL, false)
 			->_prop(self::$P__TYPE, DF_V_STRING_NE)
 		;
@@ -131,7 +105,7 @@ class LineItem extends \Df\Core\O {
 
 	/**
 	 * @param string $type
-	 * @param float $price
+	 * @param string $price
 	 * @param string|null $name [optional]
 	 * @param bool $tangible [optional]
 	 * @param string|null $id [optional]
