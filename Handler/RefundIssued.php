@@ -1,17 +1,8 @@
 <?php
+// 2016-05-22
+// REFUND_ISSUED
+// https://www.2checkout.com/documentation/notifications/refund-issued
 namespace Dfe\TwoCheckout\Handler;
-use Dfe\TwoCheckout\Settings as S;
-use Magento\Sales\Api\CreditmemoManagementInterface as ICreditmemoService;
-use Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader;
-use Magento\Sales\Model\Order;
-use Magento\Sales\Model\Order\Creditmemo;
-use Magento\Sales\Model\Order\Invoice;
-use Magento\Sales\Model\Service\CreditmemoService;
-/**
- * 2016-05-22
- * REFUND_ISSUED
- * https://www.2checkout.com/documentation/notifications/refund-issued
- */
 class RefundIssued extends Charge {
 	/**
 	 * 2016-05-23
@@ -25,89 +16,16 @@ class RefundIssued extends Charge {
 	/**
 	 * 2016-03-27
 	 * @override
-	 * «How is an online refunding implemented?» https://mage2.pro/t/959
-	 *
-	 * Сначала хотел cделать по аналогии с @see \Magento\Paypal\Model\Ipn::_registerPaymentRefund()
-	 * https://github.com/magento/magento2/blob/9546277/app/code/Magento/Paypal/Model/Ipn.php#L467-L501
-	 * Однако используемый там метод @see \Magento\Sales\Model\Order\Payment::registerRefundNotification()
-	 * нерабочий: «Invalid method Magento\Sales\Model\Order\Creditmemo::register»
-	 * https://mage2.pro/t/1029
-	 *
-	 * Поэтому делаю по аналогии с
-	 * @see \Magento\Sales\Controller\Adminhtml\Order\Creditmemo\Save::execute()
-	 *
 	 * @see \Dfe\TwoCheckout\Handler::_process()
 	 * @used-by \Dfe\TwoCheckout\Handler::process()
 	 * @return mixed
 	 */
-	protected function process() {
-		/**
-		 * 2016-05-22
-		 * @todo Примечание к заказу.
-		 */
-		/** @var CreditmemoService|ICreditmemoService $cmi */
-		$cmi = df_om()->create(ICreditmemoService::class);
-		$cmi->refund($this->cm(), false);
-		/**
-		 * 2016-03-28
-		 * @todo Надо отослать покупателю письмо-оповещение о возврате оплаты.
-		 * 2016-05-15
-		 * Что интересно, при возврате из административной части Magento 2
-		 * покупатель тоже не получает уведомление.
-		 */
-		return $this->cm()->getId();
-	}
-
-	/**
-	 * 2016-03-27
-	 * @return Creditmemo
-	 */
-	private function cm() {return dfc($this, function() {
-		/** @var CreditmemoLoader $cmLoader */
-		$cmLoader = df_o(CreditmemoLoader::class);
-		$cmLoader->setOrderId($this->order()->getId());
-		$cmLoader->setInvoiceId($this->invoice()->getId());
-		/** @var float|null $refundAmount */
-		$refundAmount = $this->item('refund');
-		/** @var float|null $invoiceAmount */
-		$invoiceAmount = $this->item('bill', $refundAmount);
-		if ($refundAmount !== $invoiceAmount) {
-			/**
-			 * 2016-05-23
-			 * https://mage2.pro/tags/credit-memo-adjustment
-			 *
-			 * Стек вызова:
-			 * 1) @used-by \Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader::load()
-			 * https://github.com/magento/magento2/blob/b366da/app/code/Magento/Sales/Controller/Adminhtml/Order/CreditmemoLoader.php#L186
-			 * 2) @used-by \Magento\Sales\Model\Order\CreditmemoFactory::createByInvoice()
-			 * https://github.com/magento/magento2/blob/b366da/app/code/Magento/Sales/Model/Order/CreditmemoFactory.php#L155
-			 * 3) @used-by \Magento\Sales\Model\Order\CreditmemoFactory::initData()
-			 * https://github.com/magento/magento2/blob/b366da/app/code/Magento/Sales/Model/Order/CreditmemoFactory.php#L244-L246
-			 */
-			$cmLoader->setCreditmemo(['adjustment_negative' =>
-				S::s()->cToOrder($invoiceAmount - $refundAmount, $this->order())
-			]);
-		}
-		/** @varCreditmemo  $result */
-		$result = $cmLoader->load();
-		df_assert($result);
-		/**
-		 * 2016-03-28
-		 * Важно! Иначе order загрузит payment автоматически вместо нашего,
-		 * и флаг @see \Dfe\CheckoutCom\Method::WEBHOOK_CASE будет утерян
-		 */
-		$result->getOrder()->setData(Order::PAYMENT, $this->payment());
-		return $result;
-	});}
-
-	/**
-	 * 2016-03-27
-	 * @return Invoice
-	 */
-	private function invoice() {return dfc($this, function() {return
-		df_invoice_by_transaction($this->order(), $this->parentId())
-	;});}
-
+	protected function process() {return dfp_refund(
+		$this->payment()
+		,df_invoice_by_transaction($this->order(), $this->parentId())
+		,$this->item('refund')
+	);}
+	
 	/**
 	 * 2016-05-23
 	 * 1) Сценарий полного возврата:

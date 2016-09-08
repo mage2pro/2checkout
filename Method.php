@@ -11,6 +11,33 @@ use Magento\Sales\Model\Order\Payment\Transaction;
 /** @method Settings s() */
 class Method extends \Df\Payment\Method {
 	/**
+	 * 2016-09-07
+	 * @override
+	 * @see \Df\Payment\Method::amountFormat()
+	 * @used-by \Df\Payment\Operation::amountFormat()
+	 *
+	 * 2016-05-23
+	 * https://www.2checkout.com/documentation/checkout/parameter-sets/pass-through-products/
+	 * «Price of the line item.
+	 * Format: 0.00-99999999.99, defaults to 0 if a value isn’t passed in
+	 * or if value is incorrectly formatted, no negatives
+	 * (use positive values for coupons).»
+	 *
+	 * 2016-05-19
+	 * «Format: 0.00-99999999.99,
+	 * defaults to 0 if a value isn’t passed in or if value is incorrectly formatted, no negatives»
+	 * https://www.2checkout.com/documentation/payment-api/create-sale
+	 *
+	 * @param float|int $amount
+	 * @return string
+	 */
+	public function amountFormat($amount) {
+		$amount = abs($amount);
+		df_assert_le(99999999.99, $amount);
+		return df_2f($amount);
+	}
+
+	/**
 	 * 2016-03-07
 	 * @override
 	 * @see \Df\Payment\Method::canCapture()
@@ -33,33 +60,6 @@ class Method extends \Df\Payment\Method {
 	 * @return bool
 	 */
 	public function canRefundPartialPerInvoice() {return true;}
-
-	/**
-	 * 2016-09-07
-	 * @override
-	 * @see \Df\Payment\Method::formatAmount()
-	 * @used-by \Df\Payment\Operation::formatAmount()
-	 *
-	 * 2016-05-23
-	 * https://www.2checkout.com/documentation/checkout/parameter-sets/pass-through-products/
-	 * «Price of the line item.
-	 * Format: 0.00-99999999.99, defaults to 0 if a value isn’t passed in
-	 * or if value is incorrectly formatted, no negatives
-	 * (use positive values for coupons).»
-	 *
-	 * 2016-05-19
-	 * «Format: 0.00-99999999.99,
-	 * defaults to 0 if a value isn’t passed in or if value is incorrectly formatted, no negatives»
-	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 *
-	 * @param float|int $amount
-	 * @return string
-	 */
-	public function formatAmount($amount) {
-		$amount = abs($amount);
-		df_assert_le(99999999.99, $amount);
-		return df_2f($amount);
-	}
 
 	/**
 	 * 2016-05-20
@@ -187,7 +187,7 @@ class Method extends \Df\Payment\Method {
 				 * the remaining amount for the invoice is assumed.»
 				 * https://www.2checkout.com/documentation/api/sales/refund-invoice
 				 */
-				, 'amount' => $this->formatAmount($amount)
+				, 'amount' => $this->amountFormat($amount)
 			]);
 			/**
 			 * 2016-05-22
