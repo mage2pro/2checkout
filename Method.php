@@ -62,23 +62,6 @@ class Method extends \Df\Payment\Method {
 	public function canRefundPartialPerInvoice() {return true;}
 
 	/**
-	 * 2016-05-20
-	 * «Once you have passed the token to your server,
-	 * you can use it along with your private key to charge the credit card
-	 * and create a new sale using the authorization API call.
-	 * The authorization will capture and deposit automatically within 48 hours of being placed.»
-	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 * Я так понял, у них нет двух отдельных режимов authorize и capture.
-	 * Вместо этого у них всегда используется authorize, который через 48 часов
-	 * автоматически превращается в capture.
-	 * Поэтому в Magento я всегда буду помечать транзакцию как capture.
-	 * @override
-	 * @see \Df\Payment\Method::getConfigPaymentAction()
-	 * @return string
-	 */
-	public function getConfigPaymentAction() {return M::ACTION_AUTHORIZE_CAPTURE;}
-
-	/**
 	 * 2016-05-21
 	 * @override
 	 * @see \Df\Payment\Method::_refund()
