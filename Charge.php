@@ -170,7 +170,7 @@ class Charge extends \Df\Payment\Charge\WithToken {
 		;}, $result));
 		/** @var float $rest */
 		$rest = $this->amount() - $total;
-		if (!df_f0($rest)) {
+		if (!df_is0($rest)) {
 			$result[]= LineItem::buildLI(
 				$rest > 0 ? 'tax' : 'coupon'
 				, $this->amountFormat($rest)

@@ -34,7 +34,7 @@ class Method extends \Df\Payment\Method {
 	public function amountFormat($amount) {
 		$amount = abs($amount);
 		df_assert_le(99999999.99, $amount);
-		return df_2f($amount);
+		return df_f2($amount);
 	}
 
 	/**
