@@ -7,7 +7,7 @@ define ([
 	 * 2016-08-25
 	 * https://mail.google.com/mail/u/0/#inbox/156ae0f52f7e5964
 	 * @override
-	 * @see mage2pro/core/Payment/view/frontend/web/js/view/payment/mixin.js
+	 * @see mage2pro/core/Payment/view/frontend/web/mixin.js
 	 * @returns {String}
 	 */
 	debugMessage: df.c(function() {
@@ -28,7 +28,12 @@ define ([
 			}
 		);
 	}),
-	defaults: {df: {test: {suffix: 'SANDBOX'}}},
+	defaults: {df: {
+		// 2016-11-10
+		// https://mage2.pro/t/1631
+		card: {prefill: {cvv: 123}}
+		,test: {suffix: 'SANDBOX'}
+	}},
 	/**
 	 * 2016-03-01
 	 * 2016-03-08
@@ -58,16 +63,6 @@ define ([
 		 * https://www.2checkout.com/documentation/payment-api/create-token
 		 */
 		TCO.loadPubKey(this.isTest() ? 'sandbox' : 'production');
-		// 2016-05-18
-		// «Mage2.PRO» → «Payment» → «2Checkout» → «Prefill the Payment Form with Test Data?»
-		// https://mage2.pro/t/topic/1631
-		/** @type {String|Boolean} */
-		var prefill = this.config('prefill');
-		if (prefill) {
-			this.creditCardNumber(prefill);
-			this.prefillWithAFutureData();
-			this.creditCardVerificationNumber(123);
-		}
 		return this;
 	},
 	/**

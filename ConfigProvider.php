@@ -11,7 +11,6 @@ class ConfigProvider extends \Df\Payment\ConfigProvider\BankCard {
 	 */
 	protected function config() {return [
 		'accountNumber' => $this->s()->accountNumber()
-		,'prefill' => $this->s()->prefill()
 		,'publishableKey' => $this->s()->publishableKey()
 	] + parent::config();}
 
