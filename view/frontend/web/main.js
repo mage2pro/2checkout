@@ -1,4 +1,4 @@
-define ([
+define([
 	'df'
 	,'Df_Payment/card'
 	,'Dfe_TwoCheckout/API'
@@ -54,7 +54,7 @@ define ([
 	getCardTypes: function() {return ['VI', 'MC', 'AE', 'JCB', 'DI', 'DN'];},
 	/**
 	 * 2016-03-02
-	 * @return {Object}
+	 * @returns {Object}
 	*/
 	initialize: function() {
 		this._super();
