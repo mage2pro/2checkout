@@ -94,10 +94,10 @@ define([
 					);
 				},
 				{
-					cvv: this.dfCardVerification()
-					,expMonth: this.dfCardExpirationMonth()
-					,expYear: this.dfCardExpirationYear()
-					,ccNo: this.dfCardNumber()
+					cvv: this.creditCardVerificationNumber()
+					,expMonth: this.creditCardExpMonth()
+					,expYear: this.creditCardExpYear()
+					,ccNo: this.creditCardNumber()
 					,publishableKey: this.config('publicKey')
 					,sellerId: this.config('accountNumber')
 				}
