@@ -98,7 +98,7 @@ define([
 					,expMonth: this.dfCardExpirationMonth()
 					,expYear: this.dfCardExpirationYear()
 					,ccNo: this.dfCardNumber()
-					,publishableKey: this.config('publishableKey')
+					,publishableKey: this.config('publicKey')
 					,sellerId: this.config('accountNumber')
 				}
 			);

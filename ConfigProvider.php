@@ -1,7 +1,7 @@
 <?php
 namespace Dfe\TwoCheckout;
 /** @method Settings s() */
-class ConfigProvider extends \Df\Payment\ConfigProvider\BankCard {
+class ConfigProvider extends \Df\Payment\ConfigProvider\StripeClone {
 	/**
 	 * 2016-08-04
 	 * @override
@@ -11,7 +11,6 @@ class ConfigProvider extends \Df\Payment\ConfigProvider\BankCard {
 	 */
 	protected function config() {return [
 		'accountNumber' => $this->s()->accountNumber()
-		,'publishableKey' => $this->s()->publishableKey()
 	] + parent::config();}
 
 	/**
