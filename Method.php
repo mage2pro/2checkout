@@ -74,7 +74,7 @@ class Method extends \Df\Payment\Method {
 		 * Метод @uses \Magento\Sales\Model\Order\Payment::getAuthorizationTransaction()
 		 * необязательно возвращает транзакцию типа «авторизация»:
 		 * в первую очередь он стремится вернуть родительскую транзакцию:
-		 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment/Transaction/Manager.php#L31-L47
+		 * https://github.com/magento/magento2/blob/2.1.0/app/code/Magento/Sales/Model/Order/Payment/Transaction/Manager.php#L31-L47
 		 * Это как раз то, что нам нужно, ведь наш модуль может быть настроен сразу на capture,
 		 * без предварительной транзакции типа «авторизация».
 		 */
@@ -269,7 +269,7 @@ class Method extends \Df\Payment\Method {
 		 * Иначе операция «void» (отмена авторизации платежа) будет недоступна:
 		 * «How is a payment authorization voiding implemented?»
 		 * https://mage2.pro/t/938
-		 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment.php#L540-L555
+		 * https://github.com/magento/magento2/blob/2.1.0/app/code/Magento/Sales/Model/Order/Payment.php#L540-L555
 		 * @used-by \Magento\Sales\Model\Order\Payment::canVoid()
 		 *
 		 * 2016-05-20
@@ -338,7 +338,7 @@ class Method extends \Df\Payment\Method {
 		/**
 		 * 2016-03-15
 		 * Аналогично, иначе операция «void» (отмена авторизации платежа) будет недоступна:
-		 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Model/Order/Payment.php#L540-L555
+		 * https://github.com/magento/magento2/blob/2.1.0/app/code/Magento/Sales/Model/Order/Payment.php#L540-L555
 		 * @used-by \Magento\Sales\Model\Order\Payment::canVoid()
 		 * Транзакция ситается завершённой, если явно не указать «false».
 		 */
@@ -387,7 +387,7 @@ class Method extends \Df\Payment\Method {
 	 * «We can't void the payment right now» надо вернуть объект именно класса
 	 * @uses \Magento\Framework\Exception\LocalizedException
 	 * https://mage2.pro/t/945
-	 * https://github.com/magento/magento2/blob/8fd3e8/app/code/Magento/Sales/Controller/Adminhtml/Order/VoidPayment.php#L20-L30
+	 * https://github.com/magento/magento2/blob/2.1.0/app/code/Magento/Sales/Controller/Adminhtml/Order/VoidPayment.php#L20-L30
 	 * @param callable $function
 	 * @return mixed
 	 * @throws LE
