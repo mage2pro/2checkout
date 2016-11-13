@@ -12,10 +12,6 @@ use Magento\Sales\Model\Order\Payment\Transaction;
 class Method extends \Df\Payment\Method {
 	/**
 	 * 2016-09-07
-	 * @override
-	 * @see \Df\Payment\Method::amountFormat()
-	 * @used-by \Df\Payment\Operation::amountFormat()
-	 *
 	 * 2016-05-23
 	 * https://www.2checkout.com/documentation/checkout/parameter-sets/pass-through-products/
 	 * «Price of the line item.
@@ -27,7 +23,9 @@ class Method extends \Df\Payment\Method {
 	 * «Format: 0.00-99999999.99,
 	 * defaults to 0 if a value isn’t passed in or if value is incorrectly formatted, no negatives»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 *
+	 * @override
+	 * @see \Df\Payment\Method::amountFormat()
+	 * @used-by \Df\Payment\Operation::amountFormat()
 	 * @param float|int $amount
 	 * @return string
 	 */
@@ -185,6 +183,17 @@ class Method extends \Df\Payment\Method {
 			});
 		}
 	});}
+
+	/**
+	 * 2016-11-13
+	 * Этот метод косвенно (через amountParse) используется при refund.
+	 * @override
+	 * @see \Df\Payment\Method::amountFactor()
+	 * @used-by \Df\Payment\Method::amountFormat()
+	 * @used-by \Df\Payment\Method::amountParse()
+	 * @return int
+	 */
+	protected function amountFactor() {return 1;}
 
 	/**
 	 * 2016-08-14
