@@ -20,10 +20,10 @@ define([
 			'ILS', 'INR', 'JPY', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'RON', 'RUB',
 			 'SEK', 'SGD', 'TRY', 'USD', 'ZAR'
 		];
-		return -1 < codes.indexOf(this.dfc.currency) ? '' : df.t(
-			'The transaction will <b><a href="{url}" target="_blank">fail</a></b> with the message «<b>Bad request - parameter error</b>», because 2Checkout does not support the «<b>{currency}</b>» in the sandbox mode (but supports it in the production mode).'
+		return -1 < codes.indexOf(this.paymentCurrency().code) ? '' : df.t(
+			'The transaction will <b><a href="{url}" target="_blank">fail</a></b> with the message «<b>Bad request - parameter error</b>», because 2Checkout does not support the «<b>{currency}</b>» currency in the sandbox mode (but supports it in the production mode).'
 			,{
-				currency: this.dfc.currency
+				currency: this.paymentCurrency().name
 				,url: 'https://mage2.pro/t/1986'
 			}
 		);
@@ -31,7 +31,12 @@ define([
 	defaults: {df: {
 		// 2016-11-10
 		// https://mage2.pro/t/1631
-		card: {prefill: {cvv: 123}}
+		// 2016-11-13
+		// 2Checkout ожидает CVV именно в виде строки.
+		// Если передать число, то будет сбой: «TypeError: e.cvv.replace is not a function»
+		// потому что 2Checkout обрабатывает значение так:
+		// e.cvv = e.cvv.replace(/[^0-9]+/g,'');
+		card: {prefill: {cvv: '123'}}
 		,test: {suffix: 'SANDBOX'}
 	}},
 	/**
