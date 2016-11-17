@@ -1,6 +1,5 @@
 <?php
 namespace Dfe\TwoCheckout\Block;
-use Magento\Framework\DataObject;
 class Info extends \Df\Payment\Block\Info {
 	/**
 	 * 2016-05-23
@@ -24,27 +23,15 @@ class Info extends \Df\Payment\Block\Info {
 	/**
 	 * 2016-05-21
 	 * @override
-	 * @see \Magento\Payment\Block\ConfigurableInfo::_prepareSpecificInformation()
-	 * @used-by \Magento\Payment\Block\Info::getSpecificInformation()
-	 * @param DataObject|null $transport
-	 * @return DataObject
+	 * @see \Df\Payment\Block\Info::prepare()
+	 * @used-by \Df\Payment\Block\Info::_prepareSpecificInformation()
 	 */
-	protected function _prepareSpecificInformation($transport = null) {
-		/** @var DataObject $result */
-		$result = parent::_prepareSpecificInformation($transport);
-		if ($this->isBackend()) {
-			$result->setData('Sale', df_tag('a', [
-				'target' => '_blank', 'href' =>
-					(
-						$this->isTest()
-						? 'https://sandbox.2checkout.com/sandbox/'
-						: 'https://www.2checkout.com/va/'
-					) . 'sales/detail?sale_id=' . $this->iia(self::SALE_ID)
-			], $this->iia('sale_id')));
-		}
-		$result->addData(['Card Number' => $this->cardNumber()]);
-		$this->markTestMode($result);
-		return $result;
+	protected function prepare() {
+		$this->siB('Sale', df_tag_ab($this->iia('sale_id'),
+			"https://{$this->isTest('sandbox.2checkout.com/sandbox', 'www.2checkout.com/va')}/"
+			,"sales/detail?sale_id={$this->iia(self::SALE_ID)}"
+		));
+		$this->si('Card Number', $this->cardNumber());
 	}
 
 	/**
