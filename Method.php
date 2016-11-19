@@ -5,7 +5,7 @@ use Dfe\TwoCheckout\Settings as S;
 use Magento\Payment\Model\Method\AbstractMethod as M;
 use Magento\Framework\Exception\LocalizedException as LE;
 use Magento\Sales\Model\Order as O;
-use Magento\Sales\Model\Order\Creditmemo;
+use Magento\Sales\Model\Order\Creditmemo as CM;
 use Magento\Sales\Model\Order\Payment as OP;
 use Magento\Sales\Model\Order\Payment\Transaction;
 /** @method Settings s() */
@@ -79,13 +79,11 @@ class Method extends \Df\Payment\Method {
 		/** @var Transaction $tCapture */
 		$tCapture = $this->ii()->getAuthorizationTransaction();
 		if ($tCapture) {
-			/** @var Creditmemo $cm */
+			/** @var CM|null $cm */
 			$cm = $this->ii()->getCreditmemo();
-			/**
-			 * 2016-03-24
-			 * Credit Memo и Invoice отсутствуют в сценарии Authorize / Capture
-			 * и присутствуют в сценарии Capture / Refund.
-			 */
+			// 2016-03-24
+			// Credit Memo и Invoice отсутствуют в сценарии Authorize / Capture
+			// и присутствуют в сценарии Capture / Refund.
 			df_assert($cm);
 			/**
 			 * 2016-05-21
