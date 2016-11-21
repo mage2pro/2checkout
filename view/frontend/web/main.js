@@ -1,8 +1,8 @@
 define([
 	'df'
 	,'Df_Payment/card'
-	,'Dfe_TwoCheckout/API'
-], function(df, parent, TCO) {'use strict'; return parent.extend({
+	,'https://www.2checkout.com/checkout/api/2co.min.js'
+], function(df, parent) {'use strict'; return parent.extend({
 	/**
 	 * 2016-08-25
 	 * https://mail.google.com/mail/u/0/#inbox/156ae0f52f7e5964
