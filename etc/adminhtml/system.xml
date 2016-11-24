@@ -1,42 +1,42 @@
 <?xml version='1.0'?>
 <config
-    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-    xsi:noNamespaceSchemaLocation='urn:magento:module:Df_Config:etc/system_file.xsd'
+	xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+	xsi:noNamespaceSchemaLocation='urn:magento:module:Df_Config:etc/system_file.xsd'
 >
-    <system>
-        <section id='df_payment'>
-            <!--
-                2015-09-25
-                1-я и 2-я цифры sortOrder соответствуют порядковому номеру первой буквы модуля
-                в английском алфавите: https://en.wikipedia.org/wiki/English_alphabet
-				3-я и 4-я цифры sortOrder соответствуют порядковому номеру второй буквы модуля
-                в английском алфавите.
-            -->
-            <group
-                id='two_checkout'
-                translate='label'
-                type='text'
-                sortOrder='3'
-                showInDefault='1'
-                showInWebsite='1'
-                showInStore='1'
-            >
-                <label>2Checkout</label>
+	<system>
+		<section id='df_payment'>
+<!--
+2015-09-25
+1-я и 2-я цифры sortOrder соответствуют порядковому номеру первой буквы модуля
+в английском алфавите: https://en.wikipedia.org/wiki/English_alphabet
+3-я и 4-я цифры sortOrder соответствуют порядковому номеру второй буквы модуля
+в английском алфавите.
+-->
+			<group
+				id='two_checkout'
+				translate='label'
+				type='text'
+				sortOrder='3'
+				showInDefault='1'
+				showInWebsite='1'
+				showInStore='1'
+			>
+				<label>2Checkout</label>
 				<dfExtension>Dfe\TwoCheckout\Ext</dfExtension>
 				<frontend_model>Df\Config\Block\System\Config\Form\Fieldset\Ext</frontend_model>
-                <field
-                    id='enable'
-                    translate='label'
-                    type='Df\Framework\Form\Element\Checkbox'
-                    sortOrder='1'
+				<field
+					id='enable'
+					translate='label'
+					type='Df\Framework\Form\Element\Checkbox'
+					sortOrder='1'
 					showInDefault='1'
 					showInWebsite='1'
 					showInStore='1'
-                >
-                    <label>Enable?</label>
+				>
+					<label>Enable?</label>
 					<backend_model>Df\Config\Backend\Checkbox</backend_model>
-                    <comment><![CDATA[Enable the «<a href='https://mage2.pro/c/extensions/2checkout' target='_blank'>2Checkout</a>» payment extension?]]></comment>
-                </field>
+					<comment><![CDATA[Enable the «<a href='https://mage2.pro/c/extensions/2checkout' target='_blank'>2Checkout</a>» payment extension?]]></comment>
+				</field>
 				<field
 					id='test'
 					translate='label'
@@ -98,14 +98,18 @@
 					<label>Sandbox Private Key</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1628' target='_blank'>How to get it?</a>]]></comment>
 					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-					<!--
-						2016-08-06
-						Раньше здесь стояло:
-						<validate>validate-length maximum-length-36 minimum-length-36</validate>
-						Однако после последнего обновления Magento
-						валидатор стал ложно срабатывать на звёздочки (маску),
-						требуя, чтобы этих звёздочек было 36 штук.
-					-->
+<!--
+2016-08-06
+Раньше здесь стояло:
+<validate>validate-length maximum-length-36 minimum-length-36</validate>
+Однако после последнего обновления Magento
+валидатор стал ложно срабатывать на звёздочки (маску),
+требуя, чтобы этих звёздочек было 36 штук.
+2016-11-24
+Аналогичные проявления для модулей Df_Amazon и Dfe_AmazonLogin:
+https://code.dmitry-fedyuk.com/m2e/amazon/blob/1.0.9/etc/adminhtml/system.xml#L122
+https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.xml#L69
+-->
 					<depends>
 						<field id='enable'>1</field>
 						<field id='test'>1</field>
@@ -407,15 +411,15 @@
 					<depends>
 						<field id='enable'>1</field>
 						<!--
-						 	2016-03-08
-						 	«The negative syntax for the backend config field <depends> condition»
-                            https://mage2.pro/t/329
+							2016-03-08
+							«The negative syntax for the backend config field <depends> condition»
+							https://mage2.pro/t/329
 						-->
 						<field id='country_restriction' negative='1'>0</field>
 					</depends>
 					<comment><![CDATA[Customers from which countries can (or can not) use the method?]]></comment>
-				</field>				
-            </group>
-        </section>
-    </system>
+				</field>
+			</group>
+		</section>
+	</system>
 </config>
