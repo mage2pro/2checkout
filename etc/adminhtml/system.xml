@@ -179,7 +179,7 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				>
 					<label>Prefill the Payment Form with Test Data?</label>
 					<source_model>Dfe\TwoCheckout\Source\Prefill</source_model>
-					<comment><![CDATA[If you do not want it, then please use the following <a href='https://mage2.pro/t/1631' target='_blank'>test card numbers</a>.]]></comment>
+					<comment><![CDATA[If you do not want it, then please use the following <a href='https://mage2.pro/t/1631' target='_blank'>test cards</a>.]]></comment>
 					<depends>
 						<field id='enable'>1</field>
 						<field id='test'>1</field>
