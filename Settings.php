@@ -2,7 +2,7 @@
 namespace Dfe\TwoCheckout;
 use \Twocheckout as T;
 /** @method static Settings s() */
-final class Settings extends \Df\Payment\Settings\StripeClone {
+final class Settings extends \Df\StripeClone\Settings {
 	/**
 	 * 2016-05-18
 	 * @return string
