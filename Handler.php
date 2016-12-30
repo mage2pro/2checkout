@@ -76,6 +76,7 @@ abstract class Handler extends \Df\Core\O {
 		}
 		catch (E $e) {
 			df_response()->setStatusCode(500);
+			df_sentry($e);
 			if (df_my_local()) {
 				// 2016-03-27
 				// Удобно видеть стек на экране.
