@@ -9,7 +9,7 @@ class ConfigProvider extends \Df\StripeClone\ConfigProvider {
 	 * @used-by \Df\Payment\ConfigProvider::getConfig()
 	 * @return array(string => mixed)
 	 */
-	protected function config() {return [
+	final protected function config() {return [
 		'accountNumber' => $this->s()->accountNumber()
 	] + parent::config();}
 
