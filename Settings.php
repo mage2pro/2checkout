@@ -13,8 +13,8 @@ final class Settings extends \Df\StripeClone\Settings {
 	 * 2016-05-19
 	 * https://github.com/2Checkout/2checkout-php#credentials-and-options
 	 * @override
-	 * @see \Df\StripeClone\Settings::init()
-	 * @used-by \Df\StripeClone\Method::api()
+	 * @see \Df\Payment\Settings::init()
+	 * @used-by \Df\Payment\Method::action()
 	 * @return void
 	 */
 	public function init() {
