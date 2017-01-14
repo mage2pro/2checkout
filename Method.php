@@ -80,11 +80,10 @@ class Method extends \Df\Payment\Method {
 		$tCapture = $this->ii()->getAuthorizationTransaction();
 		if ($tCapture) {
 			/** @var CM|null $cm */
-			$cm = $this->ii()->getCreditmemo();
 			// 2016-03-24
 			// Credit Memo и Invoice отсутствуют в сценарии Authorize / Capture
 			// и присутствуют в сценарии Capture / Refund.
-			df_assert($cm);
+			$cm = df_assert($this->ii()->getCreditmemo());
 			/**
 			 * 2016-05-21
 			 * https://www.2checkout.com/documentation/api/sales/refund-invoice
