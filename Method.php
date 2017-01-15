@@ -29,11 +29,7 @@ class Method extends \Df\Payment\Method {
 	 * @param float|int $amount
 	 * @return string
 	 */
-	public function amountFormat($amount) {
-		$amount = abs($amount);
-		df_assert_le(99999999.99, $amount);
-		return df_f2($amount);
-	}
+	public function amountFormat($amount) {return df_f2(df_assert_le(99999999.99, abs($amount)));}
 
 	/**
 	 * 2016-03-07
