@@ -245,11 +245,9 @@ class Method extends \Df\Payment\Method {
 		 */
 		/** @var array(string => mixed)|null $rr */
 		$rr = dfa($r, 'response');
-		/**
-		 * 2016-05-20
-		 * https://www.2checkout.com/documentation/payment-api/create-sale
-		 * «Code indicating the result of the authorization attempt.»
-		 */
+		// 2016-05-20
+		// https://www.2checkout.com/documentation/payment-api/create-sale
+		// «Code indicating the result of the authorization attempt.»
 		df_assert_eq('APPROVED', dfa($rr, 'responseCode'));
 		df_assert(is_null(dfa($r, 'validationErrors')));
 		/**
