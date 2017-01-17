@@ -62,7 +62,7 @@ class Method extends \Df\Payment\Method {
 	 * @param float $amount
 	 * @return void
 	 */
-	protected function _refund($amount) {$this->api(function() use($amount) {
+	final protected function _refund($amount) {$this->api(function() use($amount) {
 		/**
 		 * 2016-03-17
 		 * Метод @uses \Magento\Sales\Model\Order\Payment::getAuthorizationTransaction()
