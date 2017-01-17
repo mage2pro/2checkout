@@ -196,7 +196,7 @@ class Method extends \Df\Payment\Method {
 	 * @param bool $capture [optional]
 	 * @return void
 	 */
-	protected function charge($amount, $capture = true) {$this->api(function() use($amount) {
+	final protected function charge($amount, $capture = true) {$this->api(function() use($amount) {
 		/** @var array(string => mixed) $request */
 		$request = Charge::request($this, $this->iia(self::$TOKEN), $amount);
 		/**
@@ -400,7 +400,7 @@ class Method extends \Df\Payment\Method {
 	 * @used-by \Df\Payment\Method::assignData()
 	 * @return string[]
 	 */
-	protected function iiaKeys() {return [self::$TOKEN];}
+	final protected function iiaKeys() {return [self::$TOKEN];}
 
 	/**
 	 * 2016-03-17
