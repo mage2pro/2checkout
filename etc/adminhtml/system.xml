@@ -329,7 +329,7 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				<field
 					id='currency'
 					translate='label'
-					type='Df\Payment\FormElement\Currency'
+					type='Df\Directory\FormElement\Currency'
 					sortOrder='17'
 					showInDefault='1'
 					showInWebsite='1'
