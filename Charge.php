@@ -1,7 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout;
 use Dfe\TwoCheckout\LineItem\Product as LIP;
-use Dfe\TwoCheckout\Settings as S;
 use Magento\Sales\Model\Order\Address as OrderAddress;
 use Magento\Sales\Model\Order\Item as OI;
 use Magento\Sales\Model\Order\Payment as OrderPayment;
@@ -11,6 +10,7 @@ use Magento\Sales\Model\Order\Payment as OrderPayment;
  * https://github.com/2Checkout/2checkout-php/wiki/Charge_Authorize#example-usage
  *
  * @method Method m()
+ * @method Settings ss()
  */
 class Charge extends \Df\Payment\Charge\WithToken {
 	/**
@@ -92,7 +92,7 @@ class Charge extends \Df\Payment\Charge\WithToken {
 		 * Your site needs to record any custom data with the order, and associate that data with the API's response after the sale is made.»
 		 * https://mail.google.com/mail/u/0/#inbox/154d5138c541ed85
 		 */
-	] + (S::s()->passOrderItems()
+	] + ($this->ss()->passOrderItems()
 		/**
 		 * 2016-05-23
 		 * «Array of lineitem objects using the attributes specified below.

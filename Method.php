@@ -414,7 +414,7 @@ class Method extends \Df\Payment\Method {
 	 * @throws LE
 	 */
 	private function api(callable $function) {
-		try {S::s()->init(); return $function();}
+		try {$this->s()->init(); return $function();}
 		catch (Exception $e) {throw $e;}
 		catch (\Exception $e) {throw df_le($e);}
 	}
