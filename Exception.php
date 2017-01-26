@@ -2,11 +2,11 @@
 namespace Dfe\TwoCheckout;
 use Df\Core\A;
 // 2016-08-21
-class Exception extends \Df\Payment\Exception {
+final class Exception extends \Df\Payment\Exception {
 	/**
 	 * 2016-08-21
 	 * @override
-	 * @see \Df\Payment\Exception::__construct()
+	 * @see \Df\Core\Exception::__construct()
 	 * @param array(string => mixed) $response
 	 * @param array(string => mixed) $request [optional]
 	 */
@@ -19,7 +19,7 @@ class Exception extends \Df\Payment\Exception {
 	/**
 	 * 2016-08-19
 	 * @override
-	 * @see \Df\Payment\Exception::message()
+	 * @see \Df\Core\Exception::message()
 	 * @return string
 	 */
 	public function message() {return df_cc_n(
@@ -31,7 +31,7 @@ class Exception extends \Df\Payment\Exception {
 	/**
 	 * 2016-08-21
 	 * @override
-	 * @see \Df\Payment\Exception::messageC()
+	 * @see \Df\Core\Exception::messageC()
 	 * @return string
 	 */
 	public function messageC() {return
