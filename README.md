@@ -1,3 +1,5 @@
+The extension integrates your Magento 2 store with the [**2Checkout**](https://www.2checkout.com/) payment service.
+
 ## Demo videos
 
 1. [Capture a payment](https://www.youtube.com/watch?v=T_QXS3YTlAI).
