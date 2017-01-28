@@ -15,7 +15,7 @@ You can use it for free for testing puprose only.
 
 ## How to buy
 
-You can buy it with PayPal [here](https://mage2.pro/t/1651).
+You can buy it with PayPal [here](https://mage2.pro/t/1627).
 
 ## Installation
 ### Free installation service
