@@ -12,7 +12,7 @@ use Magento\Sales\Model\Order\Payment as OrderPayment;
  * @method Method m()
  * @method Settings ss()
  */
-class Charge extends \Df\Payment\Charge\WithToken {
+final class Charge extends \Df\Payment\Charge\WithToken {
 	/**
 	 * 2016-05-19
 	 * @return array(string => mixed)
@@ -173,10 +173,10 @@ class Charge extends \Df\Payment\Charge\WithToken {
 		if (!df_is0($rest)) {
 			$result[]= LineItem::buildLI(
 				$rest > 0 ? 'tax' : 'coupon'
-				, $this->amountFormat($rest)
-				, 'Correction'
-				, false
-				, 'correction'
+				,$this->amountFormat($rest)
+				,'Correction'
+				,false
+				,'correction'
 			);
 		}
 		return $result;
