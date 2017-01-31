@@ -69,13 +69,18 @@ final class Product extends LineItem {
 	protected function id() {return $this->oi()->getQuoteItemId();}
 
 	/**
-	 * 2016-05-29
+	 * 2016-05-29   
+	 * 2017-02-01
+	 * Раньше здесь стояло $this->top()->getName().
+	 * Идея была в том, что название «New Very Prive» лучше, чем «New Very Prive-37-Almond».
+	 * Теперь же я думаю наоборот.
+	 * @see \Dfe\CheckoutCom\Charge::cProduct()
 	 * @override
 	 * @see \Dfe\TwoCheckout\LineItem::nameRaw()
 	 * @used-by \Dfe\TwoCheckout\LineItem::name()
 	 * @return string
 	 */
-	protected function nameRaw() {return $this->top()->getName();}
+	protected function nameRaw() {return $this->oi()->getName();}
 
 	/**
 	 * 2016-05-29
