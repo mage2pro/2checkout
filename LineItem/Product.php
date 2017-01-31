@@ -79,6 +79,13 @@ final class Product extends LineItem {
 
 	/**
 	 * 2016-05-29
+	 * 2017-02-01
+	 * @uses df_oi_price() использует
+	 * @see \Magento\Sales\Model\Order\Item::getPrice(),
+	 * а не @see \Magento\Sales\Model\Order\Item::getPriceInclTax().
+	 * Это именно то, что нам нужно: мы не размазываем налоги по товарам,
+	 * а передаём их платёжной системе отдельной строкой:
+	 * @see \Dfe\TwoCheckout\Charge::lineItem_tax()
 	 * @override
 	 * @see \Dfe\TwoCheckout\LineItem::price()
 	 * @used-by \Dfe\TwoCheckout\LineItem::build()
