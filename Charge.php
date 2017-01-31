@@ -156,7 +156,7 @@ final class Charge extends \Df\Payment\Charge\WithToken {
 	 */
 	private function lineItems() {
 		/** @var array(array(string => string)) $result */
-		$result = $this->oiLeafsM(function(OI $item) {return LIP::buildP($this, $item);});
+		$result = $this->oiLeafs(function(OI $item) {return LIP::buildP($this, $item);});
 		$result = df_clean(array_merge($result, [
 			$this->lineItem_shipping()
 			,$this->lineItem_discount()
