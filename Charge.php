@@ -135,9 +135,9 @@ final class Charge extends \Df\Payment\Charge\WithToken {
 	private function lineItem_shipping() {return
 		!$this->o()->getShippingAmount() ? null : LineItem::buildLI(
 			'shipping'
-			, $this->cFromOrderF($this->o()->getShippingAmount())
-			, $this->o()->getShippingDescription()
-			, true
+			,$this->cFromOrderF($this->o()->getShippingAmount())
+			,$this->o()->getShippingDescription()
+			,true
 		)
 	;}
 
