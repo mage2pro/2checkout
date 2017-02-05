@@ -54,6 +54,9 @@ define([
 	 * 2016-05-18
 	 * https://www.2checkout.com/faq#what-payment-methods-does-2checkout-offer-my-customers
 	 *
+	 * 2017-02-05
+	 * The bank card network codes: https://mage2.pro/t/2647
+	 *
 	 * @returns {String[]}
 	 */
 	getCardTypes: function() {return ['VI', 'MC', 'AE', 'JCB', 'DI', 'DN'];},
