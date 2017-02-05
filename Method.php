@@ -9,7 +9,7 @@ use Magento\Sales\Model\Order\Creditmemo as CM;
 use Magento\Sales\Model\Order\Payment as OP;
 use Magento\Sales\Model\Order\Payment\Transaction;
 /** @method Settings s() */
-class Method extends \Df\Payment\Method {
+final class Method extends \Df\Payment\Method {
 	/**
 	 * 2016-09-07
 	 * 2016-05-23
@@ -62,7 +62,7 @@ class Method extends \Df\Payment\Method {
 	 * @param float $amount
 	 * @return void
 	 */
-	final protected function _refund($amount) {$this->api(function() use($amount) {
+	protected function _refund($amount) {$this->api(function() use($amount) {
 		/**
 		 * 2016-03-17
 		 * Метод @uses \Magento\Sales\Model\Order\Payment::getAuthorizationTransaction()
@@ -196,7 +196,7 @@ class Method extends \Df\Payment\Method {
 	 * @param bool $capture [optional]
 	 * @return void
 	 */
-	final protected function charge($amount, $capture = true) {$this->api(function() use($amount) {
+	protected function charge($amount, $capture = true) {$this->api(function() use($amount) {
 		/** @var array(string => mixed) $request */
 		$request = Charge::request($this, $this->iia(self::$TOKEN), $amount);
 		/**
@@ -400,7 +400,7 @@ class Method extends \Df\Payment\Method {
 	 * @used-by \Df\Payment\Method::assignData()
 	 * @return string[]
 	 */
-	final protected function iiaKeys() {return [self::$TOKEN];}
+	protected function iiaKeys() {return [self::$TOKEN];}
 
 	/**
 	 * 2016-03-17
