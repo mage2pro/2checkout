@@ -1,7 +1,7 @@
 <?php
 namespace Dfe\TwoCheckout;
 /** @method Settings s() */
-class ConfigProvider extends \Df\StripeClone\ConfigProvider {
+final class ConfigProvider extends \Df\StripeClone\ConfigProvider {
 	/**
 	 * 2016-08-04
 	 * @override
@@ -9,7 +9,7 @@ class ConfigProvider extends \Df\StripeClone\ConfigProvider {
 	 * @used-by \Df\Payment\ConfigProvider::getConfig()
 	 * @return array(string => mixed)
 	 */
-	final protected function config() {return [
+	protected function config() {return [
 		'accountNumber' => $this->s()->accountNumber()
 	] + parent::config();}
 
