@@ -1,6 +1,6 @@
 define([
 	'df'
-	,'Df_Payment/card'
+	,'Df_Payment/stripeClone'
 	,'https://www.2checkout.com/checkout/api/2co.min.js'
 ], function(df, parent) {'use strict'; return parent.extend({
 	/**
@@ -106,7 +106,7 @@ define([
 					,expMonth: this.creditCardExpMonth()
 					,expYear: this.creditCardExpYear()
 					,ccNo: this.creditCardNumber()
-					,publishableKey: this.config('publicKey')
+					,publishableKey: this.publicKey()
 					,sellerId: this.config('accountNumber')
 				}
 			);
