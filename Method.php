@@ -192,23 +192,28 @@ final class Method extends \Df\Payment\Method {
 	 * 2017-02-08
 	 * @override
 	 * Результат — в рублях, не в копейках.
-	 * I did not find such information on the 2Checkout website.
 	 * «Does 2Checkout have minimum and maximum amount limitations on a single payment?»
-	 * https://mage2.pro/t/2686
-	 * https://mail.google.com/mail/u/0/#sent/15a1f2455383127e
 	 *
 	 * I have got an answer from the 2Checkout support:
 	 * «The minimum recommended charge is $1.00 as banks may elect to reject lesser payments.
 	 * You must charge a positive value with 2CO, so no negative or zero-amount sales are permitted.
 	 * There is no upper limit to a payment amount.»
 	 *
-	 * @todo What are the minimum recommended limits for other transaction currencies (not USD)?
+	 * «The system will not return an error if the value charged is at least positive -
+	 * we are unable to account for a bank's decision to allow or reject a payment
+	 * based on a very small amount charged.
+	 * We recommend that you charge the approximate equivalent of $1.00 USD,
+	 * regardless of the currency used during the test.»
+	 *
+	 * https://mage2.pro/t/2686
 	 *
 	 * @see \Df\Payment\Method::amountLimits()
 	 * @used-by \Df\Payment\Method::isAvailable()
-	 * @return null
+	 * @return \Closure
 	 */
-	protected function amountLimits() {return [1, null];}
+	protected function amountLimits() {return function($c) {return [
+		df_currency_convert(1, 'USD', $c), null
+	];};}
 
 	/**
 	 * 2016-08-14
