@@ -189,6 +189,20 @@ final class Method extends \Df\Payment\Method {
 	protected function amountFactor() {return 1;}
 
 	/**
+	 * 2017-02-08
+	 * @override
+	 * Результат — в рублях, не в копейках.
+	 * I did not find such information on the 2Checkout website.
+	 * «Does 2Checkout have minimum and maximum amount limitations on a single payment?»
+	 * https://mage2.pro/t/2686
+	 * https://mail.google.com/mail/u/0/#sent/15a1f2455383127e
+	 * @see \Df\Payment\Method::amountLimits()
+	 * @used-by \Df\Payment\Method::isAvailable()
+	 * @return null
+	 */
+	protected function amountLimits() {return null;}
+
+	/**
 	 * 2016-08-14
 	 * @override
 	 * @see \Df\Payment\Method::charge()
