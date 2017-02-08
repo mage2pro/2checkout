@@ -21,7 +21,7 @@ final class Settings extends \Df\StripeClone\Settings {
 		T::sandbox($this->test());
 		T::username($this->testable('username'));
 		T::password($this->testableP('password'));
-		T::privateKey($this->testableP('secretKey'));
+		T::privateKey($this->privateKey());
 		T::sellerId($this->accountNumber());
 	}
 
