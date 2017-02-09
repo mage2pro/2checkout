@@ -20,13 +20,9 @@ class RefundIssued extends Charge {
 	 * @used-by \Dfe\TwoCheckout\Handler::process()
 	 * @return int|string
 	 */
-	final protected function process() {return
-		dfp_refund(
-			$this->payment()
-			,df_invoice_by_transaction($this->order(), $this->parentId())
-			,$this->item('refund')
-		) ?: 'skipped'
-	;}
+	final protected function process() {return dfp_refund(
+		$this->payment(), df_invoice_by_trans($this->order(), $this->parentId()), $this->item('refund')
+	) ?: 'skipped';}
 	
 	/**
 	 * 2016-05-23
