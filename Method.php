@@ -191,7 +191,7 @@ final class Method extends \Df\Payment\Method {
 	/**
 	 * 2017-02-08
 	 * @override
-	 * Результат — в рублях, не в копейках.
+	 * The result should be in the basic monetary unit (like dollars), not in fractions (like cents).
 	 * «Does 2Checkout have minimum and maximum amount limitations on a single payment?»
 	 *
 	 * I have got an answer from the 2Checkout support:
