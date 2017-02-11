@@ -208,7 +208,7 @@ final class Product extends LineItem {
 	 * @param OI $oi
 	 * @return array(string => string)
 	 */
-	public static function buildP(Charge $c, OI $oi) {return
+	static function buildP(Charge $c, OI $oi) {return
 		(new self([self::$P__C => $c, self::$P__OI => $oi]))->build();
 	}
 

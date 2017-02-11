@@ -137,7 +137,7 @@ class Address extends \Df\Core\O {
 	 * @param bool $isBilling [optional]
 	 * @return array(mixed => mixed)
 	 */
-	public static function build(A $oa, $isBilling = false) {
+	static function build(A $oa, $isBilling = false) {
 		/** @var self $a */
 		$a = new self([self::$P__A => $oa]);
 		/** @var O $o */

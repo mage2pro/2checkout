@@ -111,7 +111,7 @@ class LineItem extends \Df\Core\O {
 	 * @param string|null $id [optional]
 	 * @return array(string => string)
 	 */
-	public static function buildLI($type, $price, $name = null, $tangible = false, $id = null) {
+	static function buildLI($type, $price, $name = null, $tangible = false, $id = null) {
 		return (new self([
 			self::$P__TYPE => $type
 			, self::$P__PRICE => $price

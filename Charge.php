@@ -188,7 +188,7 @@ final class Charge extends \Df\Payment\Charge\WithToken {
 	 * @param float|null $amount [optional]
 	 * @return array(string => mixed)
 	 */
-	public static function request(Method $method, $token, $amount = null) {return
+	static function request(Method $method, $token, $amount = null) {return
 		(new self([
 			self::$P__AMOUNT => $amount
 			, self::$P__METHOD => $method
