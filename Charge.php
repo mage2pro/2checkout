@@ -8,7 +8,6 @@ use Magento\Sales\Model\Order\Payment as OrderPayment;
  * 2016-05-20
  * https://www.2checkout.com/documentation/payment-api/create-sale
  * https://github.com/2Checkout/2checkout-php/wiki/Charge_Authorize#example-usage
- *
  * @method Method m()
  * @method Settings ss()
  */
