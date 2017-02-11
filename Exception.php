@@ -10,7 +10,7 @@ final class Exception extends \Df\Payment\Exception {
 	 * @param array(string => mixed) $response
 	 * @param array(string => mixed) $request [optional]
 	 */
-	public function __construct(array $response, array $request = []) {
+	function __construct(array $response, array $request = []) {
 		$this->_req = $request;
 		$this->_res = dfao($response);
 		parent::__construct();
@@ -22,7 +22,7 @@ final class Exception extends \Df\Payment\Exception {
 	 * @see \Df\Core\Exception::message()
 	 * @return string
 	 */
-	public function message() {return df_cc_n(
+	function message() {return df_cc_n(
 		'The 2Checkout request is failed.'
 		,'Response:', df_json_encode_pretty($this->_res->a())
 		,!$this->_req ? null : ['Request:', df_json_encode_pretty($this->_req)]
@@ -34,7 +34,7 @@ final class Exception extends \Df\Payment\Exception {
 	 * @see \Df\Core\Exception::messageC()
 	 * @return string
 	 */
-	public function messageC() {return
+	function messageC() {return
 		dfp_error_message(df_first(df_clean($this->_res->a(['errors/0/message', 'exception/errorMsg']))))
 	;}
 

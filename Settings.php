@@ -7,7 +7,7 @@ final class Settings extends \Df\StripeClone\Settings {
 	 * 2016-05-18
 	 * @return string
 	 */
-	public function accountNumber() {return $this->testable();}
+	function accountNumber() {return $this->testable();}
 
 	/**
 	 * 2016-05-19
@@ -17,7 +17,7 @@ final class Settings extends \Df\StripeClone\Settings {
 	 * @used-by \Df\Payment\Method::action()
 	 * @return void
 	 */
-	public function init() {
+	function init() {
 		T::sandbox($this->test());
 		T::username($this->testable('username'));
 		T::password($this->testableP('password'));
@@ -30,11 +30,11 @@ final class Settings extends \Df\StripeClone\Settings {
 	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Pass Order Items to the Payment Gateway?»
 	 * @return bool
 	 */
-	public function passOrderItems() {return $this->b();}
+	function passOrderItems() {return $this->b();}
 
 	/**
 	 * 2016-05-22
 	 * @return string
 	 */
-	public function secretWord() {return $this->testableP();}
+	function secretWord() {return $this->testableP();}
 }

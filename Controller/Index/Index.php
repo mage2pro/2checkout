@@ -20,7 +20,7 @@ class Index extends \Magento\Framework\App\Action\Action {
 	 * @see \Magento\Framework\App\Action\Action::execute()
 	 * @return Json
 	 */
-	public function execute() {return df_leh(function(){return
+	function execute() {return df_leh(function(){return
 		Json::i(Handler::p($this->params()))
 	;});}
 

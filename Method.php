@@ -29,7 +29,7 @@ final class Method extends \Df\Payment\Method {
 	 * @param float|int $amount
 	 * @return string
 	 */
-	public function amountFormat($amount) {return df_f2(df_assert_le(99999999.99, abs($amount)));}
+	function amountFormat($amount) {return df_f2(df_assert_le(99999999.99, abs($amount)));}
 
 	/**
 	 * 2016-03-07
@@ -37,7 +37,7 @@ final class Method extends \Df\Payment\Method {
 	 * @see \Df\Payment\Method::canCapture()
 	 * @return bool
 	 */
-	public function canCapture() {return true;}
+	function canCapture() {return true;}
 
 	/**
 	 * 2016-03-08
@@ -45,7 +45,7 @@ final class Method extends \Df\Payment\Method {
 	 * @see \Df\Payment\Method::canRefund()
 	 * @return bool
 	 */
-	public function canRefund() {return true;}
+	function canRefund() {return true;}
 
 	/**
 	 * 2016-03-08
@@ -53,7 +53,7 @@ final class Method extends \Df\Payment\Method {
 	 * @see \Df\Payment\Method::canRefundPartialPerInvoice()
 	 * @return bool
 	 */
-	public function canRefundPartialPerInvoice() {return true;}
+	function canRefundPartialPerInvoice() {return true;}
 
 	/**
 	 * 2016-05-21
