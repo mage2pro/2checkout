@@ -1,10 +1,9 @@
 The extension integrates your Magento 2 store with the [**2Checkout**](https://www.2checkout.com/) payment service.
 
 ## Demo videos
-
-1. [Capture a payment](https://www.youtube.com/watch?v=T_QXS3YTlAI).
-2. [Partially refund a payment from Magento backend](https://www.youtube.com/watch?v=ZKHJ30e_t_Y).
-3. [Refund a payment from 2Checkout account](https://www.youtube.com/watch?v=0MM9TeWaXjM).
+1. [**Capture** a payment](https://mage2.pro/t/topic/1653).
+2. [Partially **refund** a payment from the **Magento** side](https://mage2.pro/t/topic/1736).
+3. [**Refund** a payment from the **2Checkout** side](https://mage2.pro/t/topic/1747).
 
 ## Licensing
 It is a paid extension, not free.  
