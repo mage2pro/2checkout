@@ -1,6 +1,6 @@
 define([
 	'df'
-	,'Df_Payment/stripeClone'
+	,'Df_StripeClone/main'
 	,'https://www.2checkout.com/checkout/api/2co.min.js'
 ], function(df, parent) {'use strict'; return parent.extend({
 	/**
