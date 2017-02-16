@@ -28,6 +28,7 @@ define([
 			}
 		);
 	}),
+
 	defaults: {df: {
 		// 2016-11-10
 		// https://mage2.pro/t/1631
@@ -39,6 +40,7 @@ define([
 		card: {prefill: {cvv: '123'}}
 		,test: {suffix: 'SANDBOX'}
 	}},
+
 	/**
 	 * 2016-03-01
 	 * 2016-03-08
@@ -60,6 +62,7 @@ define([
 	 * @returns {String[]}
 	 */
 	getCardTypes: function() {return ['VI', 'MC', 'AE', 'JCB', 'DI', 'DN'];},
+
 	/**
 	 * 2016-03-02
 	 * @returns {Object}
@@ -73,6 +76,7 @@ define([
 		TCO.loadPubKey(this.isTest() ? 'sandbox' : 'production');
 		return this;
 	},
+	
 	/**
 	 * @override
 	 * @see https://github.com/magento/magento2/blob/2.1.0/app/code/Magento/Checkout/view/frontend/web/js/view/payment/default.js#L127-L159
