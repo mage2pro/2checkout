@@ -1,5 +1,7 @@
 <?php
 namespace Dfe\TwoCheckout\Block;
+// 2016-05-23
+/** @final */
 class Info extends \Df\Payment\Block\Info {
 	/**
 	 * 2016-05-23
