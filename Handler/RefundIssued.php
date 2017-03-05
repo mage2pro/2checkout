@@ -71,11 +71,11 @@ class RefundIssued extends Charge {
 			"item_rec_install_billed_2": ""
 			<...>
 	 *
-	 * @param string|null $key [optional]
-	 * @param float|null $default [optional]
+	 * @param string|null $k [optional]
+	 * @param float|null $d [optional]
 	 * @return float|array(string => float)
 	 */
-	private function item($key = null, $default = null) {
+	private function item($k = null, $d = null) {
 		if (!isset($this->{__METHOD__})) {
 			/** @var array(string => float) $result */
 			$result = [];
@@ -91,7 +91,7 @@ class RefundIssued extends Charge {
 			}
 			$this->{__METHOD__} = $result;
 		}
-		return !$key ? $this->{__METHOD__} : dfa($this->{__METHOD__}, $key, $default);
+		return !$k ? $this->{__METHOD__} : dfa($this->{__METHOD__}, $k, $d);
 	}
 
 	/**
