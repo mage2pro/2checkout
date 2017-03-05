@@ -1,8 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout;
 use Dfe\TwoCheckout\Block\Info as InfoBlock;
-use Dfe\TwoCheckout\Settings as S;
-use Magento\Payment\Model\Method\AbstractMethod as M;
 use Magento\Framework\Exception\LocalizedException as LE;
 use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Creditmemo as CM;
@@ -224,14 +222,13 @@ final class Method extends \Df\Payment\Method {
 	 * @return void
 	 */
 	protected function charge($amount, $capture = true) {$this->api(function() use($amount) {
-		/** @var array(string => mixed) $request */
-		$request = Charge::request($this, $this->iia(self::$TOKEN), $amount);
 		/**
 		 * 2016-08-21
 		 * @see \Twocheckout_Api_Requester::doCall()
 		 * https://github.com/2Checkout/2checkout-php/blob/0.3.1/lib/Twocheckout/Api/TwocheckoutApi.php#L25-L31
 		 */
-		$request['api'] = 'checkout';
+		/** @var array(string => mixed) $p */
+		$p = ['api' => 'checkout'] + Charge::p($this, $this->iia(self::$TOKEN), $amount);
 		/** @var \Twocheckout_Api_Requester $requester */
 		$requester = new \Twocheckout_Api_Requester;
 		/**
@@ -241,13 +238,13 @@ final class Method extends \Df\Payment\Method {
 		/** @var string $url */
 		$url = "/checkout/api/1/{$this->s()->accountNumber()}/rs/authService";
 		/** @var array(string => mixed) $r */
-		$r = df_json_decode($requester->doCall($url, $request));
+		$r = df_json_decode($requester->doCall($url, $p));
 		/**
 		 * 2016-08-21
 		 * По аналогии с @see \Twocheckout_Util::checkError()
 		 */
 		if (isset($r['errors']) || isset($r['exception'])) {
-			throw new Exception($r, $request);
+			throw new Exception($r, $p);
 		}
 		/**
 		 * 2016-05-20
@@ -409,14 +406,9 @@ final class Method extends \Df\Payment\Method {
 		 * а в этой точке программы (в момент платежа) заказ ещё не имеет идентификатора.
 		 */
 		df_on_save($this->o(), function() use($saleId) {
-			\Twocheckout_Sale::comment([
-				'sale_id' => $saleId
-				, 'sale_comment' => df_cc_s(
-					'Magento Order:'
-					, $this->oii()
-					, df_order_backend_url($this->o())
-				)
-			]);
+			\Twocheckout_Sale::comment(['sale_id' => $saleId, 'sale_comment' => df_cc_s(
+				'Magento Order:', $this->oii(), df_order_backend_url($this->o())
+			)]);
 		});
 	});}
 

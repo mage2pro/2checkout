@@ -13,10 +13,81 @@ use Magento\Sales\Model\Order\Payment as OrderPayment;
  */
 final class Charge extends \Df\Payment\Charge\WithToken {
 	/**
+	 * 2016-05-23
+	 * @return array(string => string)|null
+	 */
+	private function lineItem_discount() {return
+		!$this->o()->getDiscountAmount() ? null : LineItem::buildLI(
+			'coupon'
+			,$this->cFromOrderF($this->o()->getDiscountAmount())
+			,df_ccc(': ',
+				$this->o()->getDiscountDescription() === $this->o()->getCouponCode()
+					? $this->o()['coupon_rule_name'] : null
+				,$this->o()->getDiscountDescription()
+			)
+		)
+	;}
+
+	/**
+	 * 2016-05-23
+	 * @return array(string => string)|null
+	 */
+	private function lineItem_shipping() {return
+		!$this->o()->getShippingAmount() ? null : LineItem::buildLI(
+			'shipping'
+			,$this->cFromOrderF($this->o()->getShippingAmount())
+			,$this->o()->getShippingDescription()
+			,true
+		)
+	;}
+
+	/**
+	 * 2016-05-23
+	 * @return array(string => string)|null
+	 */
+	private function lineItem_tax() {return
+		!$this->o()->getTaxAmount() ? null :
+			LineItem::buildLI('tax', $this->cFromOrderF($this->o()->getTaxAmount()))
+	;}
+	
+	/**
+	 * 2016-05-23
+	 * @return array(array(string => string))
+	 */
+	private function lineItems() {
+		/** @var array(array(string => string)) $result */
+		$result = $this->oiLeafs(function(OI $item) {return LIP::buildP($this, $item);});
+		$result = df_clean(array_merge($result, [
+			$this->lineItem_shipping()
+			,$this->lineItem_discount()
+			,$this->lineItem_tax()
+		]));
+		/** @var float $total */
+		$total = array_sum(array_map(function(array $item) {return
+			floatval($item['price'])
+			* dfa($item, 'quantity', 1)
+			* ('coupon' === $item['type'] ? -1 : 1)
+		;}, $result));
+		/** @var float $rest */
+		$rest = $this->amount() - $total;
+		if (!df_is0($rest)) {
+			$result[]= LineItem::buildLI(
+				$rest > 0 ? 'tax' : 'coupon'
+				,$this->amountFormat($rest)
+				,'Correction'
+				,false
+				,'correction'
+			);
+		}
+		return $result;
+	}
+
+	/**
 	 * 2016-05-19
+	 * @used-by p()
 	 * @return array(string => mixed)
 	 */
-	private function _request() {return [
+	private function pCharge() {return [
 		/**
 		 * 2016-05-19
 		 * «sellerId»
@@ -108,87 +179,14 @@ final class Charge extends \Df\Payment\Charge\WithToken {
 	);}
 
 	/**
-	 * 2016-05-23
-	 * @return array(string => string)|null
-	 */
-	private function lineItem_discount() {return
-		!$this->o()->getDiscountAmount() ? null : LineItem::buildLI(
-			'coupon'
-			,$this->cFromOrderF($this->o()->getDiscountAmount())
-			,df_ccc(': ',
-				$this->o()->getDiscountDescription() === $this->o()->getCouponCode()
-					? $this->o()['coupon_rule_name'] : null
-				,$this->o()->getDiscountDescription()
-			)
-		)
-	;}
-
-	/**
-	 * 2016-05-23
-	 * @return array(string => string)|null
-	 */
-	private function lineItem_shipping() {return
-		!$this->o()->getShippingAmount() ? null : LineItem::buildLI(
-			'shipping'
-			,$this->cFromOrderF($this->o()->getShippingAmount())
-			,$this->o()->getShippingDescription()
-			,true
-		)
-	;}
-
-	/**
-	 * 2016-05-23
-	 * @return array(string => string)|null
-	 */
-	private function lineItem_tax() {return
-		!$this->o()->getTaxAmount() ? null :
-			LineItem::buildLI('tax', $this->cFromOrderF($this->o()->getTaxAmount()))
-	;}
-	
-	/**
-	 * 2016-05-23
-	 * @return array(array(string => string))
-	 */
-	private function lineItems() {
-		/** @var array(array(string => string)) $result */
-		$result = $this->oiLeafs(function(OI $item) {return LIP::buildP($this, $item);});
-		$result = df_clean(array_merge($result, [
-			$this->lineItem_shipping()
-			,$this->lineItem_discount()
-			,$this->lineItem_tax()
-		]));
-		/** @var float $total */
-		$total = array_sum(array_map(function(array $item) {return
-			floatval($item['price'])
-			* dfa($item, 'quantity', 1)
-			* ('coupon' === $item['type'] ? -1 : 1)
-		;}, $result));
-		/** @var float $rest */
-		$rest = $this->amount() - $total;
-		if (!df_is0($rest)) {
-			$result[]= LineItem::buildLI(
-				$rest > 0 ? 'tax' : 'coupon'
-				,$this->amountFormat($rest)
-				,'Correction'
-				,false
-				,'correction'
-			);
-		}
-		return $result;
-	}
-
-	/**
 	 * 2016-05-19
+	 * @used-by \Dfe\TwoCheckout\Method::charge()
 	 * @param Method $method
 	 * @param string $token
 	 * @param float|null $amount [optional]
 	 * @return array(string => mixed)
 	 */
-	static function request(Method $method, $token, $amount = null) {return
-		(new self([
-			self::$P__AMOUNT => $amount
-			, self::$P__METHOD => $method
-			, self::$P__TOKEN => $token
-		]))->_request()
-	;}
+	static function p(Method $method, $token, $amount = null) {return (new self([
+		self::$P__AMOUNT => $amount, self::$P__METHOD => $method, self::$P__TOKEN => $token
+	]))->pCharge();}
 }
