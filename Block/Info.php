@@ -1,13 +1,13 @@
 <?php
 namespace Dfe\TwoCheckout\Block;
 // 2016-05-23
-/** @final */
+/** @final Unable to use the PHP «final» keyword because of the M2 code generation. */
 class Info extends \Df\Payment\Block\Info {
 	/**
 	 * 2016-05-23
 	 * @return string
 	 */
-	function cardNumber() {return dfc($this, function() {return
+	final function cardNumber() {return dfc($this, function() {return
 		implode('********', $this->iia(self::CARD_F6, self::CARD_L2))
 	;});}
 
@@ -18,7 +18,7 @@ class Info extends \Df\Payment\Block\Info {
 	 * @see \Magento\Payment\Block\Info::$_template
 	 * @return string
 	 */
-	function getTemplate() {return
+	final function getTemplate() {return
 		'frontend' === $this->getArea() ? 'Dfe_TwoCheckout::info.phtml' : parent::getTemplate()
 	;}
 
@@ -28,7 +28,7 @@ class Info extends \Df\Payment\Block\Info {
 	 * @see \Df\Payment\Block\Info::prepare()
 	 * @used-by \Df\Payment\Block\Info::_prepareSpecificInformation()
 	 */
-	protected function prepare() {
+	final protected function prepare() {
 		$this->siB('Sale', df_tag_ab($this->iia('sale_id'),
 			"https://{$this->isTest('sandbox.2checkout.com/sandbox', 'www.2checkout.com/va')}/"
 			,"sales/detail?sale_id={$this->iia(self::SALE_ID)}"
@@ -40,17 +40,19 @@ class Info extends \Df\Payment\Block\Info {
 	 * 2016-07-13
 	 * @override
 	 * @see \Df\Payment\Block\Info::testModeLabel()
+	 * @used-by \Df\Payment\Block\Info::markTestMode()
 	 * @return string
 	 */
-	protected function testModeLabel() {return 'Sandbox';}
+	final protected function testModeLabel() {return 'Sandbox';}
 
 	/**
 	 * 2016-07-29
 	 * @override
 	 * @see \Df\Payment\Block\Info::testModeLabelLong()
+	 * @used-by \Df\Payment\Block\Info::title()
 	 * @return string
 	 */
-	protected function testModeLabelLong() {return 'Sandbox Mode';}
+	final protected function testModeLabelLong() {return 'Sandbox Mode';}
 
 	/**
 	 * 2016-05-21
