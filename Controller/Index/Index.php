@@ -20,15 +20,13 @@ class Index extends \Magento\Framework\App\Action\Action {
 	 * @see \Magento\Framework\App\Action\Action::execute()
 	 * @return Json
 	 */
-	function execute() {return df_leh(function(){return
-		Json::i(Handler::p($this->params()))
-	;});}
+	function execute() {return df_leh(function() {return Json::i(Handler::p($this->params()));});}
 
 	/**
 	 * 2016-05-22
 	 * @return array(string => string)
 	 */
-	private function params() {return
+	private function params() {return 
 		df_my_local() ? $this->paramsLocal() : $this->getRequest()->getParams()
 	;}
 

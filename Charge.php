@@ -1,6 +1,8 @@
 <?php
 namespace Dfe\TwoCheckout;
+use Dfe\TwoCheckout\LineItem as LI;
 use Dfe\TwoCheckout\LineItem\Product as LIP;
+use Dfe\TwoCheckout\Method as M;
 use Magento\Sales\Model\Order\Address as OrderAddress;
 use Magento\Sales\Model\Order\Item as OI;
 use Magento\Sales\Model\Order\Payment as OrderPayment;
@@ -8,46 +10,38 @@ use Magento\Sales\Model\Order\Payment as OrderPayment;
  * 2016-05-20
  * https://www.2checkout.com/documentation/payment-api/create-sale
  * https://github.com/2Checkout/2checkout-php/wiki/Charge_Authorize#example-usage
- * @method Method m()
+ * @method M m()
  * @method Settings ss()
  */
 final class Charge extends \Df\Payment\Charge\WithToken {
 	/**
 	 * 2016-05-23
+	 * @used-by lineItems()
 	 * @return array(string => string)|null
 	 */
-	private function lineItem_discount() {return
-		!$this->o()->getDiscountAmount() ? null : LineItem::buildLI(
-			'coupon'
-			,$this->cFromOrderF($this->o()->getDiscountAmount())
-			,df_ccc(': ',
-				$this->o()->getDiscountDescription() === $this->o()->getCouponCode()
-					? $this->o()['coupon_rule_name'] : null
-				,$this->o()->getDiscountDescription()
-			)
-		)
+	private function liDiscount() {$o = $this->o(); return !($a = $o->getDiscountAmount()) ? null :
+		LI::buildLI('coupon', $this->cFromOrderF($a) ,df_ccc(': ',
+			($d = $o->getDiscountDescription()) === $o->getCouponCode() ? $o['coupon_rule_name'] : null
+			,$d
+		))
 	;}
 
 	/**
 	 * 2016-05-23
+	 * @used-by lineItems()
 	 * @return array(string => string)|null
 	 */
-	private function lineItem_shipping() {return
-		!$this->o()->getShippingAmount() ? null : LineItem::buildLI(
-			'shipping'
-			,$this->cFromOrderF($this->o()->getShippingAmount())
-			,$this->o()->getShippingDescription()
-			,true
-		)
+	private function liShipping() {$o = $this->o(); return !($a = $o->getShippingAmount()) ? null :
+		LI::buildLI('shipping', $this->cFromOrderF($a), $o->getShippingDescription(), true)
 	;}
 
 	/**
 	 * 2016-05-23
+	 * @used-by lineItems()
 	 * @return array(string => string)|null
 	 */
-	private function lineItem_tax() {return
-		!$this->o()->getTaxAmount() ? null :
-			LineItem::buildLI('tax', $this->cFromOrderF($this->o()->getTaxAmount()))
+	private function liTax() {return !($a = $this->o()->getTaxAmount()) ? null :
+		LI::buildLI('tax', $this->cFromOrderF($a))
 	;}
 	
 	/**
@@ -56,30 +50,19 @@ final class Charge extends \Df\Payment\Charge\WithToken {
 	 */
 	private function lineItems() {
 		/** @var array(array(string => string)) $result */
-		$result = $this->oiLeafs(function(OI $item) {return LIP::buildP($this, $item);});
-		$result = df_clean(array_merge($result, [
-			$this->lineItem_shipping()
-			,$this->lineItem_discount()
-			,$this->lineItem_tax()
-		]));
-		/** @var float $total */
-		$total = array_sum(array_map(function(array $item) {return
+		$result = df_clean(array_merge(
+			$this->oiLeafs(function(OI $item) {return LIP::buildP($this, $item);})
+			,[$this->liShipping(), $this->liDiscount(), $this->liTax()]
+		));
+		/** @var float $rest */
+		$rest = $this->amount() - array_sum(array_map(function(array $item) {return
 			floatval($item['price'])
 			* dfa($item, 'quantity', 1)
 			* ('coupon' === $item['type'] ? -1 : 1)
 		;}, $result));
-		/** @var float $rest */
-		$rest = $this->amount() - $total;
-		if (!df_is0($rest)) {
-			$result[]= LineItem::buildLI(
-				$rest > 0 ? 'tax' : 'coupon'
-				,$this->amountFormat($rest)
-				,'Correction'
-				,false
-				,'correction'
-			);
-		}
-		return $result;
+		return array_merge($result, df_is0($rest) ? [] : [LI::buildLI(
+			$rest > 0 ? 'tax' : 'coupon', $this->amountFormat($rest), 'Correction', false, 'correction'
+		)]);
 	}
 
 	/**
@@ -181,12 +164,10 @@ final class Charge extends \Df\Payment\Charge\WithToken {
 	/**
 	 * 2016-05-19
 	 * @used-by \Dfe\TwoCheckout\Method::charge()
-	 * @param Method $method
+	 * @param M $m
 	 * @param string $token
 	 * @param float|null $amount [optional]
 	 * @return array(string => mixed)
 	 */
-	static function p(Method $method, $token, $amount = null) {return (new self([
-		self::$P__AMOUNT => $amount, self::$P__METHOD => $method, self::$P__TOKEN => $token
-	]))->pCharge();}
+	static function p(M $m, $token, $amount = null) {return (new self($m, $token, $amount))->pCharge();}
 }

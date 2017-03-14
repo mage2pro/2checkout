@@ -111,7 +111,7 @@ class Address extends \Df\Core\O {
 	 * 2016-05-20
 	 * @return bool
 	 */
-	private function req() {return dfc($this, function() {return
+	private function req() {return dfc($this, function() {return 
 		in_array($this->countryIso3(), self::$req)
 	;});}
 

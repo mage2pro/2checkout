@@ -1,5 +1,9 @@
 <?php
 namespace Dfe\TwoCheckout;
+/**
+ * 2016-05-29
+ * @see \Dfe\TwoCheckout\LineItem\Product
+ */
 class LineItem extends \Df\Core\O {
 	/**
 	 * 2016-05-29

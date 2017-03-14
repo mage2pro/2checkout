@@ -127,44 +127,25 @@ final class Product extends LineItem {
 	private function oi() {return $this[self::$P__OI];}
 
 	/** @return array(array(string => string)) */
-	private function options() {
-		/** @var array(array(string => string)) $result */
-		$result = [];
-		/** @var array(string => mixed)|null */
-		$op = $this->top()->getProductOptions();
-		if ($op) {
-			/** @var array(array(string => string)) $ai */
-			$ai = dfa($op, 'attributes_info');
-			if ($ai) {
-				foreach ($ai as $option) {
-					/** @var array(string => string) $option */
-					$result[]= [
-						/**
-						 * 2016-05-23
-						 * «Name of product option.
-						 * Ex. Size (64 characters max – cannot include ‘<' or '>’) Required»
-						 * https://www.2checkout.com/documentation/payment-api/create-sale
-						 */
-						'optName' => dfa($option, 'label')
-						/**
-						 * 2016-05-23
-						 * «Option selected.
-						 * Ex. Small (64 characters max, cannot include ‘<' or '>’) Required»
-						 * https://www.2checkout.com/documentation/payment-api/create-sale
-						 */
-						,'optValue' => dfa($option, 'value')
-						/**
-						 * 2016-05-23
-						 * «Option price in seller currency. (0.00 for no cost options) Required»
-						 * https://www.2checkout.com/documentation/payment-api/create-sale
-						 */
-						,'optSurcharge' => '0.00'
-					];
-				}
-			}
-		}
-		return $result;
-	}
+	private function options() {return
+		!($op = $this->top()->getProductOptions()) || !($ai = dfa($op, 'attributes_info')) ? [] :
+			array_map(function(array $i) {return [
+				// 2016-05-23
+				// «Name of product option.
+				// Ex. Size (64 characters max – cannot include ‘<' or '>’) Required»
+				// https://www.2checkout.com/documentation/payment-api/create-sale
+				'optName' => dfa($i, 'label')
+				// 2016-05-23
+				// «Option selected.
+				// Ex. Small (64 characters max, cannot include ‘<' or '>’) Required»
+				// https://www.2checkout.com/documentation/payment-api/create-sale
+				,'optValue' => dfa($i, 'value')
+				// 2016-05-23
+				// «Option price in seller currency. (0.00 for no cost options) Required»
+				// https://www.2checkout.com/documentation/payment-api/create-sale
+				,'optSurcharge' => '0.00'
+			];}, $ai)
+	;}
 
 	/**
 	 * 2016-05-29
@@ -176,9 +157,7 @@ final class Product extends LineItem {
 	 * 2016-05-23
 	 * @return OI
 	 */
-	private function top() {return dfc($this, function() {return
-		$this->oi()->getParentItem() ?: $this->oi()
-	;});}
+	private function top() {return dfc($this, function() {return df_oi_top($this->oi());});}
 
 	/**
 	 * 2016-05-23
