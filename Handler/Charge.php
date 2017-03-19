@@ -5,7 +5,7 @@ use Df\Sales\Model\Order as DfOrder;
 use Df\Sales\Model\Order\Payment as DfPayment;
 use Magento\Framework\Exception\LocalizedException as LE;
 use Magento\Sales\Model\Order;
-use Magento\Sales\Model\Order\Payment;
+use Magento\Sales\Model\Order\Payment as OP;
 use Magento\Sales\Api\Data\OrderInterface;
 /**
  * 2016-05-22
@@ -49,27 +49,10 @@ abstract class Charge extends Handler {
 
 	/**
 	 * 2016-05-22
-	 * @return Payment|DfPayment|null
+	 * @return OP|DfPayment|null
 	 */
 	protected function payment() {return dfc($this, function() {return
-		$this->paymentByTxnId($this->parentId())
+		/** @var int|null $pid */
+		($pid = $this->parentId()) ? dfp_webhook_case(df_transx($pid, false)) : null
 	;});}
-
-	/**
-	 * 2016-05-22
-	 * @param string|null $id
-	 * @return Payment|DfPayment|null
-	 */
-	private function paymentByTxnId($id) {return dfc($this, function($id) {
-		/** @var Payment|null $result */
-		if ($id) {
-			/** @var int|null $paymentId */
-			$paymentId = df_fetch_one('sales_payment_transaction', 'payment_id', ['txn_id' => $id]);
-			if ($paymentId) {
-				$result = df_load(Payment::class, $paymentId);
-				dfp_webhook_case($result);
-			}
-		}
-		return isset($result) ? $result : null;
-	}, func_get_args());}
 }
