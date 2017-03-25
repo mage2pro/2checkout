@@ -254,10 +254,10 @@ final class Method extends \Df\Payment\Method {
 		 * in the response body.»
 		 *
 		 * Раньше тут стоял код:
-				$e = dfa($r, 'exception');
-				if ($e) {
-					df_error(dfa($e, 'errorMsg'));
-				}
+		 *		$e = dfa($r, 'exception');
+		 *		if ($e) {
+		 *			df_error(dfa($e, 'errorMsg'));
+		 *		}
 		 * Однако он бесполезен и избыточен, потому что в случае сбоя
 		 * библиотека 2Checkout сама взозбуждает исключительную ситуацию:
 		 * @see \Twocheckout_Util::checkError()
@@ -371,16 +371,16 @@ final class Method extends \Df\Payment\Method {
 		 * Наоборот: если закрыть транзакцию типа «authorize»,
 		 * то операция «Capture Online» из административного интерфейса будет недоступна:
 		 * @see \Magento\Sales\Model\Order\Payment::canCapture()
-				if ($authTransaction && $authTransaction->getIsClosed()) {
-					$orderTransaction = $this->transactionRepository->getByTransactionType(
-						Transaction::TYPE_ORDER,
-						$this->getId(),
-						$this->getOrder()->getId()
-					);
-					if (!$orderTransaction) {
-						return false;
-					}
-				}
+		 *		if ($authTransaction && $authTransaction->getIsClosed()) {
+		 *			$orderTransaction = $this->transactionRepository->getByTransactionType(
+		 *				Transaction::TYPE_ORDER,
+		 *				$this->getId(),
+		 *				$this->getOrder()->getId()
+		 *			);
+		 *			if (!$orderTransaction) {
+		 *				return false;
+		 *			}
+		 *		}
 		 * https://github.com/magento/magento2/blob/2.1.3/app/code/Magento/Sales/Model/Order/Payment.php#L263-L281
 		 * «How is \Magento\Sales\Model\Order\Payment::canCapture() implemented and used?»
 		 * https://mage2.pro/t/650
@@ -393,14 +393,13 @@ final class Method extends \Df\Payment\Method {
 		 * Пока не знаю, как передавать нестандартные параметры нормальным способом.
 		 * Похоже, для Payment API такой возможности пока нет.
 		 * https://mail.google.com/mail/u/0/#sent/154d5138c541ed85
-		 * Вариант 'x_custom_username' => $this->order()->getIncrementId()
+		 * Вариант 'x_custom_username' => $this->o()->getIncrementId()
 		 * у меня не работает.
 		 *
 		 * Поэтому для удобства администратора указываем в комментарии к заказу в 2Checkout
 		 * номер заказа в Magento.
 		 * https://www.2checkout.com/documentation/api/sales/create-comment
-		 */
-		/**
+		 *
 		 * 2016-05-22
 		 * Используем @uses df_on_save(), потому что нам нужен идентификатор заказа,
 		 * а в этой точке программы (в момент платежа) заказ ещё не имеет идентификатора.

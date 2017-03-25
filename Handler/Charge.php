@@ -22,10 +22,12 @@ abstract class Charge extends Handler {
 
 	/**
 	 * 2016-03-26
+	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::eligible()
+	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::process()
 	 * @return Order|DfOrder
 	 * @throws LE
 	 */
-	protected function order() {return dfc($this, function() {
+	final protected function o() {return dfc($this, function() {
 		/** @var Order $result */
 		$result = $this->payment()->getOrder();
 		if (!$result->getId()) {

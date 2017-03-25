@@ -81,9 +81,6 @@ class Address extends \Df\Core\O {
 		return is_null($i) ? $this->{__METHOD__} :  $this->{__METHOD__}[$i - 1];
 	}
 
-	/** @return O */
-	private function o() {return $this->a()->getOrder();}
-
 	/**
 	 * 2016-05-20
 	 * «Card holder’s city. (64 characters max) Required»
@@ -119,7 +116,7 @@ class Address extends \Df\Core\O {
 	 * 2016-05-20
 	 * @return Visitor
 	 */
-	private function visitor() {return dfc($this, function() {return df_visitor($this->o());});}
+	private function visitor() {return dfc($this, function() {return df_visitor($this->a()->getOrder());});}
 
 	/**
 	 * 2016-05-20

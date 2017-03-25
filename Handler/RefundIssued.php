@@ -11,7 +11,7 @@ class RefundIssued extends Charge {
 	 * @see \Dfe\TwoCheckout\Handler::eligible()
 	 * @return bool
 	 */
-	protected function eligible() {return parent::eligible() && $this->order()->canCreditmemo();}
+	protected function eligible() {return parent::eligible() && $this->o()->canCreditmemo();}
 
 	/**
 	 * 2016-03-27
@@ -21,7 +21,7 @@ class RefundIssued extends Charge {
 	 * @return int|string
 	 */
 	final protected function process() {return dfp_refund(
-		$this->payment(), df_invoice_by_trans($this->order(), $this->parentId()), $this->item('refund')
+		$this->payment(), df_invoice_by_trans($this->o(), $this->parentId()), $this->item('refund')
 	) ?: 'skipped';}
 	
 	/**
