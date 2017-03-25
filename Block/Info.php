@@ -29,7 +29,7 @@ class Info extends \Df\Payment\Block\Info {
 	 * @used-by \Df\Payment\Block\Info::_prepareSpecificInformation()
 	 */
 	final protected function prepare() {
-		$this->siB('Sale', df_tag_ab($this->iia('sale_id'),
+		$this->siEx('Sale', df_tag_ab($this->iia('sale_id'),
 			"https://{$this->isTest('sandbox.2checkout.com/sandbox', 'www.2checkout.com/va')}/"
 			,"sales/detail?sale_id={$this->iia(self::SALE_ID)}"
 		));
