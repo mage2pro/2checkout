@@ -6,10 +6,8 @@ use Df\Sales\Model\Order\Payment as DfPayment;
 use Magento\Framework\Exception\LocalizedException as LE;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment as OP;
-use Magento\Sales\Api\Data\OrderInterface;
-/**
- * 2016-05-22
- */
+// 2016-05-22  
+/** @see \Dfe\TwoCheckout\Handler\RefundIssued */
 abstract class Charge extends Handler {
 	/**
 	 * 2016-05-23
@@ -27,20 +25,7 @@ abstract class Charge extends Handler {
 	 * @return Order|DfOrder
 	 * @throws LE
 	 */
-	final protected function o() {return dfc($this, function() {
-		/** @var Order $result */
-		$result = $this->payment()->getOrder();
-		if (!$result->getId()) {
-			throw new LE(__('The order no longer exists.'));
-		}
-		/**
-		 * 2016-03-26
-		 * Очень важно! Иначе order создать свой экземпляр payment:
-		 * @used-by \Magento\Sales\Model\Order::getPayment()
-		 */
-		$result[OrderInterface::PAYMENT] = $this->payment();
-		return $result;
-	});}
+	final protected function o() {return df_order_by_payment($this->payment());}
 
 	/**
 	 * 2016-05-22
