@@ -1,6 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout;
-use \Twocheckout as T;
+use Twocheckout as T;
 /** @method static Settings s() */
 final class Settings extends \Df\StripeClone\Settings {
 	/**
