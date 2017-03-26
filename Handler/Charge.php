@@ -16,7 +16,7 @@ abstract class Charge extends Handler {
 	 * @see \Dfe\TwoCheckout\Handler::eligible()
 	 * @return bool
 	 */
-	protected function eligible() {return !!$this->payment();}
+	protected function eligible() {return !!$this->op();}
 
 	/**
 	 * 2016-03-26
@@ -25,21 +25,23 @@ abstract class Charge extends Handler {
 	 * @return Order|DfOrder
 	 * @throws LE
 	 */
-	final protected function o() {return df_order($this->payment());}
+	final protected function o() {return df_order($this->op());}
 
 	/**
 	 * 2016-05-22
-	 * Идентификатор транзакции capture.
+	 * Идентификатор транзакции capture.   
+	 * @used-by op()
+	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::process()
 	 * @return string|null
 	 */
-	protected function parentId() {return $this['invoice_id'];}
+	protected function pid() {return $this['invoice_id'];}
 
 	/**
 	 * 2016-05-22
 	 * @return OP|DfPayment|null
 	 */
-	protected function payment() {return dfc($this, function() {return
+	protected function op() {return dfc($this, function() {return
 		/** @var int|null $pid */
-		($pid = $this->parentId()) ? dfp_webhook_case(df_transx($pid, false)) : null
+		($pid = $this->pid()) ? dfp_webhook_case(df_transx($pid, false)) : null
 	;});}
 }

@@ -21,55 +21,55 @@ class RefundIssued extends Charge {
 	 * @return int|string
 	 */
 	final protected function process() {return dfp_refund(
-		$this->payment(), df_invoice_by_trans($this->o(), $this->parentId()), $this->item('refund')
+		$this->op(), $this->pid(), $this->item('refund')
 	) ?: 'skipped';}
 	
 	/**
 	 * 2016-05-23
 	 * 1) Сценарий полного возврата:
-	 		<...>
-			"item_count": "1",
-			"item_name_1": "ORD-2016\/05-00213",
-			"item_id_1": "",
-			"item_list_amount_1": "80.36",
-			"item_usd_amount_1": "80.36",
-			"item_cust_amount_1": "80.36",
-			"item_type_1": "refund",
-			"item_duration_1": "",
-			"item_recurrence_1": "",
-			"item_rec_list_amount_1": "",
-			"item_rec_status_1": "",
-			"item_rec_date_next_1": "",
-			"item_rec_install_billed_1": ""
-	 		<...>
+	 *		<...>
+	 *		"item_count": "1",
+	 *		"item_name_1": "ORD-2016\/05-00213",
+	 *		"item_id_1": "",
+	 *		"item_list_amount_1": "80.36",
+	 *		"item_usd_amount_1": "80.36",
+	 *		"item_cust_amount_1": "80.36",
+	 *		"item_type_1": "refund",
+	 *		"item_duration_1": "",
+	 *		"item_recurrence_1": "",
+	 *		"item_rec_list_amount_1": "",
+	 *		"item_rec_status_1": "",
+	 *		"item_rec_date_next_1": "",
+	 *		"item_rec_install_billed_1": ""
+	 *		<...>
 	 * 2) Сценарий частичного возврата:
-			<...>
-			"item_count": "2",
-			"item_name_1": "ORD-2016\/05-00212",
-			"item_id_1": "",
-			"item_list_amount_1": "80.36",
-			"item_usd_amount_1": "80.36",
-			"item_cust_amount_1": "80.36",
-			"item_type_1": "bill",
-			"item_duration_1": "",
-			"item_recurrence_1": "",
-			"item_rec_list_amount_1": "",
-			"item_rec_status_1": "",
-			"item_rec_date_next_1": "",
-			"item_rec_install_billed_1": "",
-			"item_name_2": "Partial Refund",
-			"item_id_2": "",
-			"item_list_amount_2": "76.34",
-			"item_usd_amount_2": "76.34",
-			"item_cust_amount_2": "76.34",
-			"item_type_2": "refund",
-			"item_duration_2": "",
-			"item_recurrence_2": "",
-			"item_rec_list_amount_2": "",
-			"item_rec_status_2": "",
-			"item_rec_date_next_2": "",
-			"item_rec_install_billed_2": ""
-			<...>
+	 *		<...>
+	 *		"item_count": "2",
+	 *		"item_name_1": "ORD-2016\/05-00212",
+	 *		"item_id_1": "",
+	 *		"item_list_amount_1": "80.36",
+	 *		"item_usd_amount_1": "80.36",
+	 *		"item_cust_amount_1": "80.36",
+	 *		"item_type_1": "bill",
+	 *		"item_duration_1": "",
+	 *		"item_recurrence_1": "",
+	 *		"item_rec_list_amount_1": "",
+	 *		"item_rec_status_1": "",
+	 *		"item_rec_date_next_1": "",
+	 *		"item_rec_install_billed_1": "",
+	 *		"item_name_2": "Partial Refund",
+	 *		"item_id_2": "",
+	 *		"item_list_amount_2": "76.34",
+	 *		"item_usd_amount_2": "76.34",
+	 *		"item_cust_amount_2": "76.34",
+	 *		"item_type_2": "refund",
+	 *		"item_duration_2": "",
+	 *		"item_recurrence_2": "",
+	 *		"item_rec_list_amount_2": "",
+	 *		"item_rec_status_2": "",
+	 *		"item_rec_date_next_2": "",
+	 *		"item_rec_install_billed_2": ""
+	 *		<...>
 	 *
 	 * @param string|null $k [optional]
 	 * @param float|null $d [optional]
