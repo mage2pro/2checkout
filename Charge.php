@@ -11,7 +11,7 @@ use Magento\Sales\Model\Order\Payment as OrderPayment;
  * https://www.2checkout.com/documentation/payment-api/create-sale
  * https://github.com/2Checkout/2checkout-php/wiki/Charge_Authorize#example-usage
  * @method M m()
- * @method Settings ss()
+ * @method Settings s()
  */
 final class Charge extends \Df\Payment\Charge\WithToken {
 	/**
@@ -141,7 +141,7 @@ final class Charge extends \Df\Payment\Charge\WithToken {
 		 * Your site needs to record any custom data with the order, and associate that data with the API's response after the sale is made.»
 		 * https://mail.google.com/mail/u/0/#inbox/154d5138c541ed85
 		 */
-	] + ($this->ss()->passOrderItems()
+	] + ($this->s()->passOrderItems()
 		/**
 		 * 2016-05-23
 		 * «Array of lineitem objects using the attributes specified below.

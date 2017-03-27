@@ -39,19 +39,19 @@ abstract class Handler extends \Df\Core\O {
 	static function p(array $request) {
 		/** @var mixed $result */
 		try {
-			S::s()->init();
-			/**
-			 * 2016-05-22
-			 * https://github.com/2Checkout/2checkout-php/wiki/Notification_Check#example-usage
-			 * https://www.2checkout.com/documentation/notifications/
-			 * «Each notification message will include an MD5 hash
-			 * that is computed using the secret word that you set up
-			 * under the Site Management page in the seller area.
-			 * The hash is returned on each message through the md5_hash key
-			 * and is computed as follows:
-			 * UPPERCASE(MD5_ENCRYPTED(sale_id + vendor_id + invoice_id + Secret Word))»
-			 */
-			if (!df_my_local() && !\Twocheckout_Notification::check($request, S::s()->secretWord())) {
+			/** @var S $s */
+			$s = dfps(__CLASS__);
+			$s->init();
+			// 2016-05-22
+			// https://github.com/2Checkout/2checkout-php/wiki/Notification_Check#example-usage
+			// https://www.2checkout.com/documentation/notifications/
+			// «Each notification message will include an MD5 hash
+			// that is computed using the secret word that you set up
+			// under the Site Management page in the seller area.
+			// The hash is returned on each message through the md5_hash key
+			// and is computed as follows:
+			// UPPERCASE(MD5_ENCRYPTED(sale_id + vendor_id + invoice_id + Secret Word))»
+			if (!df_my_local() && !\Twocheckout_Notification::check($request, $s->secretWord())) {
 				df_error('Invalid signature.');
 			}
 			/**
