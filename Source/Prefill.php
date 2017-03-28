@@ -1,6 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout\Source;
-final class Prefill extends \Df\Config\SourceT {
+final class Prefill extends \Df\Config\Source {
 	/**
 	 * 2016-05-17
 	 * https://www.2checkout.com/documentation/sandbox/test-data/
