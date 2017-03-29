@@ -7,9 +7,9 @@ class Info extends \Df\Payment\Block\Info {
 	 * 2016-05-23
 	 * @return string
 	 */
-	final function cardNumber() {return dfc($this, function() {return
-		implode('********', $this->iia(self::CARD_F6, self::CARD_L2))
-	;});}
+	final function cardNumber() {return dfc($this, function() {return implode(
+		'********', $this->iia(self::CARD_F6, self::CARD_L2)
+	);});}
 
 	/**
 	 * 2016-05-23
