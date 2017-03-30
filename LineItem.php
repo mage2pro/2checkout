@@ -93,8 +93,8 @@ class LineItem extends \Df\Core\O {
 
 	/**
 	 * 2016-05-29
-	 * @override
-	 * @return void
+	 * @override   
+	 * @see \Df\Core\O::_construct()
 	 */
 	protected function _construct() {
 		parent::_construct();

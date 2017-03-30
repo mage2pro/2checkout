@@ -161,8 +161,8 @@ final class Product extends LineItem {
 
 	/**
 	 * 2016-05-23
-	 * @override
-	 * @return void
+	 * @override 
+	 * @see \Dfe\TwoCheckout\LineItem::_construct()
 	 */
 	protected function _construct() {
 		parent::_construct();

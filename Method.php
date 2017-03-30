@@ -58,7 +58,6 @@ final class Method extends \Df\Payment\Method {
 	 * @override
 	 * @see \Df\Payment\Method::_refund()
 	 * @param float $amount
-	 * @return void
 	 */
 	protected function _refund($amount) {$this->api(function() use($amount) {
 		/**
@@ -219,7 +218,6 @@ final class Method extends \Df\Payment\Method {
 	 * @see \Df\Payment\Method::charge()
 	 * @param string $amount
 	 * @param bool $capture [optional]
-	 * @return void
 	 */
 	protected function charge($amount, $capture = true) {$this->api(function() use($amount) {
 		/**

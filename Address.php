@@ -121,7 +121,7 @@ class Address extends \Df\Core\O {
 	/**
 	 * 2016-05-20
 	 * @override
-	 * @return void
+	 * @see \Df\Core\O::_construct()
 	 */
 	protected function _construct() {
 		parent::_construct();
