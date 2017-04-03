@@ -24,7 +24,7 @@ If you have some problems while executing these commands, then check the [detail
 ## Licensing
 It is a paid extension, not free.  
 You can use it for free for the testing puproses only.  
-Please read the [testing policy](https://mage2.pro/t/topic/2590) before installation.
+Please read the [testing policy](https://mage2.pro/t/2590) before installation.
 
 ## Support
 - [The extension's **forum** branch](https://mage2.pro/c/extensions/2checkout).
