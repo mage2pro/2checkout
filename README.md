@@ -5,11 +5,6 @@ The extension integrates your Magento 2 store with the [**2Checkout**](https://w
 2. [Partially **refund** a payment from the **Magento** side](https://mage2.pro/t/topic/1736).
 3. [**Refund** a payment from the **2Checkout** side](https://mage2.pro/t/topic/1747).
 
-## Licensing
-It is a paid extension, not free.  
-You can use it for free for the testing puproses only.  
-Please read the [testing policy](https://mage2.pro/t/topic/2590) before installation.
-
 ## How to buy
 You can buy it with PayPal [here](https://mage2.pro/t/1627).
 
@@ -25,6 +20,11 @@ rm -rf pub/static/* && bin/magento setup:static-content:deploy
 rm -rf var/di var/generation && bin/magento setup:di:compile
 ```
 If you have some problems while executing these commands, then check the [detailed instruction](https://mage2.pro/t/263).
+
+## Licensing
+It is a paid extension, not free.  
+You can use it for free for the testing puproses only.  
+Please read the [testing policy](https://mage2.pro/t/topic/2590) before installation.
 
 ## Support
 - [The extension's **forum** branch](https://mage2.pro/c/extensions/2checkout).
