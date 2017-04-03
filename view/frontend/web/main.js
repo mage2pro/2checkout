@@ -1,7 +1,5 @@
 define([
-	'df'
-	,'Df_StripeClone/main'
-	,'https://www.2checkout.com/checkout/api/2co.min.js'
+	'df', 'Df_StripeClone/main', 'https://www.2checkout.com/checkout/api/2co.min.js'
 ], function(df, parent) {'use strict'; return parent.extend({
 	/**
 	 * 2016-08-25
@@ -28,7 +26,6 @@ define([
 			}
 		);
 	}),
-
 	defaults: {df: {
 		// 2016-11-10
 		// https://mage2.pro/t/1631
@@ -40,7 +37,6 @@ define([
 		card: {prefill: {cvv: '123'}}
 		,test: {suffix: 'SANDBOX'}
 	}},
-
 	/**
 	 * 2016-03-01
 	 * 2016-03-08
@@ -62,21 +58,19 @@ define([
 	 * @returns {String[]}
 	 */
 	getCardTypes: function() {return ['VI', 'MC', 'AE', 'JCB', 'DI', 'DN'];},
-
 	/**
-	 * 2016-03-02
+	 * 2016-05-18
+	 * https://www.2checkout.com/documentation/payment-api/create-token
+	 * @override
+	 * @see Df_Payment/card::initialize()
+	 * https://github.com/mage2pro/core/blob/2.4.21/Payment/view/frontend/web/card.js#L77-L110
 	 * @returns {Object}
 	*/
 	initialize: function() {
 		this._super();
-		/**
-		 * 2016-05-18
-		 * https://www.2checkout.com/documentation/payment-api/create-token
-		 */
 		TCO.loadPubKey(this.isTest() ? 'sandbox' : 'production');
 		return this;
 	},
-	
 	/**
 	 * @override
 	 * @see https://github.com/magento/magento2/blob/2.1.0/app/code/Magento/Checkout/view/frontend/web/js/view/payment/default.js#L127-L159
