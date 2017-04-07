@@ -1,5 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout;
+use Df\Payment\Operation\Source\Order as OpSource;
 use Df\Payment\Token;
 use Dfe\TwoCheckout\LineItem as LI;
 use Dfe\TwoCheckout\LineItem\Product as LIP;
@@ -169,5 +170,5 @@ final class Charge extends \Df\Payment\Charge {
 	 * @param float $amount
 	 * @return array(string => mixed)
 	 */
-	static function p(M $m, $amount) {return (new self($m, $amount))->pCharge();}
+	static function p(M $m, $amount) {return (new self(new OpSource($m, $amount)))->pCharge();}
 }
