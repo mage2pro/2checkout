@@ -1,5 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout;
+use Df\Payment\Token;
 use Dfe\TwoCheckout\Block\Info as InfoBlock;
 use Magento\Framework\Exception\LocalizedException as LE;
 use Magento\Sales\Model\Order as O;
@@ -218,7 +219,7 @@ final class Method extends \Df\Payment\Method {
 	 * @see \Df\Payment\Method::charge()
 	 * @used-by \Df\Payment\Method::authorize()
 	 * @used-by \Df\Payment\Method::capture()
-	 * @param string $amount
+	 * @param float $amount
 	 * @param bool $capture [optional]
 	 */
 	protected function charge($amount, $capture = true) {$this->api(function() use($amount) {
@@ -228,7 +229,7 @@ final class Method extends \Df\Payment\Method {
 		 * https://github.com/2Checkout/2checkout-php/blob/0.3.1/lib/Twocheckout/Api/TwocheckoutApi.php#L25-L31
 		 */
 		/** @var array(string => mixed) $p */
-		$p = ['api' => 'checkout'] + Charge::p($this, $this->iia(self::$TOKEN), $amount);
+		$p = ['api' => 'checkout'] + Charge::p($this, $amount);
 		/** @var \Twocheckout_Api_Requester $requester */
 		$requester = new \Twocheckout_Api_Requester;
 		/**
@@ -358,7 +359,7 @@ final class Method extends \Df\Payment\Method {
 			 */
 			InfoBlock::SALE_ID => $saleId
 		]);
-		$this->iiaUnset(self::$TOKEN);
+		$this->iiaUnset(Token::KEY);
 		/**
 		 * 2016-03-15
 		 * Если оставить открытой транзакцию «capture»,
@@ -418,7 +419,7 @@ final class Method extends \Df\Payment\Method {
 	 * @used-by \Df\Payment\Method::assignData()
 	 * @return string[]
 	 */
-	protected function iiaKeys() {return [self::$TOKEN];}
+	protected function iiaKeys() {return [Token::KEY];}
 
 	/**
 	 * 2016-03-17
@@ -444,9 +445,4 @@ final class Method extends \Df\Payment\Method {
 	 * @used-by \Df\Payment\Method::codeS()
 	 */
 	const CODE = 'dfe_two_checkout';
-	/**
-	 * 2016-03-06
-	 * @var string
-	 */
-	private static $TOKEN = 'token';
 }

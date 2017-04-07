@@ -1,5 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout;
+use Df\Payment\Token;
 use Dfe\TwoCheckout\LineItem as LI;
 use Dfe\TwoCheckout\LineItem\Product as LIP;
 use Dfe\TwoCheckout\Method as M;
@@ -13,7 +14,7 @@ use Magento\Sales\Model\Order\Payment as OrderPayment;
  * @method M m()
  * @method Settings s()
  */
-final class Charge extends \Df\Payment\Charge\WithToken {
+final class Charge extends \Df\Payment\Charge {
 	/**
 	 * 2016-05-23
 	 * @used-by lineItems()
@@ -67,7 +68,7 @@ final class Charge extends \Df\Payment\Charge\WithToken {
 
 	/**
 	 * 2016-05-19
-	 * @used-by p()
+	 * @used-by \Dfe\TwoCheckout\Charge::p()
 	 * @return array(string => mixed)
 	 */
 	private function pCharge() {return [
@@ -93,7 +94,7 @@ final class Charge extends \Df\Payment\Charge\WithToken {
 		// 2016-05-19
 		// «The credit card token. Required.»
 		// https://www.2checkout.com/documentation/payment-api/create-sale
-		,'token' => $this->token()
+		,'token' => Token::get($this->op())
 		/**
 		 * 2016-05-19
 		 * «Use to specify the currency for the sale. Required.»
@@ -165,9 +166,8 @@ final class Charge extends \Df\Payment\Charge\WithToken {
 	 * 2016-05-19
 	 * @used-by \Dfe\TwoCheckout\Method::charge()
 	 * @param M $m
-	 * @param string $token
-	 * @param float|null $amount [optional]
+	 * @param float $amount
 	 * @return array(string => mixed)
 	 */
-	static function p(M $m, $token, $amount = null) {return (new self($m, $token, $amount))->pCharge();}
+	static function p(M $m, $amount) {return (new self($m, $amount))->pCharge();}
 }
