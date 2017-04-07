@@ -216,6 +216,8 @@ final class Method extends \Df\Payment\Method {
 	 * 2016-08-14
 	 * @override
 	 * @see \Df\Payment\Method::charge()
+	 * @used-by \Df\Payment\Method::authorize()
+	 * @used-by \Df\Payment\Method::capture()
 	 * @param string $amount
 	 * @param bool $capture [optional]
 	 */
