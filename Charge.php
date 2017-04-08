@@ -90,7 +90,7 @@ final class Charge extends \Df\Payment\Charge {
 		// 2016-05-19
 		// «Your custom order identifier. Required.»
 		// https://www.2checkout.com/documentation/payment-api/create-sale
-		'merchantOrderId' => $this->oii()
+		'merchantOrderId' => $this->id()
 		// 2016-05-19
 		// «The credit card token. Required.»
 		// https://www.2checkout.com/documentation/payment-api/create-sale
