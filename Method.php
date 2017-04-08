@@ -219,17 +219,16 @@ final class Method extends \Df\Payment\Method {
 	 * @see \Df\Payment\Method::charge()
 	 * @used-by \Df\Payment\Method::authorize()
 	 * @used-by \Df\Payment\Method::capture()
-	 * @param float $amount
 	 * @param bool $capture [optional]
 	 */
-	protected function charge($amount, $capture = true) {$this->api(function() use($amount) {
+	protected function charge($capture = true) {$this->api(function() {
 		/**
 		 * 2016-08-21
 		 * @see \Twocheckout_Api_Requester::doCall()
 		 * https://github.com/2Checkout/2checkout-php/blob/0.3.1/lib/Twocheckout/Api/TwocheckoutApi.php#L25-L31
 		 */
 		/** @var array(string => mixed) $p */
-		$p = ['api' => 'checkout'] + Charge::p($this, $amount);
+		$p = ['api' => 'checkout'] + Charge::p($this);
 		/** @var \Twocheckout_Api_Requester $requester */
 		$requester = new \Twocheckout_Api_Requester;
 		/**
