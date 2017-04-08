@@ -89,7 +89,7 @@ final class Product extends LineItem {
 	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 * @return string
 	 */
-	protected function price() {return $this->charge()->cFromOrderF(df_oi_price($this->oi()));}
+	protected function price() {return $this->charge()->cFromDocF(df_oi_price($this->oi()));}
 
 	/**
 	 * 2016-05-23

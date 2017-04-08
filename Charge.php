@@ -21,7 +21,7 @@ final class Charge extends \Df\Payment\Charge {
 	 * @return array(string => string)|null
 	 */
 	private function liDiscount() {$o = $this->o(); return !($a = $o->getDiscountAmount()) ? null :
-		LI::buildLI('coupon', $this->cFromOrderF($a) ,df_ccc(': ',
+		LI::buildLI('coupon', $this->cFromDocF($a) ,df_ccc(': ',
 			($d = $o->getDiscountDescription()) === $o->getCouponCode() ? $o['coupon_rule_name'] : null
 			,$d
 		))
@@ -33,7 +33,7 @@ final class Charge extends \Df\Payment\Charge {
 	 * @return array(string => string)|null
 	 */
 	private function liShipping() {$o = $this->o(); return !($a = $o->getShippingAmount()) ? null :
-		LI::buildLI('shipping', $this->cFromOrderF($a), $o->getShippingDescription(), true)
+		LI::buildLI('shipping', $this->cFromDocF($a), $o->getShippingDescription(), true)
 	;}
 
 	/**
@@ -42,7 +42,7 @@ final class Charge extends \Df\Payment\Charge {
 	 * @return array(string => string)|null
 	 */
 	private function liTax() {return !($a = $this->o()->getTaxAmount()) ? null :
-		LI::buildLI('tax', $this->cFromOrderF($a))
+		LI::buildLI('tax', $this->cFromDocF($a))
 	;}
 	
 	/**
