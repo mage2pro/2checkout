@@ -94,7 +94,7 @@ final class Charge extends \Df\Payment\Charge {
 		// 2016-05-19
 		// «The credit card token. Required.»
 		// https://www.2checkout.com/documentation/payment-api/create-sale
-		,'token' => Token::get($this->op())
+		,'token' => Token::get($this->ii())
 		/**
 		 * 2016-05-19
 		 * «Use to specify the currency for the sale. Required.»
