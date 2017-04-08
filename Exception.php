@@ -7,6 +7,7 @@ final class Exception extends \Df\Payment\Exception {
 	 * 2016-08-21
 	 * @override
 	 * @see \Df\Core\Exception::__construct()
+	 * @used-by \Dfe\TwoCheckout\Method::charge()
 	 * @param array(string => mixed) $response
 	 * @param array(string => mixed) $request [optional]
 	 */
@@ -20,6 +21,7 @@ final class Exception extends \Df\Payment\Exception {
 	 * 2016-08-19
 	 * @override
 	 * @see \Df\Core\Exception::message()
+	 * @used-by \Dfe\TwoCheckout\Method::api()
 	 * @return string
 	 */
 	function message() {return df_cc_n(
@@ -34,9 +36,9 @@ final class Exception extends \Df\Payment\Exception {
 	 * @see \Df\Core\Exception::messageC()
 	 * @return string
 	 */
-	function messageC() {return
-		dfp_error_message(df_first(df_clean($this->_res->a(['errors/0/message', 'exception/errorMsg']))))
-	;}
+	function messageC() {return dfp_error_message(df_first(df_clean($this->_res->a([
+		'errors/0/message', 'exception/errorMsg'
+	]))));}
 
 	/**
 	 * 2016-08-21

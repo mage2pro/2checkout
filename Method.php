@@ -71,8 +71,7 @@ final class Method extends \Df\Payment\Method {
 		 * без предварительной транзакции типа «авторизация».
 		 */
 		/** @var Transaction $tCapture */
-		$tCapture = $this->ii()->getAuthorizationTransaction();
-		if ($tCapture) {
+		if ($tCapture = $this->ii()->getAuthorizationTransaction()) {
 			/** @var CM|null $cm */
 			// 2016-03-24
 			// Credit Memo и Invoice отсутствуют в сценарии Authorize / Capture
@@ -229,6 +228,7 @@ final class Method extends \Df\Payment\Method {
 		 */
 		/** @var array(string => mixed) $p */
 		$p = ['api' => 'checkout'] + Charge::p($this);
+		df_sentry_extra($this, 'Request Params', $p);
 		/** @var \Twocheckout_Api_Requester $requester */
 		$requester = new \Twocheckout_Api_Requester;
 		/**
