@@ -55,28 +55,31 @@ class Address extends \Df\Core\O {
 	 * Optional for all other “country” values.»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * https://mail.google.com/mail/u/0/#inbox/154ca839388e9f7d
+	 *
+	 * 2017-04-08
+	 * Если длина любой из строк адреса превышает 64 символа, то будет сбой: «Authorization Failed».
+	 *
 	 * @param int|null $i [optional]
 	 * @return string[]
 	 */
 	private function line($i = null) {
 		if (!isset($this->{__METHOD__})) {
-			/** @var string $line1 */
-			/** @var string $line2 */
-			if (!in_array($this->countryIso3(), ['CHN', 'JPN', 'RUS'])) {
-				$line1 = $this->a()->getStreetLine(1);
-				$line2 = $this->a()->getStreetLine(2);
+			/** @var string $s */
+			/** @var string $s1 */
+			/** @var string $s2 */
+			$s = mb_substr(df_trim(df_cc_s($this->a()->getStreet())), 0, 128);
+			/** @var int $len */
+			$len = mb_strlen($s);
+			if ($len <= 64) {
+				list($s1, $s2) = [$s, ''];
 			}
 			else {
-				/** @var string[] $words */
-				$words = df_clean(df_trim(explode(' ', df_cc_s($this->a()->getStreet()))));
-				/** @var int $wordsCount */
-				$wordsCount = count($words);
-				/** @var int $wordsCount1 */
-				$wordsCount1 = round($wordsCount / 2);
-				$line1 = df_cc_s(array_slice($words, 0, $wordsCount1));
-				$line2 = df_cc_s(array_slice($words, $wordsCount1));
+				/** @var int $end1 */
+				$end1 = mb_strrpos(mb_substr($s, 0, 64), ' ');
+				$s1 = mb_substr($s, 0, $end1);
+				$s2 = mb_substr(trim(mb_substr($s, mb_strlen($s1))), 0, 64);
 			}
-			$this->{__METHOD__} = [$line1, $line2];
+			$this->{__METHOD__} = [$s1, $s2];
 		}
 		return is_null($i) ? $this->{__METHOD__} :  $this->{__METHOD__}[$i - 1];
 	}
