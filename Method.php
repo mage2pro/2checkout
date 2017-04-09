@@ -25,10 +25,10 @@ final class Method extends \Df\Payment\Method {
 	 * @override
 	 * @see \Df\Payment\Method::amountFormat()
 	 * @used-by \Df\Payment\Operation::amountFormat()
-	 * @param float|int $amount
+	 * @param float|int $a
 	 * @return string
 	 */
-	function amountFormat($amount) {return df_f2(df_assert_le(99999999.99, abs($amount)));}
+	function amountFormat($a) {return df_f2(df_assert_le(99999999.99, abs($a)));}
 
 	/**
 	 * 2016-03-07
@@ -58,9 +58,9 @@ final class Method extends \Df\Payment\Method {
 	 * 2016-05-21
 	 * @override
 	 * @see \Df\Payment\Method::_refund()
-	 * @param float $amount
+	 * @param float $a
 	 */
-	protected function _refund($amount) {$this->api(function() use($amount) {
+	protected function _refund($a) {$this->api(function() use($a) {
 		/**
 		 * 2016-03-17
 		 * Метод @uses \Magento\Sales\Model\Order\Payment::getAuthorizationTransaction()
@@ -158,7 +158,7 @@ final class Method extends \Df\Payment\Method {
 				 * the remaining amount for the invoice is assumed.»
 				 * https://www.2checkout.com/documentation/api/sales/refund-invoice
 				 */
-				, 'amount' => $this->amountFormat($amount)
+				, 'amount' => $this->amountFormat($a)
 			]);
 			/**
 			 * 2016-05-22
