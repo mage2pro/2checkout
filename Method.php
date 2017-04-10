@@ -439,9 +439,10 @@ final class Method extends \Df\Payment\Method {
 
 	/**
 	 * 2016-02-29
-	 * @used-by mage2pro/2checkout/etc/di.xml
-	 * @used-by mage2pro/2checkout/etc/frontend/di.xml
+	 * @used-by https://github.com/mage2pro/2checkout/blob/1.4.1/etc/di.xml#L9
+	 * @used-by https://github.com/mage2pro/2checkout/blob/1.4.1/etc/frontend/di.xml#L16
 	 * @used-by \Df\Payment\Method::codeS()
+	 * @see \Df\Payment\Settings::prefix()
 	 */
 	const CODE = 'dfe_two_checkout';
 }
