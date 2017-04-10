@@ -5,6 +5,7 @@ use Dfe\TwoCheckout\Block\Info as InfoBlock;
 use Magento\Framework\Exception\LocalizedException as LE;
 use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Creditmemo as CM;
+use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\Payment as OP;
 use Magento\Sales\Model\Order\Payment\Transaction;
 /** @method Settings s() */
@@ -125,10 +126,12 @@ final class Method extends \Df\Payment\Method {
 				 * в интернет-магазине. Но теги тем более не сохраняются.
 				 * Если они добавят поддержку переносов строк, то попрошу их и о тегах.
 				 */
-				,'comment' => df_cc_n(
-					df_trim($cm->getCustomerNote())
-					,'Magento Credit Memo: ' . $cm->getIncrementId()
-				)
+				,'comment' =>
+					df_trim($cm->getCustomerNote()) . "\nMagento Credit Memo: {$cm->getIncrementId()}"
+			// 2017-04-10
+			// Избегаем сбоя из-за погрешности округления:
+			// «Amount greater than remaining balance on invoice.»
+			] + (df_is0($cm->getBaseGrandTotal() - $cm->getInvoice()->getBaseGrandTotal()) ? [] : [
 				/**
 				 * 2016-05-21
 				 * «Currency type of refund amount.
@@ -149,17 +152,15 @@ final class Method extends \Df\Payment\Method {
 				 * or the currency the customer selected at checkout (hosted checkouts).»
 				 * https://mail.google.com/mail/u/0/#inbox/154d347f4c3d79a8
 				 */
-				,'currency' => 'customer'
-				/**
-				 * 2016-05-21
-				 * «The amount to refund.
-				 * Only needed when issuing a partial refund.
-				 * If an amount is not specified,
-				 * the remaining amount for the invoice is assumed.»
-				 * https://www.2checkout.com/documentation/api/sales/refund-invoice
-				 */
-				, 'amount' => $this->amountFormat($a)
-			]);
+				'currency' => 'customer'
+				// 2016-05-21
+				// «The amount to refund.
+				// Only needed when issuing a partial refund.
+				// If an amount is not specified,
+				// the remaining amount for the invoice is assumed.»
+				// https://www.2checkout.com/documentation/api/sales/refund-invoice
+				,'amount' => $this->amountFormat($a)
+			]));
 			/**
 			 * 2016-05-22
 			 * Используем @uses df_on_save(), потому что нам нужен идентификатор возврата,
