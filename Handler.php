@@ -65,6 +65,7 @@ abstract class Handler extends \Df\Core\O {
 			 * @var string|null $type
 			 */
 			$type = dfa($request, 'message_type');
+			dfp_report(__CLASS__, $request, strtolower($type));
 			/**
 			 * REFUND_ISSUED => Handler\RefundIssued
 			 * @var string $suffix
