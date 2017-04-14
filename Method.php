@@ -205,12 +205,16 @@ final class Method extends \Df\Payment\Method {
 	 *
 	 * https://mage2.pro/t/2686
 	 *
+	 * 2017-04-15
+	 * The «USD» currency could be not set up in the store,
+	 * so use @uses df_currency_convert_safe() to get rid from a failure like «Undefined rate from "AUD-USD"».
+	 *
 	 * @see \Df\Payment\Method::amountLimits()
 	 * @used-by \Df\Payment\Method::isAvailable()
 	 * @return \Closure
 	 */
 	protected function amountLimits() {return function($c) {return [
-		df_currency_convert(1, 'USD', $c), null
+		df_currency_convert_safe(1, 'USD', $c), null
 	];};}
 
 	/**
