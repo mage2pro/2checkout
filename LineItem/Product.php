@@ -35,7 +35,7 @@ final class Product extends LineItem {
 		// «Quantity of the item passed in.
 		// (0-999, defaults to 1 if not passed in or incorrectly formatted.) Optional»
 		// https://www.2checkout.com/documentation/payment-api/create-sale
-		,'quantity' => df_oi_qty($this->oi())
+		,'quantity' => df_oqi_qty($this->oi())
 	]);}
 
 	/**
@@ -78,7 +78,7 @@ final class Product extends LineItem {
 	/**
 	 * 2016-05-29
 	 * 2017-02-01
-	 * @uses df_oi_price() использует
+	 * @uses df_oqi_price() использует
 	 * @see \Magento\Sales\Model\Order\Item::getPrice(),
 	 * а не @see \Magento\Sales\Model\Order\Item::getPriceInclTax().
 	 * Это именно то, что нам нужно: мы не размазываем налоги по товарам,
@@ -89,7 +89,7 @@ final class Product extends LineItem {
 	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 * @return string
 	 */
-	protected function price() {return $this->charge()->cFromDocF(df_oi_price($this->oi()));}
+	protected function price() {return $this->charge()->cFromDocF(df_oqi_price($this->oi()));}
 
 	/**
 	 * 2016-05-23
@@ -157,7 +157,7 @@ final class Product extends LineItem {
 	 * 2016-05-23
 	 * @return OI
 	 */
-	private function top() {return dfc($this, function() {return df_oi_top($this->oi());});}
+	private function top() {return dfc($this, function() {return df_oqi_top($this->oi());});}
 
 	/**
 	 * 2016-05-23
