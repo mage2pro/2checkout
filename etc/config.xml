@@ -35,7 +35,7 @@
 				<model>Dfe\TwoCheckout\Method</model>
 				<!--
 				 	2016-05-06
-				 	По аналогии с https://mage2.pro/t/topic/898/3
+				 	По аналогии с https://mage2.pro/t/898/3
 				-->
 				<paymentInfoKeys></paymentInfoKeys>
 				<privateInfoKeys></privateInfoKeys>

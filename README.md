@@ -1,9 +1,9 @@
 The extension integrates your Magento 2 store with the [**2Checkout**](https://www.2checkout.com/) payment service.
 
 ## Demo videos
-1. [**Capture** a payment](https://mage2.pro/t/topic/1653).
-2. [Partially **refund** a payment from the **Magento** side](https://mage2.pro/t/topic/1736).
-3. [**Refund** a payment from the **2Checkout** side](https://mage2.pro/t/topic/1747).
+1. [**Capture** a payment](https://mage2.pro/t/1653).
+2. [Partially **refund** a payment from the **Magento** side](https://mage2.pro/t/1736).
+3. [**Refund** a payment from the **2Checkout** side](https://mage2.pro/t/1747).
 
 ## How to buy
 You can buy it with PayPal [here](https://mage2.pro/t/1627).
@@ -29,7 +29,7 @@ Please read the [testing policy](https://mage2.pro/t/2590) before installation.
 ## Support
 - [The extension's **forum** branch](https://mage2.pro/c/extensions/2checkout).
 - [Where and how to report a Mage2.PRO extension's issue?](https://mage2.pro/t/2034)
-- I also provide a **[generic Magento 2 support](https://mage2.pro/t/topic/755)** and [Magento 2 installation service](https://mage2.pro/t/748).
+- I also provide a **[generic Magento 2 support](https://mage2.pro/t/755)** and [Magento 2 installation service](https://mage2.pro/t/748).
 
 ## Want to be notified about the extension's updates?
 - [Subscribe](https://mage2.pro/t/2540) to the extension's [forum branch](https://mage2.pro/c/extensions/2checkout).
