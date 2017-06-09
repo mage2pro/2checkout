@@ -138,13 +138,10 @@ class LineItem extends \Df\Core\O {
 	 * Опытным путём установил, что у description
 	 * такое же ограничение по длине, как и у name.
 	 *
-	 * @param string $text
+	 * @param string $s
 	 * @return string
 	 */
-	protected static function adjustText($text) {
-		$text = strtr($text, ['<' => '«', '>' => '»']);
-		return mb_strlen($text) <= 128 ? $text : mb_substr($text, 0, 127) . '…';
-	}
+	protected static function adjustText($s) {return df_chop(strtr($s, ['<' => '«', '>' => '»']), 128);}
 
 	/** @var string */
 	private static $P__ID = 'id';
