@@ -52,7 +52,7 @@ final class Charge extends \Df\Payment\Charge {
 	private function lineItems() {
 		/** @var array(array(string => string)) $result */
 		$result = df_clean(array_merge(
-			$this->oiLeafs(function(OI $item) {return LIP::buildP($this, $item);})
+			$this->oiLeafs(function(OI $i) {return LIP::buildP($this, $i);})
 			,[$this->liShipping(), $this->liDiscount(), $this->liTax()]
 		));
 		/** @var float $rest */
