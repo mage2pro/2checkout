@@ -14,34 +14,15 @@ class Address extends \Df\Core\O {
 	 * @return string|null
 	 */
 	private function city() {return $this->a()->getCity() ?: $this->visitor()->city();}
-
 	/**
 	 * 2016-05-20
-	 * «Card holder’s country. (64 characters max) Required»
-	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 *
-	 * Раньше реализация была такой:
-			return
-				$this->a()->getCountryId()
-				? df_country_ctn($this->a()->getCountryId())
-				: $this->visitor()->countryName()
-			;
-	 * Но теперь дибилоид из службы поддержки утверждает,
-	 * что надо передавать 3-символьный код страны.
-	 *
-	 * @return string|null
-	 */
-	private function country() {return
-		df_country_2_to_3($this->a()->getCountryId() ?: $this->visitor()->iso2())
-	;}
-
-	/**
-	 * 2016-05-20
+	 * @used-by build()
+	 * @used-by req()
 	 * @return string
 	 */
-	private function countryIso3() {return dfc($this, function() {return
-		df_country_2_to_3($this->a()->getCountryId())
-	;});}
+	private function countryIso3() {return dfc($this, function() {return df_country_2_to_3(
+		$this->a()->getCountryId() ?: $this->visitor()->iso2()
+	);});}
 
 	/**
 	 * 2016-05-20
@@ -193,7 +174,7 @@ class Address extends \Df\Core\O {
 			 * «Card holder’s country. (64 characters max) Required»
 			 * https://www.2checkout.com/documentation/payment-api/create-sale
 			 */
-			,'country' => $a->country()
+			,'country' => $a->countryIso3()
 		];
 		if ($isBilling) {
 			$result += [
