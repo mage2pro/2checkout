@@ -14,23 +14,18 @@
 -->
 			<group
 				id='two_checkout'
-				translate='label'
+				showInDefault='1' showInStore='1' showInWebsite='1'
 				sortOrder='3'
-				showInDefault='1'
-				showInWebsite='1'
-				showInStore='1'
+				translate='label'
 			>
 				<label>2Checkout</label>
 				<dfExtension>Dfe_TwoCheckout</dfExtension>
 				<frontend_model>Df\Config\Fieldset</frontend_model>
 				<field
 					id='enable'
+					showInDefault='1' showInStore='1' showInWebsite='1' sortOrder='1'
 					translate='label'
 					type='Df\Framework\Form\Element\Checkbox'
-					sortOrder='1'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Enable?</label>
 					<backend_model>Df\Config\Backend\Checkbox</backend_model>
@@ -38,12 +33,9 @@
 				</field>
 				<field
 					id='test'
+					showInDefault='1' showInStore='1' showInWebsite='1' sortOrder='2'
 					translate='label'
 					type='Df\Framework\Form\Element\Checkbox'
-					sortOrder='2'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Sandbox Mode?</label>
 					<backend_model>Df\Config\Backend\Checkbox</backend_model>
@@ -52,12 +44,10 @@
 				</field>
 				<field
 					id='testAccountNumber'
+					showInDefault='1' showInStore='1' showInWebsite='0'
+					sortOrder='3'
 					translate='label'
 					type='text'
-					sortOrder='3'
-					showInDefault='1'
-					showInWebsite='0'
-					showInStore='1'
 				>
 					<label>Sandbox Account Number</label>
 					<comment><![CDATA[<a href="https://mage2.pro/t/1629" target='_blank'>Where to find it?</a>
@@ -70,12 +60,9 @@
 				</field>
 				<field
 					id='testPublishableKey'
+					showInDefault='1' showInStore='1' showInWebsite='1' sortOrder='4'
 					translate='label'
 					type='text'
-					sortOrder='4'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Sandbox Publishable Key</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1628' target='_blank'>How to get it?</a>]]></comment>
@@ -87,12 +74,10 @@
 				</field>
 				<field
 					id='testSecretKey'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='5'
 					translate='label'
 					type='obscure'
-					sortOrder='5'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Sandbox Private Key</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1628' target='_blank'>How to get it?</a>]]></comment>
@@ -116,12 +101,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='testUsername'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='6'
 					translate='label'
 					type='text'
-					sortOrder='6'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Sandbox API Username</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1637' target='_blank'>How to get it?</a>]]></comment>
@@ -133,12 +116,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='testPassword'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='7'
 					translate='label'
 					type='obscure'
-					sortOrder='7'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Sandbox API Password</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1637' target='_blank'>How to get it?</a>]]></comment>
@@ -151,12 +132,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='testSecretWord'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='8'
 					translate='label'
 					type='obscure'
-					sortOrder='8'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Sandbox Secret Word</label>
 					<comment><![CDATA[It is used for Notifications. <a href='https://mage2.pro/t/1646' target='_blank'>How to get it?</a>]]></comment>
@@ -169,12 +148,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='prefill'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='9'
 					translate='label'
 					type='select'
-					sortOrder='9'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Prefill the Payment Form with Test Data?</label>
 					<source_model>Dfe\TwoCheckout\Source\Prefill</source_model>
@@ -186,12 +163,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='liveAccountNumber'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='10'
 					translate='label'
 					type='text'
-					sortOrder='10'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Live Account Number</label>
 					<comment><![CDATA[<a href="https://mage2.pro/t/1629" target='_blank'>Where to find it?</a>
@@ -204,12 +179,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='livePublishableKey'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='11'
 					translate='label'
 					type='text'
-					sortOrder='11'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Live Publishable Key</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1628' target='_blank'>How to get it?</a>]]></comment>
@@ -221,12 +194,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='liveSecretKey'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='12'
 					translate='label'
 					type='obscure'
-					sortOrder='12'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Live Private Key</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1628' target='_blank'>How to get it?</a>]]></comment>
@@ -246,12 +217,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='liveUsername'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='13'
 					translate='label'
 					type='text'
-					sortOrder='13'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Live API Username</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1637' target='_blank'>How to get it?</a>]]></comment>
@@ -263,12 +232,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='livePassword'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='14'
 					translate='label'
 					type='obscure'
-					sortOrder='14'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Live API Password</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1637' target='_blank'>How to get it?</a>]]></comment>
@@ -281,12 +248,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='liveSecretWord'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='15'
 					translate='label'
 					type='obscure'
-					sortOrder='15'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Live Secret Word</label>
 					<comment><![CDATA[It is used for Notifications. <a href='https://mage2.pro/t/1646' target='_blank'>How to get it?</a>]]></comment>
@@ -299,12 +264,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='title'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='16'
 					translate='label'
 					type='text'
-					sortOrder='16'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Title</label>
 					<comment><![CDATA[It is shown on the checkout screen.]]></comment>
@@ -313,12 +276,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field 
 					id='webhook' 
-					translate='label' 
-					type='Df\Framework\Form\Element\Webhook'
+					showInDefault='1' showInStore='1' showInWebsite='1'
 					sortOrder='16'
-					showInDefault='1' 
-					showInWebsite='1'
-					showInStore='1'
+					translate='label'
+					type='Df\Framework\Form\Element\Webhook'
 				>
 					<label>Notifications URL</label>
 					<comment><![CDATA[<a href='https://mage2.pro/t/1632' target='_blank'>Set it in your 2Checkout account.</a>]]></comment>
@@ -326,24 +287,20 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='currency'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='17'
 					translate='label'
 					type='Df\Directory\FormElement\Currency'
-					sortOrder='17'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Payment Currency</label>
 					<depends><field id='enable'>1</field></depends>
 				</field>
 				<field
 					id='passOrderItems'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='18'
 					translate='label'
 					type='Df\Framework\Form\Element\Checkbox'
-					sortOrder='18'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Pass Order Items to the Payment Gateway?</label>
 					<backend_model>Df\Config\Backend\Checkbox</backend_model>
@@ -355,12 +312,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='min_order_total'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='19'
 					translate='label'
 					type='text'
-					sortOrder='19'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Minimum Order Total</label>
 					<comment><![CDATA[]]></comment>
@@ -369,12 +324,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='max_order_total'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='20'
 					translate='label'
 					type='text'
-					sortOrder='20'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Maximum Order Total</label>
 					<comment><![CDATA[]]></comment>
@@ -383,12 +336,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='country_restriction'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='21'
 					translate='label'
 					type='select'
-					sortOrder='21'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Country Restriction</label>
 					<source_model>Df\Config\Source\NoWhiteBlack</source_model>
@@ -396,12 +347,10 @@ https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.
 				</field>
 				<field
 					id='countries'
+					showInDefault='1' showInStore='1' showInWebsite='1'
+					sortOrder='22'
 					translate='label'
 					type='Df\Framework\Form\Element\Multiselect'
-					sortOrder='22'
-					showInDefault='1'
-					showInWebsite='1'
-					showInStore='1'
 				>
 					<label>Countries</label>
 					<source_model>Magento\Directory\Model\Config\Source\Country</source_model>
