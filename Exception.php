@@ -24,11 +24,7 @@ final class Exception extends \Df\Payment\Exception {
 	 * @used-by \Dfe\TwoCheckout\Method::api()
 	 * @return string
 	 */
-	function message() {return df_cc_n(
-		'The 2Checkout request is failed.'
-		,'Response:', df_json_encode($this->_res->a())
-		,!$this->_req ? null : ['Request:', df_json_encode($this->_req)]
-	);}
+	function message() {return df_api_rr_failed('2Checkout', $this->_res->a(), $this->_req);}
 
 	/**
 	 * 2016-08-21
