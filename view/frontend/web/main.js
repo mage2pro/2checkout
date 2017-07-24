@@ -1,3 +1,4 @@
+// 2016-05-18
 define([
 	'df', 'Df_StripeClone/main', 'https://www.2checkout.com/checkout/api/2co.min.js'
 ], function(df, parent) {'use strict'; return parent.extend({
