@@ -74,12 +74,32 @@ define([
 	},
 	/**
 	 * @override
-	 * @see https://github.com/magento/magento2/blob/2.1.0/app/code/Magento/Checkout/view/frontend/web/js/view/payment/default.js#L127-L159
-	 * @used-by https://github.com/magento/magento2/blob/2.1.0/lib/web/knockoutjs/knockout.js#L3863
+	 * @see Df_StripeClone/main::placeOrder()
+	 * @used-by Df_Payment/main.html:
+	 *		<button
+	 *			class="action primary checkout"
+	 *			type="submit"
+	 *			data-bind="
+	 *				click: placeOrder
+	 *				,css: {disabled: !isPlaceOrderActionAllowed()}
+	 *				,enable: dfIsChosen()
+	 *			"
+	 *			disabled
+	 *		>
+	 *			<span data-bind="df_i18n: 'Place Order'"></span>
+	 *		</button>
+	 * https://github.com/mage2pro/core/blob/2.9.10/Payment/view/frontend/web/template/main.html#L57-L68
+	 * https://github.com/magento/magento2/blob/2.1.0/lib/web/knockoutjs/knockout.js#L3863
 	 * @param {this} _this
-	*/
-	placeOrder: function(_this) {
+	 * @param {Event} event
+	 */
+	placeOrder: function(_this, event) {
+		if (event) {
+			event.preventDefault();
+		}
 		if (this.validate()) {
+			// 2017-07-26 «Sometimes getting duplicate orders in checkout»: https://mage2.pro/t/4217
+			this.isPlaceOrderActionAllowed(false);
 			/**
 			 * 2016-05-18
 			 * https://www.2checkout.com/documentation/payment-api/create-token
@@ -96,9 +116,8 @@ define([
 					// https://www.2checkout.com/documentation/payment-api/create-token
 					// This error code indicates that the ajax call failed.
 					// We recommend that you retry the token request.
-					_this.showErrorMessage(
-						200 === data.errorCode ? 'Please, try again.' : data.errorMsg
-					);
+					_this.showErrorMessage(200 === data.errorCode ? 'Please, try again.' : data.errorMsg);
+					_this.isPlaceOrderActionAllowed(true);
 				},
 				{
 					cvv: this.creditCardVerificationNumber()
