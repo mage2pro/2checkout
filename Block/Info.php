@@ -21,7 +21,7 @@ class Info extends \Df\Payment\Block\Info {
 	 * 2016-07-13
 	 * @override
 	 * @see \Df\Payment\Block\Info::testModeLabel()
-	 * @used-by \Df\Payment\Block\Info::_prepareSpecificInformation()
+	 * @used-by \Df\Payment\Block\Info::_toHtml()
 	 * @return string
 	 */
 	final protected function testModeLabel() {return 'Sandbox';}
