@@ -91,8 +91,8 @@
 требуя, чтобы этих звёздочек было 36 штук.
 2016-11-24
 Аналогичные проявления для модулей Df_Amazon и Dfe_AmazonLogin:
-https://code.dmitry-fedyuk.com/m2e/amazon/blob/1.0.9/etc/adminhtml/system.xml#L122
-https://code.dmitry-fedyuk.com/m2e/amazon-login/blob/1.0.7/etc/adminhtml/system.xml#L69
+https://github.com/mage2pro/amazon/blob/1.0.9/etc/adminhtml/system.xml#L122
+https://github.com/mage2pro/amazon-login/blob/1.0.7/etc/adminhtml/system.xml#L69
 -->
 					<depends>
 						<field id='enable'>1</field>
