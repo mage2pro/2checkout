@@ -219,6 +219,9 @@ final class Method extends \Df\Payment\Method {
 
 	/**
 	 * 2016-08-14
+	 * 2016-08-21
+	 * @see \Twocheckout_Api_Requester::doCall()
+	 * https://github.com/2Checkout/2checkout-php/blob/0.3.1/lib/Twocheckout/Api/TwocheckoutApi.php#L25-L31
 	 * @override
 	 * @see \Df\Payment\Method::charge()
 	 * @used-by \Df\Payment\Method::authorize()
@@ -226,28 +229,13 @@ final class Method extends \Df\Payment\Method {
 	 * @param bool $capture [optional]
 	 */
 	protected function charge($capture = true) {$this->api(function() {
-		/**
-		 * 2016-08-21
-		 * @see \Twocheckout_Api_Requester::doCall()
-		 * https://github.com/2Checkout/2checkout-php/blob/0.3.1/lib/Twocheckout/Api/TwocheckoutApi.php#L25-L31
-		 */
-		/** @var array(string => mixed) $p */
-		$p = ['api' => 'checkout'] + Charge::p($this);
+		$p = ['api' => 'checkout'] + Charge::p($this); /** @var array(string => mixed) $p */
 		df_sentry_extra($this, 'Request Params', $p);
-		/** @var \Twocheckout_Api_Requester $requester */
-		$requester = new \Twocheckout_Api_Requester;
-		/**
-		 * 2016-08-21
-		 * По аналогии с @see \Twocheckout_Charge::auth()
-		 */
-		/** @var string $url */
-		$url = "/checkout/api/1/{$this->s()->accountNumber()}/rs/authService";
-		/** @var array(string => mixed) $r */
-		$r = df_json_decode($requester->doCall($url, $p));
-		/**
-		 * 2016-08-21
-		 * По аналогии с @see \Twocheckout_Util::checkError()
-		 */
+		$requester = new \Twocheckout_Api_Requester; /** @var \Twocheckout_Api_Requester $requester */
+		/** 2016-08-21 By analogy with @see \Twocheckout_Charge::auth() */
+		$url = "/checkout/api/1/{$this->s()->accountNumber()}/rs/authService"; /** @var string $url */
+		$r = df_json_decode($requester->doCall($url, $p)); /** @var array(string => mixed) $r */
+		/** 2016-08-21 By analogy with @see \Twocheckout_Util::checkError() */
 		if (isset($r['errors']) || isset($r['exception'])) {
 			throw new Exception($r, $p);
 		}
@@ -268,8 +256,7 @@ final class Method extends \Df\Payment\Method {
 		 * @see \Twocheckout_Util::checkError()
 		 * https://github.com/2Checkout/2checkout-php/blob/cbac8da68155b6f557db0da0ac16a48a0faa5400/lib/Twocheckout/Api/TwocheckoutUtil.php#L65-L72
 		 */
-		/** @var array(string => mixed)|null $rr */
-		$rr = dfa($r, 'response');
+		$rr = dfa($r, 'response'); /** @var array(string => mixed)|null $rr */
 		// 2016-05-20
 		// https://www.2checkout.com/documentation/payment-api/create-sale
 		// «Code indicating the result of the authorization attempt.»
@@ -310,7 +297,6 @@ final class Method extends \Df\Payment\Method {
 		 * 2016-05-20
 		 * https://www.2checkout.com/documentation/api/sales/detail-sale
 		 * https://github.com/2Checkout/2checkout-php/wiki#example-admin-api-usage
-		 * @var array(string => string|mixed)
 		 *
 		 * 2016-05-21
 		 * Этот запрос в промышленном («live») режиме с включенной опцией «Demo Setting»
@@ -334,12 +320,9 @@ final class Method extends \Df\Payment\Method {
 		 * мы можем узнать посредством API:
 		 * https://www.2checkout.com/documentation/api/account/detail-company-info
 		 */
-		$sr = \Twocheckout_Sale::retrieve(['invoice_id' => $id]);
-		//df_log($sr);
-		/** @var array(string => string|array) $sale */
-		$sale = dfa($sr, 'sale');
-		/** @var array(string => string) $card */
-		$card = dfa_deep($sale, 'customer/pay_method');
+		$sr = \Twocheckout_Sale::retrieve(['invoice_id' => $id]);  /** @var array(string => string|mixed) $sr */
+		$sale = dfa($sr, 'sale'); /** @var array(string => string|array) $sale */
+		$card = dfa_deep($sale, 'customer/pay_method'); /** @var array(string => string) $card */
 		/**
 		 * 2016-03-15
 		 * https://mage2.pro/t/941
