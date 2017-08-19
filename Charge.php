@@ -119,7 +119,7 @@ final class Charge extends \Df\Payment\Charge {
 		 * Required. (Passed as a sub object to the Authorization Object.)»
 		 * https://www.2checkout.com/documentation/payment-api/create-sale
 		 */
-		,'billingAddr' => Address::build($this->addressBS(), $isBilling = true)
+		,'billingAddr' => Address::build($this->addressB(), $isBilling = true)
 		/**
 		 * 2016-05-19
 		 * «Object that defines the shipping address using the attributes specified below.
@@ -127,7 +127,7 @@ final class Charge extends \Df\Payment\Charge {
 		 * (Passed as a sub object to the Authorization Object.) »
 		 * https://www.2checkout.com/documentation/payment-api/create-sale
 		 */
-		,'shippingAddr' => Address::build($this->addressSB())
+		,'shippingAddr' => Address::build($this->addressS())
 		/**
 		 * 2016-05-21
 		 * Пока не знаю, как передавать нестандартные параметры.

@@ -113,90 +113,57 @@ class Address extends \Df\Core\O {
 	}
 
 	/**
-	 * 2016-05-19
-	 * @param A $oa
+	 * 2016-05-19 https://www.2checkout.com/documentation/payment-api/create-sale    
+	 * 2017-04-10
+	 * Если адрес доставки отсутствует, то:
+	 * 1) @uses \Magento\Sales\Model\Order::getShippingAddress() возвращает null
+	 * 1) @uses \Magento\Quote\Model\Quote::getShippingAddress() возвращает пустой объект
+	 * @param A|null $oa
 	 * @param bool $isBilling [optional]
 	 * @return array(mixed => mixed)
 	 */
-	static function build(A $oa, $isBilling = false) {
-		/** @var self $a */
-		$a = new self([self::$P__A => $oa]);
-		/** @var O $o */
-		$o = $oa->getOrder();
+	static function build($oa, $isBilling = false) {
 		/** @var array(string => string) $result */
-		$result = [
-			/**
-			 * 2016-05-19
-			 * «Card holder’s name. (128 characters max) Required»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			'name' => $oa->getName()
-			/**
-			 * 2016-05-19
-			 * «Card holder’s street address. (64 characters max) Required»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			,'addrLine1' => $a->line(1)
-			/**
-			 * 2016-05-19
-			 * «Card holder’s street address line 2. (64 characters max)
-			 * Required if “country” value is: CHN, JPN, RUS -
-			 * Optional for all other “country” values.»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			,'addrLine2' =>  $a->line(2)
-			/**
-			 * 2016-05-19
-			 * «Card holder’s city. (64 characters max) Required»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			,'city' => $a->city()
-			/**
-			 * 2016-05-19
-			 * «Card holder’s state. (64 characters max)
-			 * Required if “country” value is ARG, AUS, BGR, CAN, CHN, CYP, EGY, FRA, IND,
-			 * IDN, ITA, JPN, MYS, MEX, NLD, PAN, PHL, POL, ROU, RUS, SRB, SGP, ZAF, ESP,
-			 * SWE, THA, TUR, GBR, USA - Optional for all other “country” values.»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			,'state' => $a->region()
-			/**
-			 * 2016-05-19
-			 * «Card holder’s zip. (16 characters max)
-			 * Required if “country” value is ARG, AUS, BGR, CAN, CHN, CYP, EGY, FRA, IND,
-			 * IDN, ITA, JPN, MYS, MEX, NLD, PAN, PHL, POL, ROU, RUS, SRB, SGP, ZAF, ESP,
-			 * SWE, THA, TUR, GBR, USA - Optional for all other “country” values.»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			,'zipCode' => $a->postcode()
-			/**
-			 * 2016-05-19
-			 * «Card holder’s country. (64 characters max) Required»
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 */
-			,'country' => $a->countryIso3()
-		];
-		if ($isBilling) {
-			$result += [
-				/**
-				 * 2016-05-19
-				 * «Card holder’s email. (64 characters max) Required»
-				 * https://www.2checkout.com/documentation/payment-api/create-sale
-				 */
+		if (!$oa) {
+			$result = [];
+		}
+		else {
+			$a = new self([self::$P__A => $oa]); /** @var self $a */
+			$o = $oa->getOrder(); /** @var O $o */
+			$result = [
+				// 2016-05-19 «Card holder’s street address. (64 characters max) Required»
+				'addrLine1' => $a->line(1)
+				// 2016-05-19
+				// «Card holder’s street address line 2. (64 characters max)
+				// Required if “country” value is: CHN, JPN, RUS.
+				// Optional for all other “country” values.»
+				,'addrLine2' => $a->line(2)
+				// 2016-05-19 «Card holder’s city. (64 characters max) Required»
+				,'city' => $a->city()
+				// 2016-05-19 «Card holder’s country. (64 characters max) Required»
+				,'country' => $a->countryIso3()				
+				// 2016-05-19 «Card holder’s name. (128 characters max) Required»
+				,'name' => $oa->getName()				
+				// 2016-05-19
+				// «Card holder’s state. (64 characters max)
+				// Required if “country” value is ARG, AUS, BGR, CAN, CHN, CYP, EGY, FRA, IND,
+				// IDN, ITA, JPN, MYS, MEX, NLD, PAN, PHL, POL, ROU, RUS, SRB, SGP, ZAF, ESP,
+				// SWE, THA, TUR, GBR, USA - Optional for all other “country” values.»
+				,'state' => $a->region()
+				// 2016-05-19
+				// «Card holder’s zip. (16 characters max)
+				// Required if “country” value is ARG, AUS, BGR, CAN, CHN, CYP, EGY, FRA, IND,
+				// IDN, ITA, JPN, MYS, MEX, NLD, PAN, PHL, POL, ROU, RUS, SRB, SGP, ZAF, ESP,
+				// SWE, THA, TUR, GBR, USA - Optional for all other “country” values.»
+				,'zipCode' => $a->postcode()
+			] + (!$isBilling ? [] : [
+				// 2016-05-19 «Card holder’s email. (64 characters max) Required»
 				'email' => $o->getCustomerEmail()
-				/**
-				 * 2016-05-19
-				 * «Card holder’s phone. (16 characters max) Optional»
-				 * https://www.2checkout.com/documentation/payment-api/create-sale
-				 */
-				,'phoneNumber' => $oa->getTelephone()
-				/**
-				 * 2016-05-19
-				 * «Card holder’s phone extension. (9 characters max) Optional»
-				 * https://www.2checkout.com/documentation/payment-api/create-sale
-				 */
-				, 'phoneExt' => ''
-			];
+				// 2016-05-19 «Card holder’s phone extension. (9 characters max) Optional»
+				,'phoneExt' => ''					
+				// 2016-05-19 «Card holder’s phone. (16 characters max) Optional»
+				,'phoneNumber' => $oa->getTelephone()				
+			]);
 		}
 		return $result;
 	}
