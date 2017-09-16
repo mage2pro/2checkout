@@ -14,6 +14,7 @@ class Address extends \Df\Core\O {
 	 * @return string|null
 	 */
 	private function city() {return $this->a()->getCity() ?: $this->visitor()->city();}
+
 	/**
 	 * 2016-05-20
 	 * @used-by build()
@@ -38,32 +39,57 @@ class Address extends \Df\Core\O {
 	 * https://mail.google.com/mail/u/0/#inbox/154ca839388e9f7d
 	 *
 	 * 2017-04-08
-	 * Если длина любой из строк адреса превышает 64 символа, то будет сбой: «Authorization Failed».
+	 * 2017-09-16
+	 * Any value longer than 64 characters will lead to the «600 - Authorization Failed» failure:
+	 *	{
+	 *		"exception": {
+	 *			"errorCode": "600",
+	 *			"errorMsg": "Authorization Failed",
+	 *			"exception": false,
+	 *			"httpStatus": "400"
+	 *		},
+	 *		"response": null,
+	 *		"validationErrors": null
+	 *	}
 	 *
 	 * @param int|null $i [optional]
 	 * @return string[]
 	 */
-	private function line($i = null) {
-		if (!isset($this->{__METHOD__})) {
-			/** @var string $s */
-			/** @var string $s1 */
-			/** @var string $s2 */
-			$s = mb_substr(df_trim(df_cc_s($this->a()->getStreet())), 0, 128);
-			/** @var int $len */
-			$len = mb_strlen($s);
-			if ($len <= 64) {
-				list($s1, $s2) = [$s, ''];
-			}
-			else {
-				/** @var int $end1 */
-				$end1 = mb_strrpos(mb_substr($s, 0, 64), ' ');
-				$s1 = mb_substr($s, 0, $end1);
-				$s2 = mb_substr(trim(mb_substr($s, mb_strlen($s1))), 0, 64);
-			}
-			$this->{__METHOD__} = [$s1, $s2];
+	private function line($i = null) {/** @var string[] $r */$r = dfc($this, function() {
+		/** @var string $s */
+		/** @var string $s1 */
+		/** @var string $s2 */
+		$s = mb_substr(df_trim(df_cc_s($this->a()->getStreet())), 0, 128);
+		/** @var int $len */
+		$len = mb_strlen($s);
+		if ($len <= 64) {
+			/**
+			 * 2017-09-16
+			 * An empty value of `addrLine2` for CHN, JPN, RUS will lead to the «600 - Authorization Failed» failure.
+			 * E.g., the following address will fail:
+			 *	"billingAddr": {
+			 *		"addrLine1": "проспект Ленина, 59",
+			 *		"addrLine2": "",
+			 *		"city": "Абакан",
+			 *		"country": "RUS",
+			 *		"email": "dfediuk@gmail.com",
+			 *		"name": "Dmitry Fedyuk",
+			 *		"phoneExt": "",
+			 *		"phoneNumber": "+79629197300",
+			 *		"state": "Хакасия",
+			 *		"zipCode": "655017"
+			 *	}
+			 */
+			list($s1, $s2) = [$s, !in_array($this->countryIso3(), ['CHN', 'JPN', 'RUS']) ? '' : '---'];
 		}
-		return is_null($i) ? $this->{__METHOD__} :  $this->{__METHOD__}[$i - 1];
-	}
+		else {
+			/** @var int $end1 */
+			$end1 = mb_strrpos(mb_substr($s, 0, 64), ' ');
+			$s1 = mb_substr($s, 0, $end1);
+			$s2 = mb_substr(trim(mb_substr($s, mb_strlen($s1))), 0, 64);
+		}
+		return [$s1, $s2];
+	}); return is_null($i) ? $r : $r[$i - 1];}
 
 	/**
 	 * 2016-05-20
@@ -71,9 +97,9 @@ class Address extends \Df\Core\O {
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * @return string|null
 	 */
-	private function postcode() {return
-		$this->a()->getPostcode() ?: ($this->req() ? $this->visitor()->postCode() : null);
-	}
+	private function postcode() {return $this->a()->getPostcode() ?: (
+		$this->req() ? $this->visitor()->postCode() : null
+	);}
 
 	/**
 	 * 2016-05-20
@@ -84,17 +110,15 @@ class Address extends \Df\Core\O {
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * @return string|null
 	 */
-	private function region() {return
-		$this->a()->getRegion() ?: ($this->req() ? $this->visitor()->regionName() : null)
-	;}
+	private function region() {return $this->a()->getRegion() ?: (
+		$this->req() ? $this->visitor()->regionName() : null
+	);}
 
 	/**
 	 * 2016-05-20
 	 * @return bool
 	 */
-	private function req() {return dfc($this, function() {return 
-		in_array($this->countryIso3(), self::$req)
-	;});}
+	private function req() {return dfc($this, function() {return in_array($this->countryIso3(), self::$req);});}
 
 	/**
 	 * 2016-05-20
