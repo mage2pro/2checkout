@@ -101,7 +101,7 @@ return parent.extend({
 		}
 		if (this.validate()) {
 			// 2017-07-26 «Sometimes getting duplicate orders in checkout»: https://mage2.pro/t/4217
-			this.isPlaceOrderActionAllowed(false);
+			this.state_waitingForServerResponse(true);
 			/**
 			 * 2016-05-18
 			 * https://www.2checkout.com/documentation/payment-api/create-token
@@ -119,7 +119,7 @@ return parent.extend({
 					// This error code indicates that the ajax call failed.
 					// We recommend that you retry the token request.
 					_this.showErrorMessage(200 === data.errorCode ? 'Please, try again.' : data.errorMsg);
-					_this.isPlaceOrderActionAllowed(true);
+					_this.state_waitingForServerResponse(false);
 				},
 				{
 					cvv: this.creditCardVerificationNumber()
