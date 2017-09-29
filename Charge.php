@@ -61,7 +61,7 @@ final class Charge extends \Df\Payment\Charge {
 			* dfa($item, 'quantity', 1)
 			* ('coupon' === $item['type'] ? -1 : 1)
 		;}, $result));
-		return array_merge($result, dff_is0($rest) ? [] : [LI::buildLI(
+		return array_merge($result, dff_eq0($rest) ? [] : [LI::buildLI(
 			$rest > 0 ? 'tax' : 'coupon', $this->amountFormat($rest), 'Correction', false, 'correction'
 		)]);
 	}

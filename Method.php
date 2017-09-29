@@ -131,7 +131,7 @@ final class Method extends \Df\Payment\Method {
 			// 2017-04-10
 			// Избегаем сбоя из-за погрешности округления:
 			// «Amount greater than remaining balance on invoice.»
-			] + (dff_is0($cm->getBaseGrandTotal() - $cm->getInvoice()->getBaseGrandTotal()) ? [] : [
+			] + (dff_eq0($cm->getBaseGrandTotal() - $cm->getInvoice()->getBaseGrandTotal()) ? [] : [
 				/**
 				 * 2016-05-21
 				 * «Currency type of refund amount.
