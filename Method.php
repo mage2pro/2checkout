@@ -29,7 +29,7 @@ final class Method extends \Df\Payment\Method {
 	 * @param float|int $a
 	 * @return string
 	 */
-	function amountFormat($a) {return df_f2(df_assert_le(99999999.99, abs($a)));}
+	function amountFormat($a) {return dff_2(df_assert_le(99999999.99, abs($a)));}
 
 	/**
 	 * 2016-03-07
@@ -131,7 +131,7 @@ final class Method extends \Df\Payment\Method {
 			// 2017-04-10
 			// Избегаем сбоя из-за погрешности округления:
 			// «Amount greater than remaining balance on invoice.»
-			] + (df_is0($cm->getBaseGrandTotal() - $cm->getInvoice()->getBaseGrandTotal()) ? [] : [
+			] + (dff_is0($cm->getBaseGrandTotal() - $cm->getInvoice()->getBaseGrandTotal()) ? [] : [
 				/**
 				 * 2016-05-21
 				 * «Currency type of refund amount.
