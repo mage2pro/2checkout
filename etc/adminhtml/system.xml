@@ -290,7 +290,7 @@ https://github.com/mage2pro/amazon-login/blob/1.0.7/etc/adminhtml/system.xml#L69
 					showInDefault='1' showInStore='1' showInWebsite='1'
 					sortOrder='17'
 					translate='label'
-					type='Df\Directory\FormElement\Currency'
+					type='Df\Directory\FE\Currency'
 				>
 					<label>Payment Currency</label>
 					<depends><field id='enable'>1</field></depends>
