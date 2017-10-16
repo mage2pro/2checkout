@@ -1,7 +1,7 @@
 // 2016-05-18
 define([
-	'df', 'Df_StripeClone/main', 'https://www.2checkout.com/checkout/api/2co.min.js'
-], function(df, parent) {'use strict';
+	'df', 'Df_StripeClone/main', 'jquery', 'https://www.2checkout.com/checkout/api/2co.min.js'
+], function(df, parent, $) {'use strict';
 /** 2017-09-06 @uses Class::extend() https://github.com/magento/magento2/blob/2.2.0-rc2.3/app/code/Magento/Ui/view/base/web/js/lib/core/class.js#L106-L140 */	
 return parent.extend({
 	/**
@@ -107,21 +107,21 @@ return parent.extend({
 			 * https://www.2checkout.com/documentation/payment-api/create-token
 			 */
 			TCO.requestToken(
-				function(data){
+				$.proxy(function(data){
 					// 2016-05-18
 					// https://www.2checkout.com/documentation/payment-api/create-token
-					_this.token = data.response.token.token;
-					_this.placeOrderInternal();
-				},
-				function(data){
+					this.token = data.response.token.token;
+					this.placeOrderInternal();
+				}, this)
+				,$.proxy(function(data){
 					// 2016-05-18
 					// https://www.2checkout.com/documentation/payment-api/create-token
 					// This error code indicates that the ajax call failed.
 					// We recommend that you retry the token request.
-					_this.showErrorMessage(200 === data.errorCode ? 'Please, try again.' : data.errorMsg);
-					_this.state_waitingForServerResponse(false);
-				},
-				{
+					this.showErrorMessage(200 === data.errorCode ? 'Please, try again.' : data.errorMsg);
+					this.state_waitingForServerResponse(false);
+				}, this)
+				,{
 					cvv: this.creditCardVerificationNumber()
 					,expMonth: this.creditCardExpMonth()
 					,expYear: this.creditCardExpYear()
