@@ -8,19 +8,6 @@
 			<two_checkout>
 				<currency>order</currency>
 				<passOrderItems>1</passOrderItems>
-<!--
-	2016-05-20
-	«Once you have passed the token to your server,
-	you can use it along with your private key to charge the credit card
-	and create a new sale using the authorization API call.
-	The authorization will capture and deposit automatically within 48 hours of being placed.»
-	https://www.2checkout.com/documentation/payment-api/create-sale
-	Я так понял, у них нет двух отдельных режимов authorize и capture.
-	Вместо этого у них всегда используется authorize, который через 48 часов
-	автоматически превращается в capture.
-	Поэтому в Magento я всегда буду помечать транзакцию как capture.
--->
-				<payment_action>authorize_capture</payment_action>
 				<title>Bank Card</title>
 				<!-- 2016-03-15 -->
 				<title_backend>2Checkout</title_backend>
