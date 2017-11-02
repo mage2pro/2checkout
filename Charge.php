@@ -50,17 +50,15 @@ final class Charge extends \Df\Payment\Charge {
 	 * @return array(array(string => string))
 	 */
 	private function lineItems() {
-		/** @var array(array(string => string)) $result */
 		$result = df_clean(array_merge(
 			$this->oiLeafs(function(OI $i) {return LIP::buildP($this, $i);})
 			,[$this->liShipping(), $this->liDiscount(), $this->liTax()]
-		));
-		/** @var float $rest */
+		)); /** @var array(array(string => string)) $result */
 		$rest = $this->amount() - array_sum(array_map(function(array $item) {return
 			floatval($item['price'])
 			* dfa($item, 'quantity', 1)
 			* ('coupon' === $item['type'] ? -1 : 1)
-		;}, $result));
+		;}, $result)); /** @var float $rest */
 		return array_merge($result, dff_eq0($rest) ? [] : [LI::buildLI(
 			$rest > 0 ? 'tax' : 'coupon', $this->amountFormat($rest), 'Correction', false, 'correction'
 		)]);
