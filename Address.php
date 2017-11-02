@@ -139,9 +139,9 @@ class Address extends \Df\Core\O {
 	/**
 	 * 2016-05-19 https://www.2checkout.com/documentation/payment-api/create-sale    
 	 * 2017-04-10
-	 * Если адрес доставки отсутствует, то:
-	 * 1) @uses \Magento\Sales\Model\Order::getShippingAddress() возвращает null
-	 * 1) @uses \Magento\Quote\Model\Quote::getShippingAddress() возвращает пустой объект
+	 * An order/quote can be without a shipping address (consist of the Virtual products). In this case:
+	 * *) @uses \Magento\Sales\Model\Order::getShippingAddress() returns null
+	 * *) @uses \Magento\Quote\Model\Quote::getShippingAddress() returns an empty object.
 	 * @param A|null $oa
 	 * @param bool $isBilling [optional]
 	 * @return array(mixed => mixed)
