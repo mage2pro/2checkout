@@ -115,15 +115,13 @@ class LineItem extends \Df\Core\O {
 	 * @param string|null $id [optional]
 	 * @return array(string => string)
 	 */
-	static function buildLI($type, $price, $name = null, $tangible = false, $id = null) {
-		return (new self([
-			self::$P__TYPE => $type
-			, self::$P__PRICE => $price
-			, self::$P__NAME => $name
-			, self::$P__TANGIBLE => $tangible
-			, self::$P__ID => $id ?: $type
-		]))->build();
-	}
+	static function buildLI($type, $price, $name = null, $tangible = false, $id = null) {return (new self([
+		self::$P__TYPE => $type
+		, self::$P__PRICE => $price
+		, self::$P__NAME => $name
+		, self::$P__TANGIBLE => $tangible
+		, self::$P__ID => $id ?: $type
+	]))->build();}
 
 	/**
 	 * 2016-05-29
