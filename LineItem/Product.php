@@ -178,9 +178,9 @@ final class Product extends LineItem {
 	 * @param OI $oi
 	 * @return array(string => string)
 	 */
-	static function buildP(Charge $c, OI $oi) {return
-		(new self([self::$P__C => $c, self::$P__OI => $oi]))->build();
-	}
+	static function buildP(Charge $c, OI $oi) {return (new self([
+		self::$P__C => $c, self::$P__OI => $oi
+	]))->build();}
 
 	/** @var string */
 	private static $P__C = 'c';

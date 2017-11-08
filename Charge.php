@@ -162,10 +162,7 @@ final class Charge extends \Df\Payment\Charge {
 
 	/**
 	 * 2016-05-19
-	 * 2017-11-08 
-	 * Such one-liner is compatible with PHP >= 5.4: https://3v4l.org/LJlDE
-	 * As a guess, such one-liners are compatible with PHP >= 5.4
-	 * if they do not contain an assignment (`=`), and are not compatible with an assignment.
+	 * 2017-11-08 Such one-liner is compatible with PHP >= 5.4: https://3v4l.org/LJlDE
 	 * @used-by \Dfe\TwoCheckout\Method::charge()
 	 * @param M $m
 	 * @return array(string => mixed)
