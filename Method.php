@@ -7,15 +7,9 @@ use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Creditmemo as CM;
 use Magento\Sales\Model\Order\Payment as OP;
 use Magento\Sales\Model\Order\Payment\Transaction;
-/**
- * 2016-05-17
- * 2017-11-09
- * «Class Dfe\TwoCheckout\Method\Interceptor may not inherit from final class (Dfe\TwoCheckout\Method)»
- * https://mage2.pro/t/4892
- * @final Unable to use the PHP «final» keyword here because of the M2 code generation.
- * @method Settings s()
- */
-class Method extends \Df\Payment\Method {
+// 2016-05-17
+/** @method Settings s() */
+final class Method extends \Df\Payment\Method {
 	/**
 	 * 2016-09-07
 	 * 2016-05-23
