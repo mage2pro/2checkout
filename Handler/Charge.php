@@ -40,8 +40,7 @@ abstract class Charge extends Handler {
 	 * 2016-05-22
 	 * @return OP|DfPayment|null
 	 */
-	protected function op() {return dfc($this, function() {return
-		/** @var int|null $pid */
+	protected function op() {return dfc($this, function() {return /** @var int|null $pid */
 		($pid = $this->pid()) ? dfp_webhook_case(dfp(df_transx($pid, false))) : null
 	;});}
 }
