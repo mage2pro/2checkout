@@ -1,6 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout\Controller\Index;
-use Df\Framework\Controller\Response\Json;
+use Df\Framework\W\Response\Json;
 use Dfe\TwoCheckout\Handler;
 /**
  * 2016-03-18
