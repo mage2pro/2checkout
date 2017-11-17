@@ -77,12 +77,9 @@ abstract class Handler extends \Df\Core\O {
 			df_response_code(500);
 			df_sentry(__CLASS__, $e, ['extra' => ['request' => $request]]);
 			if (df_my_local()) {
-				// 2016-03-27 Удобно видеть стек на экране.
-				throw $e;
+				throw $e; // 2016-03-27 Удобно видеть стек на экране.
 			}
-			else {
-				$result = __($e->getMessage());
-			}
+			$result = __($e->getMessage());
 		}
 		return $result;
 	}
