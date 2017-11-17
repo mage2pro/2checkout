@@ -39,8 +39,7 @@ abstract class Handler extends \Df\Core\O {
 	static function p(array $request) {
 		/** @var mixed $result */
 		try {
-			/** @var S $s */
-			$s = dfps(__CLASS__);
+			$s = dfps(__CLASS__); /** @var S $s */
 			$s->init();
 			// 2016-05-22
 			// https://github.com/2Checkout/2checkout-php/wiki/Notification_Check#example-usage
@@ -71,16 +70,14 @@ abstract class Handler extends \Df\Core\O {
 			 * @var string $suffix
 			 */
 			$suffix = df_cc_class('Handler', df_underscore_to_camel($type));
-			/** @var Handler $i */
-			$i = df_new(df_con(__CLASS__, $suffix, DefaultT::class), $request);
+			$i = df_new(df_con(__CLASS__, $suffix, DefaultT::class), $request); /** @var Handler $i */
 			$result = $i->eligible() ? $i->process() : 'The event is not for our store.';
 		}
 		catch (E $e) {
-			df_response()->setStatusCode(500);
+			df_response_code(500);
 			df_sentry(__CLASS__, $e, ['extra' => ['request' => $request]]);
 			if (df_my_local()) {
-				// 2016-03-27
-				// Удобно видеть стек на экране.
+				// 2016-03-27 Удобно видеть стек на экране.
 				throw $e;
 			}
 			else {
