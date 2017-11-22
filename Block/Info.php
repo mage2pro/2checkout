@@ -7,7 +7,7 @@ class Info extends \Df\Payment\Block\Info {
 	 * 2016-05-21
 	 * @override
 	 * @see \Df\Payment\Block\Info::prepare()
-	 * @used-by \Df\Payment\Block\Info::_prepareSpecificInformation()
+	 * @used-by \Df\Payment\Block\Info::prepareToRendering()
 	 */
 	final protected function prepare() {
 		$this->siEx('Sale', df_tag_ab($this->iia('sale_id'),
