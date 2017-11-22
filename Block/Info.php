@@ -45,8 +45,9 @@ class Info extends \Df\Payment\Block\Info {
 	 * Идентификатор документа-sale в 2Checkout.
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * Обратите внимание, что он отличается от идентификатора документа-invoice в 2Checkout.
+	 * @used-by prepare()
+	 * @used-by \Dfe\TwoCheckout\Method::_refund()
 	 * @used-by \Dfe\TwoCheckout\Method::charge()
-	 * @used-by \Dfe\TwoCheckout\Block\Info::_prepareSpecificInformation()
 	 */
 	const SALE_ID = 'sale_id';
 }
