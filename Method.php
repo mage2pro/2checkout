@@ -57,56 +57,29 @@ final class Method extends \Df\Payment\Method {
 
 	/**
 	 * 2016-05-21
+	 * 2017-12-06
+	 * I have used @see \Df\StripeClone\Method::_refund() as a basic reference refund implementation:
+	 * https://github.com/mage2pro/core/blob/3.4.1/StripeClone/Method.php#L372-L442
 	 * @override
 	 * @see \Df\Payment\Method::_refund()
 	 * @param float $a
 	 */
 	protected function _refund($a) {$this->api(function() use($a) {
 		/**
-		 * 2016-03-17, 2017-11-11
+		 * 2016-03-17, 2017-11-11, 2017-12-06
 		 * Despite of its name, @uses \Magento\Sales\Model\Order\Payment::getAuthorizationTransaction()
 		 * simply returns the previous transaction,
 		 * and it can be not only an `authorization` transaction,
-		 * but a transaction of another type (e.g. `payment`) too.
-		 *		public function getAuthorizationTransaction() {
-		 *			return $this->transactionManager->getAuthorizationTransaction(
-		 *				$this->getParentTransactionId(),
-		 *				$this->getId(),
-		 *				$this->getOrder()->getId()
-		 *			);
-		 *		}
-		 * The code is the same in Magento 2.0.0 - 2.2.1:
-		 * https://github.com/magento/magento2/blob/2.0.0/app/code/Magento/Sales/Model/Order/Payment.php#L1242-#L1253
-		 * https://github.com/magento/magento2/blob/2.2.1/app/code/Magento/Sales/Model/Order/Payment.php#L1316-L1327
-		 * @see \Magento\Sales\Model\Order\Payment\Transaction\Manager::getAuthorizationTransaction()
-		 *	public function getAuthorizationTransaction($parentTransactionId, $paymentId, $orderId) {
-		 *		$transaction = false;
-		 *		if ($parentTransactionId) {
-		 *			$transaction = $this->transactionRepository->getByTransactionId(
-		 *				$parentTransactionId,
-		 *				$paymentId,
-		 *				$orderId
-		 *			);
-		 *		}
-		 *		return $transaction ?: $this->transactionRepository->getByTransactionType(
-		 *			Transaction::TYPE_AUTH,
-		 *			$paymentId,
-		 *			$orderId
-		 *		);
-		 *	}
-		 * The code is the same in Magento 2.0.0 - 2.2.1:
-		 * https://github.com/magento/magento2/blob/2.0.0/app/code/Magento/Sales/Model/Order/Payment/Transaction/Manager.php#L31-L47
-		 * https://github.com/magento/magento2/blob/2.2.1/app/code/Magento/Sales/Model/Order/Payment/Transaction/Manager.php#L31-L47
+		 * but a transaction of another type (e.g. `payment`) too:
+		 * https://github.com/mage2pro/core/blob/3.4.1/StripeClone/Method.php#L381-L418
 		 * It is exactly what we need,
 		 * because the module can be set up to capture payments without a preliminary authorization.
 		 */
-		/** @var Transaction $tCapture */
-		if ($tCapture = $this->ii()->getAuthorizationTransaction()) {
-			/** @var CM|null $cm */
+		if ($tCapture = $this->ii()->getAuthorizationTransaction()) { /** @var Transaction $tCapture */
 			// 2016-03-24
 			// Credit Memo и Invoice отсутствуют в сценарии Authorize / Capture
 			// и присутствуют в сценарии Capture / Refund.
-			$cm = df_assert($this->ii()->getCreditmemo());
+			$cm = df_assert($this->ii()->getCreditmemo()); /** @var CM|null $cm */
 			/**
 			 * 2016-05-21
 			 * https://www.2checkout.com/documentation/api/sales/refund-invoice
