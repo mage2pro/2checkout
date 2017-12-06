@@ -6,7 +6,7 @@ use Magento\Framework\Exception\LocalizedException as LE;
 use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Creditmemo as CM;
 use Magento\Sales\Model\Order\Payment as OP;
-use Magento\Sales\Model\Order\Payment\Transaction;
+use Magento\Sales\Model\Order\Payment\Transaction as T;
 // 2016-05-17
 /** @method Settings s() */
 final class Method extends \Df\Payment\Method {
@@ -75,7 +75,7 @@ final class Method extends \Df\Payment\Method {
 		 * It is exactly what we need,
 		 * because the module can be set up to capture payments without a preliminary authorization.
 		 */
-		if ($tCapture = $this->ii()->getAuthorizationTransaction()) { /** @var Transaction $tCapture */
+		if ($tCapture = $this->ii()->getAuthorizationTransaction()) { /** @var T $tCapture */
 			// 2016-03-24
 			// Credit Memo и Invoice отсутствуют в сценарии Authorize / Capture
 			// и присутствуют в сценарии Capture / Refund.
