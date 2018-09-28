@@ -58,6 +58,9 @@ return parent.extend({
 	 * 2017-02-05
 	 * The bank card network codes: https://mage2.pro/t/2647
 	 *
+	 * @override
+	 * @see Df_Payment/main::getCardTypes()
+	 * @used-by https://github.com/mage2pro/core/blob/3.9.12/Payment/view/frontend/web/template/card/fields.html#L4
 	 * @returns {String[]}
 	 */
 	getCardTypes: function() {return ['VI', 'MC', 'AE', 'JCB', 'DI', 'DN'];},
