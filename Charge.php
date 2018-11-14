@@ -1,12 +1,9 @@
 <?php
 namespace Dfe\TwoCheckout;
-use Df\Payment\Token;
 use Dfe\TwoCheckout\LineItem as LI;
 use Dfe\TwoCheckout\LineItem\Product as LIP;
 use Dfe\TwoCheckout\Method as M;
-use Magento\Sales\Model\Order\Address as OrderAddress;
 use Magento\Sales\Model\Order\Item as OI;
-use Magento\Sales\Model\Order\Payment as OrderPayment;
 /**
  * 2016-05-20
  * https://www.2checkout.com/documentation/payment-api/create-sale
@@ -92,7 +89,7 @@ final class Charge extends \Df\Payment\Charge {
 		// 2016-05-19
 		// «The credit card token. Required.»
 		// https://www.2checkout.com/documentation/payment-api/create-sale
-		,'token' => Token::get($this->ii())
+		,'token' => $this->token()
 		/**
 		 * 2016-05-19
 		 * «Use to specify the currency for the sale. Required.»
