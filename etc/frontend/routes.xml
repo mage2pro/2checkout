@@ -4,7 +4,7 @@
 	xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd"
 >
 	<router id='standard'>
-		<route id='Dfe_TwoCheckout' frontName='dfe-2checkout'>
+		<route frontName='dfe-2checkout' id='Dfe_TwoCheckout'>
 			<module name='Dfe_TwoCheckout'/>
 		</route>
 	</router>
