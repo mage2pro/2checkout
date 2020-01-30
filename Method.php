@@ -224,8 +224,7 @@ final class Method extends \Df\Payment\Method {
 			 */
 			df_on_save($cm, function() use($cm) {
 				\Twocheckout_Sale::comment([
-					'sale_id' => $this->iia(InfoBlock::SALE_ID)
-					,'sale_comment' => df_cm_backend_url($cm)
+					'sale_comment' => df_cm_backend_url($cm), 'sale_id' => $this->iia(InfoBlock::SALE_ID)
 				]);
 			});
 		}
@@ -384,14 +383,10 @@ final class Method extends \Df\Payment\Method {
 		 * https://mage2.pro/t/941
 		 * https://stripe.com/docs/api#card_object-last4
 		 * «How is the \Magento\Sales\Model\Order\Payment's setCcLast4() / getCcLast4() used?»
-		 *
-		 * 2016-05-20
-		 * Мы не можем получить 4 последние цифры карты,
-		 * вместо этого получаем 4 первых и 2 последних.
+		 * 2016-05-20 Мы не можем получить 4 последние цифры карты: вместо этого получаем 4 первых и 2 последних.
 		 */
-		$this->iiaAdd(dfa_select_ordered($card, [
-			InfoBlock::CARD_F6, InfoBlock::CARD_L2
-		]) + [
+		$this->iiaAdd(
+			dfa($card, [InfoBlock::CARD_F6, InfoBlock::CARD_L2])
 			/**
 			 * 2016-05-21
 			 * Идентификатор документа-sale в 2Checkout.
@@ -400,8 +395,8 @@ final class Method extends \Df\Payment\Method {
 			 * от идентификатора документа-invoice в 2Checkout.
 			 * Его также можно получить посредством dfa($sale, 'sale_id')
 			 */
-			InfoBlock::SALE_ID => $saleId
-		]);
+			+ [InfoBlock::SALE_ID => $saleId]
+		);
 		$this->iiaUnset(Token::KEY);
 		/**
 		 * 2016-03-15

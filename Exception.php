@@ -11,9 +11,9 @@ final class Exception extends \Df\Payment\Exception {
 	 * @param array(string => mixed) $response
 	 * @param array(string => mixed) $request [optional]
 	 */
-	function __construct(array $response, array $request = []) {
-		$this->_req = $request;
-		$this->_res = dfao($response);
+	function __construct(array $res, array $req = []) {
+		$this->_req = $req;
+		$this->_res = new A($res);
 		parent::__construct();
 	}
 
