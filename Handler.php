@@ -74,7 +74,7 @@ abstract class Handler extends \Df\Core\O {
 			$result = $i->eligible() ? $i->process() : 'The event is not for our store.';
 		}
 		catch (E $e) {
-			df_response_code(500);
+			df_500();
 			df_sentry(__CLASS__, $e, ['extra' => ['request' => $request]]);
 			if (df_my_local()) {
 				throw $e; // 2016-03-27 Удобно видеть стек на экране.
