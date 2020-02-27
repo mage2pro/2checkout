@@ -3,7 +3,7 @@ namespace Dfe\TwoCheckout;
 use Df\Core\Visitor;
 use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Address as A;
-class Address extends \Df\Core\O {
+class Address extends \Df\Core\OLegacy {
 	/**
 	 * @used-by city()
 	 * @used-by countryIso3()
@@ -137,7 +137,7 @@ class Address extends \Df\Core\O {
 	/**
 	 * 2016-05-20
 	 * @override
-	 * @see \Df\Core\O::_construct()
+	 * @see \Df\Core\OLegacy::_construct()
 	 */
 	protected function _construct() {
 		parent::_construct();

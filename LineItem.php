@@ -4,7 +4,7 @@ namespace Dfe\TwoCheckout;
  * 2016-05-29
  * @see \Dfe\TwoCheckout\LineItem\Product
  */
-class LineItem extends \Df\Core\O {
+class LineItem extends \Df\Core\OLegacy {
 	/**
 	 * 2016-05-29
 	 * @see \Dfe\TwoCheckout\LineItem\Product::build()
@@ -94,7 +94,7 @@ class LineItem extends \Df\Core\O {
 	/**
 	 * 2016-05-29
 	 * @override   
-	 * @see \Df\Core\O::_construct()
+	 * @see \Df\Core\OLegacy::_construct()
 	 */
 	protected function _construct() {
 		parent::_construct();

@@ -3,7 +3,7 @@ namespace Dfe\TwoCheckout;
 use Dfe\TwoCheckout\Handler\DefaultT;
 use Dfe\TwoCheckout\Settings as S;
 use Exception as E;
-abstract class Handler extends \Df\Core\O {
+abstract class Handler extends \Df\Core\OLegacy{
 	/**
 	 * 2016-03-25
 	 * @used-by \Dfe\TwoCheckout\Handler::p()
