@@ -4,7 +4,7 @@ namespace Dfe\TwoCheckout;
  * 2016-05-29
  * @see \Dfe\TwoCheckout\LineItem\Product
  */
-class LineItem extends \Df\Core\OLegacy {
+class LineItem extends \Df\Core\O {
 	/**
 	 * 2016-05-29
 	 * @see \Dfe\TwoCheckout\LineItem\Product::build()
@@ -15,11 +15,9 @@ class LineItem extends \Df\Core\OLegacy {
 		'type' => $this->type()
 		,'name' => $this->name()
 		,'price' => $this->price()
-		/**
-		 * 2016-05-29
-		 * Почему-то пока этот параметр игнорируется для всех line items, кроме shipping.
-		 * https://mail.google.com/mail/u/0/#sent/154fa43ce41483c3
-		 */
+		# 2016-05-29
+		# Почему-то пока этот параметр игнорируется для всех line items, кроме shipping.
+		# https://mail.google.com/mail/u/0/#sent/154fa43ce41483c3
 		,'tangible' => $this->tangible() ? 'Y' : 'N'
 		,'productId' => $this->id()
 	]);}
@@ -56,8 +54,7 @@ class LineItem extends \Df\Core\OLegacy {
 	protected function price() {return $this[self::$P__PRICE];}
 
 	/**
-	 * 2016-05-23
-	 * «Y or N. Will default to Y if the type is shipping. Optional»
+	 * 2016-05-23 «Y or N. Will default to Y if the type is shipping. Optional»
 	 * @see \Dfe\TwoCheckout\LineItem\Product::tangible()
 	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 * @return bool
@@ -87,25 +84,9 @@ class LineItem extends \Df\Core\OLegacy {
 	 * https://mail.google.com/mail/u/0/#sent/154f4ade595abd5b
 	 * @return string
 	 */
-	private function name() {return dfc($this, function() {return
-		self::adjustText($this->nameRaw() ?: df_ucfirst($this->type()))
-	;});}
-
-	/**
-	 * 2016-05-29
-	 * @override   
-	 * @see \Df\Core\OLegacy::_construct()
-	 */
-	protected function _construct() {
-		parent::_construct();
-		$this
-			->_prop(self::$P__ID, DF_V_STRING, false)
-			->_prop(self::$P__NAME, DF_V_STRING, false)
-			->_prop(self::$P__PRICE, DF_V_STRING_NE)
-			->_prop(self::$P__TANGIBLE, DF_V_BOOL, false)
-			->_prop(self::$P__TYPE, DF_V_STRING_NE)
-		;
-	}
+	private function name() {return dfc($this, function() {return self::adjustText(
+		$this->nameRaw() ?: df_ucfirst($this->type())
+	);});}
 
 	/**
 	 * @param string $type
@@ -116,11 +97,11 @@ class LineItem extends \Df\Core\OLegacy {
 	 * @return array(string => string)
 	 */
 	static function buildLI($type, $price, $name = null, $tangible = false, $id = null) {return (new self([
-		self::$P__TYPE => $type
-		, self::$P__PRICE => $price
-		, self::$P__NAME => $name
-		, self::$P__TANGIBLE => $tangible
-		, self::$P__ID => $id ?: $type
+		self::$P__ID => $id ?: $type
+		,self::$P__NAME => $name
+		,self::$P__PRICE => $price
+		,self::$P__TANGIBLE => $tangible
+		,self::$P__TYPE => $type
 	]))->build();}
 
 	/**
@@ -133,9 +114,7 @@ class LineItem extends \Df\Core\OLegacy {
 	 * Думаю, в description они тоже недопустимы...
 	 * Похоже, description также имеет ограничения по длине, как и name.
 	 *
-	 * Опытным путём установил, что у description
-	 * такое же ограничение по длине, как и у name.
-	 *
+	 * Опытным путём установил, что у description такое же ограничение по длине, как и у name.
 	 * @param string $s
 	 * @return string
 	 */
