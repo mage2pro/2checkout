@@ -3,7 +3,7 @@ namespace Dfe\TwoCheckout;
 use Df\Core\Visitor;
 use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Address as A;
-class Address extends \Df\Core\OLegacy {
+final class Address extends \Df\Core\O {
 	/**
 	 * @used-by city()
 	 * @used-by countryIso3()
@@ -13,7 +13,7 @@ class Address extends \Df\Core\OLegacy {
 	 * @used-by visitor()
 	 * @return A
 	 */
-	private function a() {return $this[self::$P__A];}
+	private function aa() {return $this[self::$P__A];}
 
 	/**
 	 * 2016-05-20
@@ -21,7 +21,7 @@ class Address extends \Df\Core\OLegacy {
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * @return string|null
 	 */
-	private function city() {return $this->a()->getCity() ?: $this->visitor()->city();}
+	private function city() {return $this->aa()->getCity() ?: $this->visitor()->city();}
 
 	/**
 	 * 2016-05-20
@@ -30,7 +30,7 @@ class Address extends \Df\Core\OLegacy {
 	 * @return string
 	 */
 	private function countryIso3() {return dfc($this, function() {return df_country_2_to_3(
-		$this->a()->getCountryId() ?: $this->visitor()->iso2()
+		$this->aa()->getCountryId() ?: $this->visitor()->iso2()
 	);});}
 
 	/**
@@ -67,7 +67,7 @@ class Address extends \Df\Core\OLegacy {
 		/** @var string $s */
 		/** @var string $s1 */
 		/** @var string $s2 */
-		$s = mb_substr(df_trim(df_cc_s($this->a()->getStreet())), 0, 128);
+		$s = mb_substr(df_trim(df_cc_s($this->aa()->getStreet())), 0, 128);
 		/** @var int $len */
 		$len = mb_strlen($s);
 		if ($len <= 64) {
@@ -105,7 +105,7 @@ class Address extends \Df\Core\OLegacy {
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * @return string|null
 	 */
-	private function postcode() {return $this->a()->getPostcode() ?: (
+	private function postcode() {return $this->aa()->getPostcode() ?: (
 		$this->req() ? $this->visitor()->postCode() : null
 	);}
 
@@ -118,7 +118,7 @@ class Address extends \Df\Core\OLegacy {
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * @return string|null
 	 */
-	private function region() {return $this->a()->getRegion() ?: (
+	private function region() {return $this->aa()->getRegion() ?: (
 		$this->req() ? $this->visitor()->regionName() : null
 	);}
 
@@ -132,17 +132,7 @@ class Address extends \Df\Core\OLegacy {
 	 * 2016-05-20
 	 * @return Visitor
 	 */
-	private function visitor() {return dfc($this, function() {return df_visitor($this->a()->getOrder());});}
-
-	/**
-	 * 2016-05-20
-	 * @override
-	 * @see \Df\Core\OLegacy::_construct()
-	 */
-	protected function _construct() {
-		parent::_construct();
-		$this->_prop(self::$P__A, A::class);
-	}
+	private function visitor() {return dfc($this, function() {return df_visitor($this->aa()->getOrder());});}
 
 	/**
 	 * 2016-05-19 https://www.2checkout.com/documentation/payment-api/create-sale    
