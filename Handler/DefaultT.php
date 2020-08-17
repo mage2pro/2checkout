@@ -1,7 +1,7 @@
 <?php
 namespace Dfe\TwoCheckout\Handler;
 use Dfe\TwoCheckout\Handler;
-class DefaultT extends Handler {
+final class DefaultT extends Handler {
 	/**
 	 * 2016-05-11
 	 * Перекрываем метод, чтобы вернуть «Not implemented.» вместо «The event is not for our store.»

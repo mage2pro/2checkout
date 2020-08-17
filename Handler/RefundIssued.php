@@ -1,9 +1,7 @@
 <?php
-// 2016-05-22
-// REFUND_ISSUED
-// https://www.2checkout.com/documentation/notifications/refund-issued
 namespace Dfe\TwoCheckout\Handler;
-class RefundIssued extends Charge {
+# 2016-05-22 REFUND_ISSUED https://www.2checkout.com/documentation/notifications/refund-issued
+final class RefundIssued extends Charge {
 	/**
 	 * 2016-05-23
 	 * @used-by \Dfe\TwoCheckout\Handler::p()
@@ -20,9 +18,7 @@ class RefundIssued extends Charge {
 	 * @used-by \Dfe\TwoCheckout\Handler::process()
 	 * @return int|string
 	 */
-	final protected function process() {return dfp_refund(
-		$this->op(), $this->pid(), $this->item('refund')
-	) ?: 'skipped';}
+	final protected function process() {return dfp_refund($this->op(), $this->pid(), $this->item('refund')) ?: 'skipped';}
 	
 	/**
 	 * 2016-05-23
@@ -77,8 +73,7 @@ class RefundIssued extends Charge {
 	 */
 	private function item($k = null, $d = null) {
 		if (!isset($this->{__METHOD__})) {
-			/** @var array(string => float) $result */
-			$result = [];
+			$result = []; /** @var array(string => float) $result */
 			/** @var int $count */
 			$count = intval($this['item_count']);
 			for ($i = 1; $i <= $count; $i++) {
