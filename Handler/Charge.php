@@ -6,7 +6,7 @@ use Df\Sales\Model\Order\Payment as DfPayment;
 use Magento\Framework\Exception\LocalizedException as LE;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment as OP;
-// 2016-05-22  
+# 2016-05-22
 /** @see \Dfe\TwoCheckout\Handler\RefundIssued */
 abstract class Charge extends Handler {
 	/**

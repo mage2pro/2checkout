@@ -15,26 +15,26 @@ final class Product extends LineItem {
 	 * @return array(string => string)
 	 */
 	protected function build() {return parent::build() + df_clean([
-		 // 2016-05-29
-		 // Это поле отсутствует в документации,
-		 // однако, судя по ответу сервера, оно тоже поддерживается.
-		 // Спрошу у техподдержки о его формате...
+		 # 2016-05-29
+		 # Это поле отсутствует в документации,
+		 # однако, судя по ответу сервера, оно тоже поддерживается.
+		 # Спрошу у техподдержки о его формате...
 		 //
-		 // Опытным путём установил, что теги надо удалять, иначе описание не отобразится.
-		 // Но даже в этом случае значение иногда сохраняется, иногда нет.
+		 # Опытным путём установил, что теги надо удалять, иначе описание не отобразится.
+		 # Но даже в этом случае значение иногда сохраняется, иногда нет.
 		 //
-		 // Опытным путём установил, что у description такое же ограничение по длине, как и у name.
+		 # Опытным путём установил, что у description такое же ограничение по длине, как и у name.
 		'description' => $this->description()
-		// 2016-05-23
-		// «Array of option objects using the attributes specified below. Optional
-		// Will be returned in the order that they are passed in.
-		// (Passed as a sub object of a lineItem object.)»
-		// https://www.2checkout.com/documentation/payment-api/create-sale
+		# 2016-05-23
+		# «Array of option objects using the attributes specified below. Optional
+		# Will be returned in the order that they are passed in.
+		# (Passed as a sub object of a lineItem object.)»
+		# https://www.2checkout.com/documentation/payment-api/create-sale
 		,'options' => $this->options()
-		// 2016-05-23
-		// «Quantity of the item passed in.
-		// (0-999, defaults to 1 if not passed in or incorrectly formatted.) Optional»
-		// https://www.2checkout.com/documentation/payment-api/create-sale
+		# 2016-05-23
+		# «Quantity of the item passed in.
+		# (0-999, defaults to 1 if not passed in or incorrectly formatted.) Optional»
+		# https://www.2checkout.com/documentation/payment-api/create-sale
 		,'quantity' => df_oqi_qty($this->oi())
 	]);}
 
@@ -130,19 +130,19 @@ final class Product extends LineItem {
 	private function options() {return
 		!($op = $this->top()->getProductOptions()) || !($ai = dfa($op, 'attributes_info')) ? [] :
 			array_map(function(array $i) {return [
-				// 2016-05-23
-				// «Name of product option.
-				// Ex. Size (64 characters max – cannot include ‘<' or '>’) Required»
-				// https://www.2checkout.com/documentation/payment-api/create-sale
+				# 2016-05-23
+				# «Name of product option.
+				# Ex. Size (64 characters max – cannot include ‘<' or '>’) Required»
+				# https://www.2checkout.com/documentation/payment-api/create-sale
 				'optName' => dfa($i, 'label')
-				// 2016-05-23
-				// «Option selected.
-				// Ex. Small (64 characters max, cannot include ‘<' or '>’) Required»
-				// https://www.2checkout.com/documentation/payment-api/create-sale
+				# 2016-05-23
+				# «Option selected.
+				# Ex. Small (64 characters max, cannot include ‘<' or '>’) Required»
+				# https://www.2checkout.com/documentation/payment-api/create-sale
 				,'optValue' => dfa($i, 'value')
-				// 2016-05-23
-				// «Option price in seller currency. (0.00 for no cost options) Required»
-				// https://www.2checkout.com/documentation/payment-api/create-sale
+				# 2016-05-23
+				# «Option price in seller currency. (0.00 for no cost options) Required»
+				# https://www.2checkout.com/documentation/payment-api/create-sale
 				,'optSurcharge' => '0.00'
 			];}, $ai)
 	;}

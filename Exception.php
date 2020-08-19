@@ -1,7 +1,7 @@
 <?php
 namespace Dfe\TwoCheckout;
 use Df\Core\A;
-// 2016-08-21
+# 2016-08-21
 final class Exception extends \Df\Payment\Exception {
 	/**
 	 * 2016-08-21

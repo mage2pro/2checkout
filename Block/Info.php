@@ -1,6 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout\Block;
-// 2016-05-23
+# 2016-05-23
 /** @final Unable to use the PHP «final» keyword here because of the M2 code generation. */
 class Info extends \Df\Payment\Block\Info {
 	/**

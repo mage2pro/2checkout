@@ -7,7 +7,7 @@ use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Creditmemo as CM;
 use Magento\Sales\Model\Order\Payment as OP;
 use Magento\Sales\Model\Order\Payment\Transaction as T;
-// 2016-05-17
+# 2016-05-17
 /** @method Settings s() */
 final class Method extends \Df\Payment\Method {
 	/**
@@ -130,9 +130,9 @@ final class Method extends \Df\Payment\Method {
 		 * because the module can be set up to capture payments without a preliminary authorization.
 		 */
 		if ($tCapture = $this->ii()->getAuthorizationTransaction()) { /** @var T $tCapture */
-			// 2016-03-24
-			// Credit Memo и Invoice отсутствуют в сценарии Authorize / Capture
-			// и присутствуют в сценарии Capture / Refund.
+			# 2016-03-24
+			# Credit Memo и Invoice отсутствуют в сценарии Authorize / Capture
+			# и присутствуют в сценарии Capture / Refund.
 			$cm = df_assert($this->ii()->getCreditmemo()); /** @var CM|null $cm */
 			/**
 			 * 2016-05-21
@@ -184,9 +184,9 @@ final class Method extends \Df\Payment\Method {
 				 */
 				,'comment' =>
 					df_trim($cm->getCustomerNote()) . "\nMagento Credit Memo: {$cm->getIncrementId()}"
-			// 2017-04-10
-			// Избегаем сбоя из-за погрешности округления:
-			// «Amount greater than remaining balance on invoice.»
+			# 2017-04-10
+			# Избегаем сбоя из-за погрешности округления:
+			# «Amount greater than remaining balance on invoice.»
 			] + (dff_eq0($cm->getBaseGrandTotal() - $cm->getInvoice()->getBaseGrandTotal()) ? [] : [
 				/**
 				 * 2016-05-21
@@ -209,12 +209,12 @@ final class Method extends \Df\Payment\Method {
 				 * https://mail.google.com/mail/u/0/#inbox/154d347f4c3d79a8
 				 */
 				'currency' => 'customer'
-				// 2016-05-21
-				// «The amount to refund.
-				// Only needed when issuing a partial refund.
-				// If an amount is not specified,
-				// the remaining amount for the invoice is assumed.»
-				// https://www.2checkout.com/documentation/api/sales/refund-invoice
+				# 2016-05-21
+				# «The amount to refund.
+				# Only needed when issuing a partial refund.
+				# If an amount is not specified,
+				# the remaining amount for the invoice is assumed.»
+				# https://www.2checkout.com/documentation/api/sales/refund-invoice
 				,'amount' => $this->amountFormat($a)
 			]));
 			/**
@@ -312,9 +312,9 @@ final class Method extends \Df\Payment\Method {
 		 * https://github.com/2Checkout/2checkout-php/blob/cbac8da68155b6f557db0da0ac16a48a0faa5400/lib/Twocheckout/Api/TwocheckoutUtil.php#L65-L72
 		 */
 		$rr = dfa($r, 'response'); /** @var array(string => mixed)|null $rr */
-		// 2016-05-20
-		// https://www.2checkout.com/documentation/payment-api/create-sale
-		// «Code indicating the result of the authorization attempt.»
+		# 2016-05-20
+		# https://www.2checkout.com/documentation/payment-api/create-sale
+		# «Code indicating the result of the authorization attempt.»
 		df_assert_eq('APPROVED', dfa($rr, 'responseCode'));
 		df_assert(is_null(dfa($r, 'validationErrors')));
 		/**
