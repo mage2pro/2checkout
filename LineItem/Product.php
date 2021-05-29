@@ -98,7 +98,7 @@ final class Product extends LineItem {
 	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 * @return bool
 	 */
-	protected function tangible() {return !df_virtual_or_downloadable($this->p());}
+	protected function tangible() {return df_tangible($this->p());}
 
 	/**
 	 * 2016-05-29
