@@ -1,6 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout;
-use Df\Core\A;
+use Df\Core\O;
 # 2016-08-21
 final class Exception extends \Df\Payment\Exception {
 	/**
@@ -13,7 +13,7 @@ final class Exception extends \Df\Payment\Exception {
 	 */
 	function __construct(array $res, array $req = []) {
 		$this->_req = $req;
-		$this->_res = new A($res);
+		$this->_res = new O($res);
 		parent::__construct();
 	}
 
@@ -32,9 +32,9 @@ final class Exception extends \Df\Payment\Exception {
 	 * @see \Df\Core\Exception::messageC()
 	 * @return string
 	 */
-	function messageC() {return dfp_error_message(df_first(df_clean($this->_res->a([
-		'errors/0/message', 'exception/errorMsg'
-	]))));}
+	function messageC() {return dfp_error_message(df_first(df_clean(
+		$this->_res->a('errors/0/message'), $this->_res->a('exception/errorMsg')
+	)));}
 
 	/**
 	 * 2016-08-21
@@ -48,7 +48,7 @@ final class Exception extends \Df\Payment\Exception {
 	 * 2016-08-21
 	 * @used-by \Dfe\TwoCheckout\Exception::__construct()
 	 * @used-by \Dfe\TwoCheckout\Exception::message()
-	 * @var A
+	 * @var O
 	 */
 	private $_res;
 }
