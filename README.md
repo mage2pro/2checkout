@@ -1,4 +1,4 @@
-This module integrates a Magento 2 based webstore with the [**2Checkout**](https://www.2checkout.com/) payment service.  
+The module integrates a Magento 2 based webstore with the [**2Checkout**](https://www.2checkout.com/) payment service.  
 The module is **free** and **open source**.
 
 ## Demo videos
