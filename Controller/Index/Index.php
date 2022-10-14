@@ -23,13 +23,8 @@ class Index extends \Magento\Framework\App\Action\Action {
 	 * https://github.com/magento/magento2/blob/2.2.1/lib/internal/Magento/Framework/App/Action/Action.php#L84-L125
 	 * @return Json
 	 */
-	function execute() {return df_leh(function() {return Json::i(Handler::p(
-		df_my_local() ? $this->paramsLocal() : $this->getRequest()->getParams()
+	function execute() {return df_leh(function() {return Json::i(Handler::p(df_my_local()
+		? df_json_decode(file_get_contents(BP . '/_my/test/2Checkout/3/4.REFUND_ISSUED.json'))
+		: $this->getRequest()->getParams()
 	));});}
-
-	/**
-	 * 2016-05-22
-	 * @return array(string => string)
-	 */
-	private function paramsLocal() {return df_json_decode(file_get_contents(BP . '/_my/test/2Checkout/3/4.REFUND_ISSUED.json'));}
 }
