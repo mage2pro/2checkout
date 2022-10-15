@@ -91,8 +91,7 @@ final class Address extends \Df\Core\O {
 			list($s1, $s2) = [$s, !in_array($this->countryIso3(), ['CHN', 'JPN', 'RUS']) ? '' : '---'];
 		}
 		else {
-			/** @var int $end1 */
-			$end1 = mb_strrpos(mb_substr($s, 0, 64), ' ');
+			$end1 = mb_strrpos(mb_substr($s, 0, 64), ' '); /** @var int $end1 */
 			$s1 = mb_substr($s, 0, $end1);
 			$s2 = mb_substr(trim(mb_substr($s, mb_strlen($s1))), 0, 64);
 		}
