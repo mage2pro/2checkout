@@ -24,7 +24,6 @@ class Index extends \Magento\Framework\App\Action\Action {
 	 * @return Json
 	 */
 	function execute() {return df_leh(function() {return Json::i(Handler::p(df_my_local()
-		? df_json_decode(file_get_contents(BP . '/_my/test/2Checkout/3/4.REFUND_ISSUED.json'))
-		: $this->getRequest()->getParams()
+		? df_json_file_read(BP . '/_my/test/2Checkout/3/4.REFUND_ISSUED.json') : $this->getRequest()->getParams()
 	));});}
 }
