@@ -10,9 +10,5 @@ final class Prefill extends \Df\Config\Source {
 	 * @used-by \Df\Config\Source::toOptionArray()
 	 * @return array(string => string)
 	 */
-	protected function map() {return [
-		0 => 'No'
-		, '4000000000000002' => 'Success'
-		, '4333433343334333' => 'Failure'
-	];}
+	protected function map():array {return [0 => 'No', '4000000000000002' => 'Success', '4333433343334333' => 'Failure'];}
 }

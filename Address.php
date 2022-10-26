@@ -5,15 +5,14 @@ use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Address as A;
 final class Address extends \Df\Core\O {
 	/**
-	 * @used-by city()
-	 * @used-by countryIso3()
-	 * @used-by line()
-	 * @used-by postcode()
-	 * @used-by region()
-	 * @used-by visitor()
-	 * @return A
+	 * @used-by self::city()
+	 * @used-by self::countryIso3()
+	 * @used-by self::line()
+	 * @used-by self::postcode()
+	 * @used-by self::region()
+	 * @used-by self::visitor()
 	 */
-	private function aa() {return $this[self::$P__A];}
+	private function aa():A {return $this[self::$P__A];}
 
 	/**
 	 * 2016-05-20

@@ -28,9 +28,8 @@ abstract class Charge extends Handler {
 	final protected function o() {return df_order($this->op());}
 
 	/**
-	 * 2016-05-22
-	 * Идентификатор транзакции capture.   
-	 * @used-by op()
+	 * 2016-05-22 Идентификатор транзакции capture.
+	 * @used-by self::op()
 	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::process()
 	 * @return string|null
 	 */

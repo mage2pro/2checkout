@@ -38,16 +38,16 @@ final class Exception extends \Df\Payment\Exception {
 
 	/**
 	 * 2016-08-21
-	 * @used-by \Dfe\TwoCheckout\Exception::__construct()
-	 * @used-by \Dfe\TwoCheckout\Exception::message()
+	 * @used-by self::__construct()
+	 * @used-by self::message()
 	 * @var array(string => mixed)
 	 */
 	private $_req;
 
 	/**
 	 * 2016-08-21
-	 * @used-by \Dfe\TwoCheckout\Exception::__construct()
-	 * @used-by \Dfe\TwoCheckout\Exception::message()
+	 * @used-by self::__construct()
+	 * @used-by self::message()
 	 * @var O
 	 */
 	private $_res;

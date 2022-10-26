@@ -231,8 +231,7 @@ final class Method extends \Df\Payment\Method {
 	});}
 
 	/**
-	 * 2016-11-13
-	 * Этот метод косвенно (через amountParse) используется при refund.
+	 * 2016-11-13 Этот метод косвенно (через amountParse) используется при refund.
 	 * @override
 	 * @see \Df\Payment\Method::amountFactor()
 	 * @used-by \Df\Payment\Method::amountFormat()

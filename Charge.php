@@ -14,7 +14,7 @@ use Magento\Sales\Model\Order\Item as OI;
 final class Charge extends \Df\Payment\Charge {
 	/**
 	 * 2016-05-23
-	 * @used-by lineItems()
+	 * @used-by self::lineItems()
 	 * @return array(string => string)|null
 	 */
 	private function liDiscount() {$o = $this->o(); return !($a = $o->getDiscountAmount()) ? null :
@@ -26,7 +26,7 @@ final class Charge extends \Df\Payment\Charge {
 
 	/**
 	 * 2016-05-23
-	 * @used-by lineItems()
+	 * @used-by self::lineItems()
 	 * @return array(string => string)|null
 	 */
 	private function liShipping() {$o = $this->o(); return !($a = $o->getShippingAmount()) ? null :
@@ -35,7 +35,7 @@ final class Charge extends \Df\Payment\Charge {
 
 	/**
 	 * 2016-05-23
-	 * @used-by lineItems()
+	 * @used-by self::lineItems()
 	 * @return array(string => string)|null
 	 */
 	private function liTax() {return !($a = $this->o()->getTaxAmount()) ? null :
@@ -63,7 +63,7 @@ final class Charge extends \Df\Payment\Charge {
 
 	/**
 	 * 2016-05-19
-	 * @used-by \Dfe\TwoCheckout\Charge::p()
+	 * @used-by self::p()
 	 * @return array(string => mixed)
 	 */
 	private function pCharge() {return [

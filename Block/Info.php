@@ -28,14 +28,14 @@ class Info extends \Df\Payment\Block\Info {
 
 	/**
 	 * 2016-05-21
-	 * @used-by prepare()
+	 * @used-by self::prepare()
 	 * @used-by \Dfe\TwoCheckout\Method::charge()
 	 */
 	const CARD_F6 = 'first_six_digits';
 
 	/**
 	 * 2016-05-21
-	 * @used-by prepare()
+	 * @used-by self::prepare()
 	 * @used-by \Dfe\TwoCheckout\Method::charge()
 	 */
 	const CARD_L2 = 'last_two_digits';
@@ -45,7 +45,7 @@ class Info extends \Df\Payment\Block\Info {
 	 * Идентификатор документа-sale в 2Checkout.
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * Обратите внимание, что он отличается от идентификатора документа-invoice в 2Checkout.
-	 * @used-by prepare()
+	 * @used-by self::prepare()
 	 * @used-by \Dfe\TwoCheckout\Method::_refund()
 	 * @used-by \Dfe\TwoCheckout\Method::charge()
 	 */

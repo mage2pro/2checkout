@@ -10,14 +10,14 @@ use Exception as E;
 abstract class Handler extends \Df\Core\O {
 	/**
 	 * 2016-03-25
-	 * @used-by \Dfe\TwoCheckout\Handler::p()
+	 * @used-by self::p()
 	 * @return mixed
 	 */
 	abstract protected function process();
 
 	/**
 	 * 2016-03-28
-	 * @used-by \Dfe\TwoCheckout\Handler::p()
+	 * @used-by self::p()
 	 * @return bool
 	 */
 	protected function eligible() {return false;}
@@ -40,7 +40,7 @@ abstract class Handler extends \Df\Core\O {
 	 * @return mixed
 	 * @throws E
 	 */
-	static function p(array $request) {
+	final static function p(array $request) {
 		/** @var mixed $result */
 		try {
 			$s = dfps(__CLASS__); /** @var S $s */

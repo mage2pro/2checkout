@@ -8,7 +8,7 @@ class LineItem extends \Df\Core\O {
 	/**
 	 * 2016-05-29
 	 * @see \Dfe\TwoCheckout\LineItem\Product::build()
-	 * @used-by \Dfe\TwoCheckout\LineItem::buildLI()
+	 * @used-by self::buildLI()
 	 * @return array(string => string)
 	 */
 	protected function build() {return df_clean([
@@ -23,9 +23,8 @@ class LineItem extends \Df\Core\O {
 	]);}
 
 	/**
-	 * 2016-05-29
-	 * «Your custom product identifier. Optional»
-	 * @used-by \Dfe\TwoCheckout\LineItem::build()
+	 * 2016-05-29 «Your custom product identifier. Optional»
+	 * @used-by self::build()
 	 * @see \Dfe\TwoCheckout\LineItem\Product::id()
 	 * @return string
 	 */
@@ -33,7 +32,7 @@ class LineItem extends \Df\Core\O {
 
 	/**
 	 * 2016-05-29
-	 * @used-by \Dfe\TwoCheckout\LineItem::name()
+	 * @used-by self::name()
 	 * @see \Dfe\TwoCheckout\LineItem\Product::nameRaw()
 	 * @return string
 	 */
@@ -44,11 +43,10 @@ class LineItem extends \Df\Core\O {
 	 * «Price of the line item.
 	 * Format: 0.00-99999999.99, defaults to 0 if a value isn’t passed in
 	 * or if value is incorrectly formatted, no negatives
-	 * (use positive values for coupons). Required»
-	 *
+	 * (use positive values for coupons). Required».
 	 * Здесь нужно указывать именно цену товара, а не цену строки заказа.
 	 * Т.е. умножать на количество здесь не надо: проверил опытным путём. 
-	 * @used-by \Dfe\TwoCheckout\LineItem::build()
+	 * @used-by self::build()
 	 * @return string
 	 */
 	protected function price() {return $this[self::$P__PRICE];}
@@ -56,7 +54,7 @@ class LineItem extends \Df\Core\O {
 	/**
 	 * 2016-05-23 «Y or N. Will default to Y if the type is shipping. Optional»
 	 * @see \Dfe\TwoCheckout\LineItem\Product::tangible()
-	 * @used-by \Dfe\TwoCheckout\LineItem::build()
+	 * @used-by self::build()
 	 * @return bool
 	 */
 	protected function tangible() {return $this[self::$P__TANGIBLE];}
@@ -67,7 +65,7 @@ class LineItem extends \Df\Core\O {
 	 * (Always Lower Case, ‘product’, ‘shipping’, ‘tax’ or ‘coupon’, defaults to ‘product’) Required»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * @see \Dfe\TwoCheckout\LineItem\Product::type()
-	 * @used-by \Dfe\TwoCheckout\LineItem::build()
+	 * @used-by self::build()
 	 * @return string
 	 */
 	protected function type() {return $this[self::$P__TYPE];}
