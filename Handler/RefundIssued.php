@@ -18,8 +18,8 @@ final class RefundIssued extends Charge {
 	 * @used-by \Dfe\TwoCheckout\Handler::process()
 	 * @return int|string
 	 */
-	final protected function process() {return dfp_refund($this->op(), $this->pid(), $this->item('refund')) ?: 'skipped';}
-	
+	final protected function process() {return dfp_refund($this->op(), $this->pid(), dfa($this->itemA(), 'refund')) ?: 'skipped';}
+
 	/**
 	 * 2016-05-23
 	 * 1) Сценарий полного возврата:
@@ -66,34 +66,23 @@ final class RefundIssued extends Charge {
 	 *		"item_rec_date_next_2": "",
 	 *		"item_rec_install_billed_2": ""
 	 *		<...>
-	 *
-	 * @param string|null $k [optional]
-	 * @param float|null $d [optional]
-	 * @return float|array(string => float)
+	 * @used-by self::process()
+	 * @return array(string => float)
 	 */
-	private function item($k = null, $d = null) {
-		if (!isset($this->{__METHOD__})) {
-			$result = []; /** @var array(string => float) $result */
-			/** @var int $count */
-			$count = intval($this['item_count']);
-			for ($i = 1; $i <= $count; $i++) {
-				/**
-				 * 2016-05-23
-				 * «Indicates if item is a bill or refund; Value will be bill or refund»
-				 * https://www.2checkout.com/documentation/notifications/refund-issued
-				 */
-				$result[$this[$this->itemKey('type', $i)]] = $this[$this->itemKey('list_amount', $i)];
-			}
-			$this->{__METHOD__} = $result;
+	private function itemA():array {
+		$r = []; /** @var array(string => float) $r */
+		$count = intval($this['item_count']); /** @var int $count */
+		/**
+		 * @param string $name
+		 * @param int $index
+		 */
+		$key = function($name, $index):string {return implode('_', ['item', $name, $index]);};
+		for ($i = 1; $i <= $count; $i++) {
+			# 2016-05-23
+			# «Indicates if item is a bill or refund; Value will be bill or refund»
+			# https://www.2checkout.com/documentation/notifications/refund-issued
+			$r[$this[$key('type', $i)]] = $this[$key('list_amount', $i)];
 		}
-		return !$k ? $this->{__METHOD__} : dfa($this->{__METHOD__}, $k, $d);
+		return $r;
 	}
-
-	/**
-	 * 2016-05-23
-	 * @param string $name
-	 * @param int $index
-	 * @return string
-	 */
-	private function itemKey($name, $index) {return implode('_', ['item', $name, $index]);}
 }
