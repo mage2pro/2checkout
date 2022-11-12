@@ -11,9 +11,10 @@ use Magento\Sales\Model\Order\Payment as OP;
 abstract class Charge extends Handler {
 	/**
 	 * 2016-05-23
-	 * @used-by \Dfe\TwoCheckout\Handler::p()
 	 * @override
 	 * @see \Dfe\TwoCheckout\Handler::eligible()
+	 * @used-by \Dfe\TwoCheckout\Handler::p()
+	 * @see \Dfe\TwoCheckout\Handler\RefundIssued::eligible()
 	 * @return bool
 	 */
 	protected function eligible() {return !!$this->op();}
@@ -31,15 +32,17 @@ abstract class Charge extends Handler {
 	 * 2016-05-22 Идентификатор транзакции capture.
 	 * @used-by self::op()
 	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::process()
-	 * @return string|null
 	 */
-	protected function pid() {return $this['invoice_id'];}
+	final protected function pid():string {return df_nts($this['invoice_id']);}
 
 	/**
 	 * 2016-05-22
+	 * @used-by self::eligible()
+	 * @used-by self::o()
+	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::process()
 	 * @return OP|DfPayment|null
 	 */
-	protected function op() {return dfc($this, function() {return /** @var int|null $pid */
+	final protected function op() {return dfc($this, function() {return /** @var string $pid */
 		($pid = $this->pid()) ? dfp_webhook_case(dfp(df_transx($pid, false))) : null
 	;});}
 }
