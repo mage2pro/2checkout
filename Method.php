@@ -66,9 +66,8 @@ final class Method extends \Df\Payment\Method {
 	 *		}
 	 * https://github.com/magento/magento2/blob/2.0.0/app/code/Magento/Sales/Model/Order/Payment/Operations/AbstractOperation.php#L56-L75
 	 * https://github.com/magento/magento2/blob/2.2.1/app/code/Magento/Sales/Model/Order/Payment/Operations/AbstractOperation.php#L59-L78
-	 * @return bool
 	 */
-	function canCapture() {return true;}
+	function canCapture():bool {return true;}
 
 	/**
 	 * 2016-03-08
@@ -97,17 +96,15 @@ final class Method extends \Df\Payment\Method {
 	 *		}
 	 * https://github.com/magento/magento2/blob/2.2.1/app/code/Magento/Sales/Model/Order/Invoice/Validation/CanRefund.php#L84-L94
 	 * It is since Magento 2.2: https://github.com/magento/magento2/commit/767151b4
-	 * @return bool
 	 */
-	function canRefund() {return true;}
+	function canRefund():bool {return true;}
 
 	/**
 	 * 2016-03-08
 	 * @override
 	 * @see \Df\Payment\Method::canRefundPartialPerInvoice()
-	 * @return bool
 	 */
-	function canRefundPartialPerInvoice() {return true;}
+	function canRefundPartialPerInvoice():bool {return true;}
 
 	/**
 	 * 2016-05-21
@@ -118,7 +115,7 @@ final class Method extends \Df\Payment\Method {
 	 * @see \Df\Payment\Method::_refund()
 	 * @param float $a
 	 */
-	protected function _refund($a) {$this->api(function() use($a) {
+	protected function _refund($a):void {$this->api(function() use($a) {
 		/**
 		 * 2016-03-17, 2017-11-11, 2017-12-06
 		 * Despite of its name, @uses \Magento\Sales\Model\Order\Payment::getAuthorizationTransaction()
@@ -182,8 +179,7 @@ final class Method extends \Df\Payment\Method {
 				 * в интернет-магазине. Но теги тем более не сохраняются.
 				 * Если они добавят поддержку переносов строк, то попрошу их и о тегах.
 				 */
-				,'comment' =>
-					df_trim($cm->getCustomerNote()) . "\nMagento Credit Memo: {$cm->getIncrementId()}"
+				,'comment' => df_trim($cm->getCustomerNote()) . "\nMagento Credit Memo: {$cm->getIncrementId()}"
 			# 2017-04-10
 			# Избегаем сбоя из-за погрешности округления:
 			# «Amount greater than remaining balance on invoice.»
@@ -238,7 +234,7 @@ final class Method extends \Df\Payment\Method {
 	 * @used-by \Df\Payment\Method::amountParse()
 	 * @return int
 	 */
-	protected function amountFactor() {return 1;}
+	protected function amountFactor():int {return 1;}
 
 	/**
 	 * 2017-02-08
@@ -282,7 +278,7 @@ final class Method extends \Df\Payment\Method {
 	 * @used-by \Df\Payment\Method::capture()
 	 * @param bool $capture [optional]
 	 */
-	protected function charge($capture = true) {$this->api(function() {
+	protected function charge($capture = true):void {$this->api(function() {
 		$p = ['api' => 'checkout'] + Charge::p($this); /** @var array(string => mixed) $p */
 		df_sentry_extra($this, 'Request Params', $p);
 		$requester = new \Twocheckout_Api_Requester; /** @var \Twocheckout_Api_Requester $requester */
@@ -456,7 +452,7 @@ final class Method extends \Df\Payment\Method {
 	 * @used-by \Df\Payment\Method::assignData()
 	 * @return string[]
 	 */
-	protected function iiaKeys() {return [Token::KEY];}
+	protected function iiaKeys():array {return [Token::KEY];}
 
 	/**
 	 * 2016-03-17
@@ -472,7 +468,7 @@ final class Method extends \Df\Payment\Method {
 	private function api(callable $function) {
 		try {$this->s()->init(); return $function();}
 		catch (Exception $e) {throw $e;}
-		catch (\Exception $e) {throw df_le($e);}
+		catch (\Exception $e) {throw df_lx($e);}
 	}
 
 	/**

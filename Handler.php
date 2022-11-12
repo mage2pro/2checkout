@@ -65,9 +65,12 @@ abstract class Handler extends \Df\Core\O {
 			 * , INVOICE_STATUS_CHANGED, REFUND_ISSUED, RECURRING_INSTALLMENT_SUCCESS
 			 * , RECURRING_INSTALLMENT_FAILED, RECURRING_STOPPED, RECURRING_COMPLETE
 			 * , or RECURRING_RESTARTED )»
-			 * @var string|null $type
+			 * 2022-11-12
+			 * "PHP ≥ 8.1: «Passing null to parameter … of type string is deprecated»":
+			 * https://github.com/mage2pro/core/issues/173
+			 * @var string $type
 			 */
-			$type = dfa($request, 'message_type');
+			$type = df_nts(dfa($request, 'message_type'));
 			dfp_report(__CLASS__, $request, strtolower($type));
 			/**
 			 * REFUND_ISSUED => Handler\RefundIssued

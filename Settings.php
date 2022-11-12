@@ -16,7 +16,7 @@ final class Settings extends \Df\StripeClone\Settings {
 	 * @see \Df\Payment\Settings::init()
 	 * @used-by \Df\Payment\Method::action()
 	 */
-	function init() {
+	function init():void {
 		T::sandbox($this->test());
 		T::username($this->testable('username'));
 		T::password($this->testableP('password'));

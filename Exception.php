@@ -21,18 +21,18 @@ final class Exception extends \Df\Payment\Exception {
 	 * 2016-08-19
 	 * @override
 	 * @see \Df\Core\Exception::message()
+	 * @used-by df_xts()
 	 * @used-by \Dfe\TwoCheckout\Method::api()
-	 * @return string
 	 */
-	function message() {return df_api_rr_failed('2Checkout', $this->_res->a(), $this->_req);}
+	function message():string {return df_api_rr_failed('2Checkout', $this->_res->a(), $this->_req);}
 
 	/**
 	 * 2016-08-21
 	 * @override
 	 * @see \Df\Core\Exception::messageC()
-	 * @return string
+	 * @used-by \Df\Payment\PlaceOrderInternal::message()
 	 */
-	function messageC() {return dfp_error_message(df_first(df_clean(
+	function messageC():string {return dfp_error_message(df_first(df_clean(
 		$this->_res->a('errors/0/message'), $this->_res->a('exception/errorMsg')
 	)));}
 

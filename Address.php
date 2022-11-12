@@ -18,9 +18,9 @@ final class Address extends \Df\Core\O {
 	 * 2016-05-20
 	 * «Card holder’s city. (64 characters max) Required»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 * @return string|null
+	 * @used-by self::build()
 	 */
-	private function city() {return $this->aa()->getCity() ?: $this->visitor()->city();}
+	private function city():string {return df_nts($this->aa()->getCity() ?: $this->visitor()->city());}
 
 	/**
 	 * 2016-05-20
@@ -98,13 +98,11 @@ final class Address extends \Df\Core\O {
 	}); return is_null($i) ? $r : $r[$i - 1];}
 
 	/**
-	 * 2016-05-20
-	 * «Card holder’s city. (64 characters max) Required»
-	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 * @return string|null
+	 * 2016-05-20 https://www.2checkout.com/documentation/payment-api/create-sale
+	 * @used-by self::build()
 	 */
-	private function postcode() {return $this->aa()->getPostcode() ?: (
-		$this->req() ? $this->visitor()->postCode() : null
+	private function postcode():string {return df_nts(
+		$this->aa()->getPostcode() ?: ($this->req() ? $this->visitor()->postCode() : '')
 	);}
 
 	/**
@@ -114,10 +112,10 @@ final class Address extends \Df\Core\O {
 	 * IDN, ITA, JPN, MYS, MEX, NLD, PAN, PHL, POL, ROU, RUS, SRB, SGP, ZAF, ESP,
 	 * SWE, THA, TUR, GBR, USA - Optional for all other “country” values.»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 * @return string|null
+	 * @used-by self::build()
 	 */
-	private function region() {return $this->aa()->getRegion() ?: (
-		$this->req() ? $this->visitor()->regionName() : null
+	private function region():string {return df_nts(
+		$this->aa()->getRegion() ?: ($this->req() ? $this->visitor()->regionName() : '')
 	);}
 
 	/**

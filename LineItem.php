@@ -87,20 +87,21 @@ class LineItem extends \Df\Core\O {
 	);});}
 
 	/**
-	 * @param string $type
-	 * @param string $price
-	 * @param string|null $name [optional]
-	 * @param bool $tangible [optional]
-	 * @param string|null $id [optional]
+	 * @used-by \Dfe\TwoCheckout\Charge::liDiscount()
+	 * @used-by \Dfe\TwoCheckout\Charge::liShipping()
+	 * @used-by \Dfe\TwoCheckout\Charge::liTax()
+	 * @used-by \Dfe\TwoCheckout\Charge::lineItems()
 	 * @return array(string => string)
 	 */
-	static function buildLI($type, $price, $name = null, $tangible = false, $id = null) {return (new self([
-		self::$P__ID => $id ?: $type
-		,self::$P__NAME => $name
-		,self::$P__PRICE => $price
-		,self::$P__TANGIBLE => $tangible
-		,self::$P__TYPE => $type
-	]))->build();}
+	static function buildLI(string $type, string $price, string $name = '', bool $tangible = false, string $id = ''):array {
+		return (new self([
+			self::$P__ID => $id ?: $type
+			,self::$P__NAME => $name
+			,self::$P__PRICE => $price
+			,self::$P__TANGIBLE => $tangible
+			,self::$P__TYPE => $type
+		]))->build();
+	}
 
 	/**
 	 * 2016-05-29

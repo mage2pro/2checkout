@@ -9,7 +9,7 @@ class Info extends \Df\Payment\Block\Info {
 	 * @see \Df\Payment\Block\Info::prepare()
 	 * @used-by \Df\Payment\Block\Info::prepareToRendering()
 	 */
-	final protected function prepare() {
+	final protected function prepare():void {
 		$this->siEx('Sale', df_tag_ab($this->iia('sale_id'),
 			"https://{$this->isTest('sandbox.2checkout.com/sandbox', 'www.2checkout.com/va')}/"
 			,"sales/detail?sale_id={$this->iia(self::SALE_ID)}"
@@ -22,9 +22,8 @@ class Info extends \Df\Payment\Block\Info {
 	 * @override
 	 * @see \Df\Payment\Block\Info::testModeLabel()
 	 * @used-by \Df\Payment\Block\Info::_toHtml()
-	 * @return string
 	 */
-	final protected function testModeLabel() {return 'Sandbox';}
+	final protected function testModeLabel():string {return 'Sandbox';}
 
 	/**
 	 * 2016-05-21
