@@ -104,7 +104,7 @@ class LineItem extends \Df\Core\O {
 	 * Похоже, description также имеет ограничения по длине, как и name.
 	 * 3) Опытным путём установил, что у description такое же ограничение по длине, как и у name.
 	 * @used-by self::build()
-	 * @used-by \Dfe\TwoCheckout\LineItem\Product::description()
+	 * @used-by \Dfe\TwoCheckout\LineItem\Product::build()
 	 */
 	protected static function adjustText(string $s):string {return df_chop(strtr($s, ['<' => '«', '>' => '»']), 128);}
 

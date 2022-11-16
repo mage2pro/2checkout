@@ -22,7 +22,9 @@ final class Product extends LineItem {
 		 # 2) Опытным путём установил, что теги надо удалять, иначе описание не отобразится.
 		 # Но даже в этом случае значение иногда сохраняется, иногда нет.
 		 # 3) Опытным путём установил, что у description такое же ограничение по длине, как и у name.
-		'description' => $this->description()
+		'description' => self::adjustText(strip_tags(
+			$this->p()->getData('short_description') ?: $this->p()->getData('description')
+		))
 		# 2016-05-23
 		# «Array of option objects using the attributes specified below. Optional
 		# Will be returned in the order that they are passed in.
@@ -102,13 +104,6 @@ final class Product extends LineItem {
 
 	/** @return Charge */
 	private function charge() {return $this[self::$P__C];}
-
-	/**
-	 * 2016-05-29
-	 */
-	private function description():string {return self::adjustText(strip_tags(
-		$this->p()->getData('short_description') ?: $this->p()->getData('description')
-	));}
 
 	/**
 	 * @used-by self::build()
