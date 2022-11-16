@@ -19,7 +19,10 @@ final class Settings extends \Df\StripeClone\Settings {
 	 * @used-by \Df\Payment\Method::action()
 	 */
 	function init():void {
-		T::sandbox($this->test());
+		# 2022-11-16
+		# The @see \Twocheckout::sandbox() method has been removed: https://github.com/2Checkout/2checkout-php/commit/f1f44364
+		# The previous code was:
+		#		T::sandbox($this->test());
 		T::username($this->testable('username'));
 		T::password($this->testableP('password'));
 		T::privateKey($this->privateKey());
