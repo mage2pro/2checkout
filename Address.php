@@ -58,14 +58,15 @@ final class Address extends \Df\Core\O {
 	 * @param int|null $i [optional]
 	 * @return string[]
 	 */
-	private function line($i = null):array {/** @var string[] $r */$r = dfc($this, function() {
-		/** @var string $s */
-		/** @var string $s1 */
-		/** @var string $s2 */
+	private function line($i = null):array {/** @var string[] $r */ $r = dfc($this, function() {
+		/** @var string $s */ /** @var string $s1 */ /** @var string $s2 */
 		$s = mb_substr(df_trim(df_cc_s($this->aa()->getStreet())), 0, 128);
-		/** @var int $len */
-		$len = mb_strlen($s);
-		if ($len <= 64) {
+		if (64 < mb_strlen($s)) {
+			$end1 = mb_strrpos(mb_substr($s, 0, 64), ' '); /** @var int $end1 */
+			$s1 = mb_substr($s, 0, $end1);
+			$s2 = mb_substr(trim(mb_substr($s, mb_strlen($s1))), 0, 64);
+		}
+		else {
 			/**
 			 * 2017-09-16
 			 * An empty value of `addrLine2` for CHN, JPN, RUS will lead to the «600 - Authorization Failed» failure.
@@ -84,11 +85,6 @@ final class Address extends \Df\Core\O {
 			 *	}
 			 */
 			list($s1, $s2) = [$s, !in_array($this->countryIso3(), ['CHN', 'JPN', 'RUS']) ? '' : '---'];
-		}
-		else {
-			$end1 = mb_strrpos(mb_substr($s, 0, 64), ' '); /** @var int $end1 */
-			$s1 = mb_substr($s, 0, $end1);
-			$s2 = mb_substr(trim(mb_substr($s, mb_strlen($s1))), 0, 64);
 		}
 		return [$s1, $s2];
 	}); return is_null($i) ? $r : $r[$i - 1];}
@@ -116,15 +112,19 @@ final class Address extends \Df\Core\O {
 
 	/**
 	 * 2016-05-20
-	 * @return bool
+	 * @used-by self::postcode()
+	 * @used-by self::region()
 	 */
-	private function req() {return dfc($this, function() {return in_array($this->countryIso3(), self::$req);});}
+	private function req():bool {return in_array($this->countryIso3(), self::$req);}
 
 	/**
 	 * 2016-05-20
-	 * @return Visitor
+	 * @used-by self::city()
+	 * @used-by self::countryIso3()
+	 * @used-by self::postcode()
+	 * @used-by self::region()
 	 */
-	private function visitor() {return dfc($this, function() {return df_visitor($this->aa()->getOrder());});}
+	private function visitor():Visitor {return dfc($this, function() {return df_visitor($this->aa()->getOrder());});}
 
 	/**
 	 * 2016-05-19 https://www.2checkout.com/documentation/payment-api/create-sale    
