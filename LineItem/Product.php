@@ -111,15 +111,17 @@ final class Product extends LineItem {
 		$this->p()->getData('short_description') ?: $this->p()->getData('description')
 	));}
 
-	/** @return M */
-	private function m() {return $this->charge()->m();}
-
-	/** @return OI */
-	private function oi() {return $this[self::$P__OI];}
+	/**
+	 * @used-by self::build()
+	 * @used-by self::id()
+	 * @used-by self::nameRaw()
+	 * @used-by self::price()
+	 */
+	private function oi():OI {return $this[self::$P__OI];}
 
 	/** @return array(array(string => string)) */
 	private function options() {return
-		!($op = $this->top()->getProductOptions()) || !($ai = dfa($op, 'attributes_info')) ? [] :
+		!($op = df_oqi_top($this->oi())->getProductOptions()) || !($ai = dfa($op, 'attributes_info')) ? [] :
 			array_map(function(array $i) {return [
 				# 2016-05-23
 				# «Name of product option.
@@ -146,18 +148,10 @@ final class Product extends LineItem {
 
 	/**
 	 * 2016-05-23
-	 * @return OI
-	 */
-	private function top() {return dfc($this, function() {return df_oqi_top($this->oi());});}
-
-	/**
-	 * 2016-05-23
 	 * @used-by \Dfe\TwoCheckout\Charge::lineItems()
-	 * @param Charge $c
-	 * @param OI $oi
 	 * @return array(string => string)
 	 */
-	static function buildP(Charge $c, OI $oi) {return (new self([self::$P__C => $c, self::$P__OI => $oi]))->build();}
+	static function buildP(Charge $c, OI $oi):array {return (new self([self::$P__C => $c, self::$P__OI => $oi]))->build();}
 
 	/** @var string */
 	private static $P__C = 'c';
