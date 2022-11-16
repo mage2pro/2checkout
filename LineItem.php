@@ -45,9 +45,8 @@ class LineItem extends \Df\Core\O {
 	 * Здесь нужно указывать именно цену товара, а не цену строки заказа.
 	 * Т.е. умножать на количество здесь не надо: проверил опытным путём. 
 	 * @used-by self::build()
-	 * @return string
 	 */
-	protected function price() {return $this[self::$P__PRICE];}
+	protected function price():string {return $this[self::$P__PRICE];}
 
 	/**
 	 * 2016-05-23 «Y or N. Will default to Y if the type is shipping. Optional»
