@@ -41,6 +41,7 @@ final class Charge extends \Df\Payment\Charge {
 	
 	/**
 	 * 2016-05-23
+	 * @used-by self::pCharge()
 	 * @return array(array(string => string))
 	 */
 	private function lineItems():array {/** @var array(array(string => string)) $r */
