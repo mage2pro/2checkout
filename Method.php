@@ -455,12 +455,12 @@ final class Method extends \Df\Payment\Method {
 	 * @uses \Magento\Framework\Exception\LocalizedException
 	 * https://mage2.pro/t/945
 	 * https://github.com/magento/magento2/blob/2.1.0/app/code/Magento/Sales/Controller/Adminhtml/Order/VoidPayment.php#L20-L30
-	 * 2022-11-16 `callable` as an argument type is supported by PHP ≥ 5.4: https://3v4l.org/ZtdKu
-	 * @param callable $f
+	 * @used-by self::_refund()
+	 * @used-by self::charge()
 	 * @return mixed
 	 * @throws LE
 	 */
-	private function api(callable $f) {
+	private function api(\Closure $f) {
 		try {$this->s()->init(); return $f();}
 		catch (Exception $e) {throw $e;}
 		catch (\Exception $e) {throw df_lx($e);}
