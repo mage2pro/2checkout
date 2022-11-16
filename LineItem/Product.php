@@ -4,8 +4,8 @@ use Dfe\TwoCheckout\Charge;
 use Dfe\TwoCheckout\LineItem;
 use Dfe\TwoCheckout\Method as M;
 use Magento\Catalog\Model\Product as P;
-use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Item as OI;
+# 2016-05-29
 final class Product extends LineItem {
 	/**
 	 * 2016-05-29
@@ -152,26 +152,12 @@ final class Product extends LineItem {
 
 	/**
 	 * 2016-05-23
-	 * @override 
-	 * @see \Dfe\TwoCheckout\LineItem::_construct()
-	 */
-	protected function _construct() {
-		parent::_construct();
-		$this
-			->_prop(self::$P__C, Charge::class)
-			->_prop(self::$P__OI, OI::class)
-		;
-	}
-
-	/**
-	 * 2016-05-23
+	 * @used-by \Dfe\TwoCheckout\Charge::lineItems()
 	 * @param Charge $c
 	 * @param OI $oi
 	 * @return array(string => string)
 	 */
-	static function buildP(Charge $c, OI $oi) {return (new self([
-		self::$P__C => $c, self::$P__OI => $oi
-	]))->build();}
+	static function buildP(Charge $c, OI $oi) {return (new self([self::$P__C => $c, self::$P__OI => $oi]))->build();}
 
 	/** @var string */
 	private static $P__C = 'c';

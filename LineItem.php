@@ -8,6 +8,7 @@ class LineItem extends \Df\Core\O {
 	/**
 	 * 2016-05-29
 	 * @used-by self::buildLI()
+	 * @used-by \Dfe\TwoCheckout\LineItem\Product::build()
 	 * @see \Dfe\TwoCheckout\LineItem\Product::build()
 	 * @return array(string => string)
 	 */
@@ -86,10 +87,10 @@ class LineItem extends \Df\Core\O {
 	final static function buildLI(string $t, string $price, string $name = '', bool $tangible = false, string $id = ''):array {
 		return (new self([
 			self::$P__ID => $id ?: $t
-			,self::$P__NAME => $name
-			,self::$P__PRICE => $price
-			,self::$P__TANGIBLE => $tangible
-			,self::$P__TYPE => $t
+			, self::$P__NAME => $name
+			, self::$P__PRICE => $price
+			, self::$P__TANGIBLE => $tangible
+			, self::$P__TYPE => $t
 		]))->build();
 	}
 
