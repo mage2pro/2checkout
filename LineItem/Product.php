@@ -65,7 +65,7 @@ final class Product extends LineItem {
 	 * @see \Dfe\CheckoutCom\Charge::cProduct()
 	 * @override
 	 * @see \Dfe\TwoCheckout\LineItem::nameRaw()
-	 * @used-by \Dfe\TwoCheckout\LineItem::name()
+	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 */
 	protected function nameRaw():string {return $this->oi()->getName();}
 

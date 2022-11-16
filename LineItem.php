@@ -13,7 +13,17 @@ class LineItem extends \Df\Core\O {
 	 */
 	protected function build():array {return df_clean([
 		'type' => $this->type()
-		,'name' => $this->name()
+		/**
+		 * 2016-05-23
+		 * «Name of the item passed in. (128 characters max, cannot use ‘<' or '>’,
+		 * defaults to capitalized version of ‘type’.) Required»
+		 * https://www.2checkout.com/documentation/payment-api/create-sale
+		 * 2016-05-29
+		 * The fallback to the «capitalized version of ‘type’» does not work:
+		 * the server responds "Bad request - parameter error" if the "name" is absent.
+		 * https://mail.google.com/mail/u/0/#sent/154f4ade595abd5b
+		 */
+		,'name' => self::adjustText($this->nameRaw() ?: df_ucfirst($this->type()))
 		,'price' => $this->price()
 		# 2016-05-29
 		# Почему-то пока этот параметр игнорируется для всех line items, кроме shipping.
@@ -65,19 +75,6 @@ class LineItem extends \Df\Core\O {
 	 * @see \Dfe\TwoCheckout\LineItem\Product::type()
 	 */
 	protected function type():string {return $this[self::$P__TYPE];}
-
-	/**
-	 * 2016-05-23
-	 * «Name of the item passed in. (128 characters max, cannot use ‘<' or '>’,
-	 * defaults to capitalized version of ‘type’.) Required»
-	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 * 2016-05-29
-	 * The fallback to the «capitalized version of ‘type’» does not work:
-	 * the server responds "Bad request - parameter error" if the "name" is absent.
-	 * https://mail.google.com/mail/u/0/#sent/154f4ade595abd5b
-	 * @used-by self::build()
-	 */
-	private function name():string {return self::adjustText($this->nameRaw() ?: df_ucfirst($this->type()));}
 
 	/**
 	 * @used-by \Dfe\TwoCheckout\Charge::liDiscount()
