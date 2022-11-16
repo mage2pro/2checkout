@@ -180,18 +180,16 @@ final class Address extends \Df\Core\O {
 
 	/**
 	 * 2016-05-20
-	 * «Card holder’s state. (64 characters max)
+	 * 1) «Card holder’s state. (64 characters max)
 	 * Required if “country” value is ARG, AUS, BGR, CAN, CHN, CYP, EGY, FRA, IND,
 	 * IDN, ITA, JPN, MYS, MEX, NLD, PAN, PHL, POL, ROU, RUS, SRB, SGP, ZAF, ESP,
 	 * SWE, THA, TUR, GBR, USA - Optional for all other “country” values.»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 *
-	 * «Card holder’s zip. (16 characters max)
+	 * 2) «Card holder’s zip. (16 characters max)
 	 * Required if “country” value is ARG, AUS, BGR, CAN, CHN, CYP, EGY, FRA, IND,
 	 * IDN, ITA, JPN, MYS, MEX, NLD, PAN, PHL, POL, ROU, RUS, SRB, SGP, ZAF, ESP,
 	 * SWE, THA, TUR, GBR, USA - Optional for all other “country” values.»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 *
 	 * @var string[]
 	 */
 	private static $req = [
