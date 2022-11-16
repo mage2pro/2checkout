@@ -139,9 +139,8 @@ final class Product extends LineItem {
 
 	/**
 	 * 2016-05-29
-	 * @return P
 	 */
-	private function p() {return $this->oi()->getProduct();}
+	private function p():P {return $this->oi()->getProduct();}
 
 	/**
 	 * 2016-05-23
