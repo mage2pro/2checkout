@@ -5,7 +5,7 @@ namespace Dfe\TwoCheckout;
  * @see \Dfe\TwoCheckout\LineItem\Additional
  * @see \Dfe\TwoCheckout\LineItem\Product
  */
-abstract class LineItem extends \Df\Core\O {
+abstract class LineItem {
 	/**
 	 * 2016-05-29 «Your custom product identifier. Optional»
 	 * @used-by self::build()

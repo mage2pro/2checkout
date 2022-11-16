@@ -2,6 +2,7 @@
 namespace Dfe\TwoCheckout\LineItem;
 use Dfe\TwoCheckout\Charge;
 use Dfe\TwoCheckout\LineItem;
+use JMS\Serializer\Annotation as Serializer;
 use Magento\Catalog\Model\Product as P;
 use Magento\Sales\Model\Order\Item as OI;
 # 2016-05-29
@@ -101,6 +102,12 @@ final class Product extends LineItem {
 	 */
 	protected function type():string {return 'product';}
 
+	/**
+	 * 2022-11-16
+	 * @used-by self::p()
+	 */
+	private function __construct(Charge $c, OI $oi) {$this->_c = $c; $this->_oi = $oi;}
+
 	/** @used-by self::price() */
 	private function charge():Charge {return $this[self::$P__C];}
 
@@ -145,14 +152,23 @@ final class Product extends LineItem {
 
 	/**
 	 * 2016-05-23
+	 * 2022-11-16 It works in PHP ≥ 5.4: https://3v4l.org/V4sAU
 	 * @used-by \Dfe\TwoCheckout\Charge::lineItems()
 	 * @return array(string => string)
 	 */
-	static function p(Charge $c, OI $oi):array {return (new self([self::$P__C => $c, self::$P__OI => $oi]))->build();}
+	static function p(Charge $c, OI $oi):array {return (new self($c, $oi))->build();}
 
-	/** @var string */
-	private static $P__C = 'c';
+	/**
+	 * 2022-11-16
+	 * @used-by self::__construct()
+	 * @var Charge
+	 */
+	private $_c;
 
-	/** @var string */
-	private static $P__OI = 'oi';
+	/**
+	 * 2022-11-16
+	 * @used-by self::__construct()
+	 * @var OI
+	 */
+	private $_oi;
 }
