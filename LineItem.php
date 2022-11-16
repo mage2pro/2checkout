@@ -7,8 +7,8 @@ namespace Dfe\TwoCheckout;
 class LineItem extends \Df\Core\O {
 	/**
 	 * 2016-05-29
-	 * @see \Dfe\TwoCheckout\LineItem\Product::build()
 	 * @used-by self::buildLI()
+	 * @see \Dfe\TwoCheckout\LineItem\Product::build()
 	 * @return array(string => string)
 	 */
 	protected function build():array {return df_clean([

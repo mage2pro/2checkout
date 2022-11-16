@@ -14,7 +14,7 @@ final class Product extends LineItem {
 	 * @used-by \Dfe\TwoCheckout\LineItem::buildLI()
 	 * @return array(string => string)
 	 */
-	protected function build() {return parent::build() + df_clean([
+	protected function build():array {return parent::build() + df_clean([
 		 # 2016-05-29
 		 # 1) Это поле отсутствует в документации,
 		 # однако, судя по ответу сервера, оно тоже поддерживается.
