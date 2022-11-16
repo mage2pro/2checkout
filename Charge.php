@@ -19,8 +19,7 @@ final class Charge extends \Df\Payment\Charge {
 	 */
 	private function liDiscount() {$o = $this->o(); return !($a = $o->getDiscountAmount()) ? null :
 		LI::buildLI('coupon', $this->cFromDocF($a) ,df_ccc(': ',
-			($d = $o->getDiscountDescription()) === $o->getCouponCode() ? $o['coupon_rule_name'] : null
-			,$d
+			($d = $o->getDiscountDescription()) === $o->getCouponCode() ? $o['coupon_rule_name'] : null, $d
 		))
 	;}
 
