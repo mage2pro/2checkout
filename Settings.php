@@ -31,11 +31,13 @@ final class Settings extends \Df\StripeClone\Settings {
 
 	/**
 	 * 2016-05-23 «Mage2.PRO» → «Payment» → «2Checkout» → «Pass Order Items to the Payment Gateway?»
+	 * @used-by \Dfe\TwoCheckout\Charge::pCharge()
 	 */
 	function passOrderItems():bool {return $this->b();}
 
 	/**
 	 * 2016-05-22
+	 * @used-by \Dfe\TwoCheckout\Handler::p()
 	 */
 	function secretWord():string {return $this->testableP();}
 }
