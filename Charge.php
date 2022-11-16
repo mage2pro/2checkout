@@ -80,13 +80,9 @@ final class Charge extends \Df\Payment\Charge {
 		 * «privateKey» указывать не нужно и нет смысла по той же причине:
 		 * https://github.com/2Checkout/2checkout-php/blob/cbac8da/lib/Twocheckout/Api/TwocheckoutApi.php#L27
 		 */
-		# 2016-05-19
-		# «Your custom order identifier. Required.»
-		# https://www.2checkout.com/documentation/payment-api/create-sale
+		# 2016-05-19 «Your custom order identifier. Required.» https://www.2checkout.com/documentation/payment-api/create-sale
 		'merchantOrderId' => $this->id()
-		# 2016-05-19
-		# «The credit card token. Required.»
-		# https://www.2checkout.com/documentation/payment-api/create-sale
+		# 2016-05-19 «The credit card token. Required.» https://www.2checkout.com/documentation/payment-api/create-sale
 		,'token' => $this->token()
 		/**
 		 * 2016-05-19
