@@ -136,15 +136,14 @@ final class Address extends \Df\Core\O {
 	 * @param A|null $oa
 	 * @return array(mixed => mixed)
 	 */
-	static function build($oa, bool $isBilling = false):array {
-		/** @var array(string => string) $result */
+	static function build($oa, bool $isBilling = false):array {/** @var array(string => string) $r */
 		if (!$oa) {
-			$result = [];
+			$r = [];
 		}
 		else {
 			$a = new self([self::$P__A => $oa]); /** @var self $a */
 			$o = $oa->getOrder(); /** @var O $o */
-			$result = [
+			$r = [
 				# 2016-05-19 «Card holder’s street address. (64 characters max) Required»
 				'addrLine1' => $a->line(1)
 				# 2016-05-19
@@ -152,12 +151,9 @@ final class Address extends \Df\Core\O {
 				# Required if “country” value is: CHN, JPN, RUS.
 				# Optional for all other “country” values.»
 				,'addrLine2' => $a->line(2)
-				# 2016-05-19 «Card holder’s city. (64 characters max) Required»
-				,'city' => $a->city()
-				# 2016-05-19 «Card holder’s country. (64 characters max) Required»
-				,'country' => $a->countryIso3()				
-				# 2016-05-19 «Card holder’s name. (128 characters max) Required»
-				,'name' => $oa->getName()				
+				,'city' => $a->city() # 2016-05-19 «Card holder’s city. (64 characters max) Required»
+				,'country' => $a->countryIso3() # 2016-05-19 «Card holder’s country. (64 characters max) Required»
+				,'name' => $oa->getName() # 2016-05-19 «Card holder’s name. (128 characters max) Required»
 				# 2016-05-19
 				# «Card holder’s state. (64 characters max)
 				# Required if “country” value is ARG, AUS, BGR, CAN, CHN, CYP, EGY, FRA, IND,
@@ -171,15 +167,12 @@ final class Address extends \Df\Core\O {
 				# SWE, THA, TUR, GBR, USA - Optional for all other “country” values.»
 				,'zipCode' => $a->postcode()
 			] + (!$isBilling ? [] : [
-				# 2016-05-19 «Card holder’s email. (64 characters max) Required»
-				'email' => $o->getCustomerEmail()
-				# 2016-05-19 «Card holder’s phone extension. (9 characters max) Optional»
-				,'phoneExt' => ''					
-				# 2016-05-19 «Card holder’s phone. (16 characters max) Optional»
-				,'phoneNumber' => $oa->getTelephone()				
+				'email' => $o->getCustomerEmail() # 2016-05-19 «Card holder’s email. (64 characters max) Required»
+				,'phoneExt' => '' # 2016-05-19 «Card holder’s phone extension. (9 characters max) Optional»
+				,'phoneNumber' => $oa->getTelephone() # 2016-05-19 «Card holder’s phone. (16 characters max) Optional»
 			]);
 		}
-		return $result;
+		return $r;
 	}
 
 	/** @var string */
