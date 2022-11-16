@@ -231,7 +231,6 @@ final class Method extends \Df\Payment\Method {
 	 * @see \Df\Payment\Method::amountFactor()
 	 * @used-by \Df\Payment\Method::amountFormat()
 	 * @used-by \Df\Payment\Method::amountParse()
-	 * @return int
 	 */
 	protected function amountFactor():int {return 1;}
 
