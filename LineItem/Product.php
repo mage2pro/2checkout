@@ -148,7 +148,7 @@ final class Product extends LineItem {
 	 * @used-by \Dfe\TwoCheckout\Charge::lineItems()
 	 * @return array(string => string)
 	 */
-	static function buildP(Charge $c, OI $oi):array {return (new self([self::$P__C => $c, self::$P__OI => $oi]))->build();}
+	static function p(Charge $c, OI $oi):array {return (new self([self::$P__C => $c, self::$P__OI => $oi]))->build();}
 
 	/** @var string */
 	private static $P__C = 'c';

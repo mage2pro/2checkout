@@ -46,7 +46,7 @@ final class Charge extends \Df\Payment\Charge {
 	 */
 	private function lineItems():array {/** @var array(array(string => string)) $r */
 		$r = df_clean(array_merge(
-			$this->oiLeafs(function(OI $i) {return LIP::buildP($this, $i);})
+			$this->oiLeafs(function(OI $i) {return LIP::p($this, $i);})
 			,[$this->liShipping(), $this->liDiscount(), $this->liTax()]
 		));
 		$rest = $this->amount() - array_sum(array_map(function(array $item) {return
