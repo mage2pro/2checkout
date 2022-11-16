@@ -83,13 +83,13 @@ class LineItem extends \Df\Core\O {
 	 * @used-by \Dfe\TwoCheckout\Charge::lineItems()
 	 * @return array(string => string)
 	 */
-	static function buildLI(string $type, string $price, string $name = '', bool $tangible = false, string $id = ''):array {
+	final static function buildLI(string $t, string $price, string $name = '', bool $tangible = false, string $id = ''):array {
 		return (new self([
-			self::$P__ID => $id ?: $type
+			self::$P__ID => $id ?: $t
 			,self::$P__NAME => $name
 			,self::$P__PRICE => $price
 			,self::$P__TANGIBLE => $tangible
-			,self::$P__TYPE => $type
+			,self::$P__TYPE => $t
 		]))->build();
 	}
 
