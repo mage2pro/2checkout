@@ -55,9 +55,8 @@ final class Product extends LineItem {
 	 * @override
 	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 * @see \Dfe\TwoCheckout\LineItem::id()
-	 * @return string
 	 */
-	protected function id() {return $this->oi()->getQuoteItemId();}
+	protected function id():string {return $this->oi()->getQuoteItemId();}
 
 	/**
 	 * 2016-05-29   
