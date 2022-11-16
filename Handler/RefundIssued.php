@@ -95,8 +95,8 @@ final class RefundIssued extends Handler {
 
 	/**
 	 * 2016-03-26
-	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::eligible()
-	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::process()
+	 * @used-by self::eligible()
+	 * @used-by self::process()
 	 * @return Order|DfOrder
 	 * @throws LE
 	 */
@@ -106,7 +106,7 @@ final class RefundIssued extends Handler {
 	 * 2016-05-22
 	 * @used-by self::eligible()
 	 * @used-by self::o()
-	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::process()
+	 * @used-by self::process()
 	 * @return OP|DfPayment|null
 	 */
 	private function op() {return dfc($this, function() {return /** @var string $pid */
