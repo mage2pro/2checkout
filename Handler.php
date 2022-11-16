@@ -21,7 +21,9 @@ abstract class Handler extends \Df\Core\O {
 	/**
 	 * 2016-03-28
 	 * @used-by self::p()
-	 * @return bool
+	 * @see \Dfe\TwoCheckout\Handler\DefaultT::eligible()
+	 * @see \Dfe\TwoCheckout\Handler\RefundIssued::process()
+	 * @see \Dfe\TwoCheckout\Handler\Charge::eligible()
 	 */
 	protected function eligible():bool {return false;}
 

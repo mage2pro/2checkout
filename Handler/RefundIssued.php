@@ -4,12 +4,11 @@ namespace Dfe\TwoCheckout\Handler;
 final class RefundIssued extends Charge {
 	/**
 	 * 2016-05-23
-	 * @used-by \Dfe\TwoCheckout\Handler::p()
 	 * @override
-	 * @see \Dfe\TwoCheckout\Handler::eligible()
-	 * @return bool
+	 * @see \Dfe\TwoCheckout\Handler\Charge::eligible()
+	 * @used-by \Dfe\TwoCheckout\Handler::p()
 	 */
-	protected function eligible() {return parent::eligible() && $this->o()->canCreditmemo();}
+	protected function eligible():bool {return parent::eligible() && $this->o()->canCreditmemo();}
 
 	/**
 	 * 2016-03-27

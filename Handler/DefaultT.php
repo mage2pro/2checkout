@@ -3,14 +3,12 @@ namespace Dfe\TwoCheckout\Handler;
 use Dfe\TwoCheckout\Handler;
 final class DefaultT extends Handler {
 	/**
-	 * 2016-05-11
-	 * Перекрываем метод, чтобы вернуть «Not implemented.» вместо «The event is not for our store.»
+	 * 2016-05-11 Перекрываем метод, чтобы вернуть «Not implemented.» вместо «The event is not for our store.»
 	 * @override
 	 * @see \Dfe\TwoCheckout\eligible::p()
 	 * @used-by \Dfe\TwoCheckout\Handler::p()
-	 * @return bool
 	 */
-	protected function eligible() {return true;}
+	protected function eligible():bool {return true;}
 
 	/**
 	 * 2016-03-25

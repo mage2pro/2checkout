@@ -15,9 +15,8 @@ abstract class Charge extends Handler {
 	 * @see \Dfe\TwoCheckout\Handler::eligible()
 	 * @used-by \Dfe\TwoCheckout\Handler::p()
 	 * @see \Dfe\TwoCheckout\Handler\RefundIssued::eligible()
-	 * @return bool
 	 */
-	protected function eligible() {return !!$this->op();}
+	protected function eligible():bool {return !!$this->op();}
 
 	/**
 	 * 2016-03-26
