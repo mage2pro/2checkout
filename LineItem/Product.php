@@ -105,9 +105,8 @@ final class Product extends LineItem {
 
 	/**
 	 * 2016-05-29
-	 * @return string
 	 */
-	private function description() {return self::adjustText(strip_tags(
+	private function description():string {return self::adjustText(strip_tags(
 		$this->p()->getData('short_description') ?: $this->p()->getData('description')
 	));}
 
