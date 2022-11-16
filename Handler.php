@@ -22,7 +22,7 @@ abstract class Handler extends \Df\Core\O {
 	 * @used-by self::p()
 	 * @return bool
 	 */
-	protected function eligible() {return false;}
+	protected function eligible():bool {return false;}
 
 	/**
 	 * 2016-05-22
