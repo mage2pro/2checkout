@@ -11,7 +11,7 @@ final class RefundIssued extends Handler {
 	/**
 	 * 2016-05-23
 	 * @override
-	 * @see \Dfe\TwoCheckout\Handler\Charge::eligible()
+	 * @see \Dfe\TwoCheckout\Handler::eligible()
 	 * @used-by \Dfe\TwoCheckout\Handler::p()
 	 */
 	protected function eligible():bool {return $this->op() && $this->o()->canCreditmemo();}
