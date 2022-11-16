@@ -34,17 +34,13 @@ final class Address extends \Df\Core\O {
 
 	/**
 	 * 2016-05-20
-	 * 1)
-	 * «Card holder’s street address. (64 characters max) Required»
+	 * 1)  «Card holder’s street address. (64 characters max) Required»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 *
-	 * 2)
-	 * «Card holder’s street address line 2. (64 characters max)
+	 * 2) «Card holder’s street address line 2. (64 characters max)
 	 * Required if “country” value is: CHN, JPN, RUS -
 	 * Optional for all other “country” values.»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * https://mail.google.com/mail/u/0/#inbox/154ca839388e9f7d
-	 *
 	 * 2017-04-08
 	 * 2017-09-16
 	 * Any value longer than 64 characters will lead to the «600 - Authorization Failed» failure:
@@ -62,7 +58,7 @@ final class Address extends \Df\Core\O {
 	 * @param int|null $i [optional]
 	 * @return string[]
 	 */
-	private function line($i = null) {/** @var string[] $r */$r = dfc($this, function() {
+	private function line($i = null):array {/** @var string[] $r */$r = dfc($this, function() {
 		/** @var string $s */
 		/** @var string $s1 */
 		/** @var string $s2 */
