@@ -271,9 +271,8 @@ final class Method extends \Df\Payment\Method {
 	 * @see \Df\Payment\Method::charge()
 	 * @used-by \Df\Payment\Method::authorize()
 	 * @used-by \Df\Payment\Method::capture()
-	 * @param bool $capture [optional]
 	 */
-	protected function charge($capture = true):void {$this->api(function() {
+	protected function charge(bool $capture = true):void {$this->api(function() {
 		$p = ['api' => 'checkout'] + Charge::p($this); /** @var array(string => mixed) $p */
 		df_sentry_extra($this, 'Request Params', $p);
 		$requester = new \Twocheckout_Api_Requester; /** @var \Twocheckout_Api_Requester $requester */
