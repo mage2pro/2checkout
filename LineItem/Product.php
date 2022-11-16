@@ -2,7 +2,6 @@
 namespace Dfe\TwoCheckout\LineItem;
 use Dfe\TwoCheckout\Charge;
 use Dfe\TwoCheckout\LineItem;
-use Dfe\TwoCheckout\Method as M;
 use Magento\Catalog\Model\Product as P;
 use Magento\Sales\Model\Order\Item as OI;
 # 2016-05-29
@@ -139,6 +138,8 @@ final class Product extends LineItem {
 
 	/**
 	 * 2016-05-29
+	 * @used-by self::build()
+	 * @used-by self::tangible()
 	 */
 	private function p():P {return $this->oi()->getProduct();}
 
