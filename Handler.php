@@ -42,8 +42,7 @@ abstract class Handler extends \Df\Core\O {
 	 * @return mixed
 	 * @throws E
 	 */
-	final static function p(array $request) {
-		/** @var mixed $result */
+	final static function p(array $request) {/** @var mixed $r */
 		try {
 			$s = dfps(__CLASS__); /** @var S $s */
 			$s->init();
@@ -80,7 +79,7 @@ abstract class Handler extends \Df\Core\O {
 			 */
 			$suffix = df_cc_class('Handler', df_underscore_to_camel($type));
 			$i = df_new(df_con(__CLASS__, $suffix, DefaultT::class), $request); /** @var Handler $i */
-			$result = $i->eligible() ? $i->process() : 'The event is not for our store.';
+			$r = $i->eligible() ? $i->process() : 'The event is not for our store.';
 		}
 		catch (E $e) {
 			df_500();
@@ -88,8 +87,8 @@ abstract class Handler extends \Df\Core\O {
 			if (df_my_local()) {
 				throw $e; # 2016-03-27 Удобно видеть стек на экране.
 			}
-			$result = __($e->getMessage());
+			$r = __($e->getMessage());
 		}
-		return $result;
+		return $r;
 	}
 }
