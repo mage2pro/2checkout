@@ -22,7 +22,7 @@ final class Product extends LineItem {
 		 # Но даже в этом случае значение иногда сохраняется, иногда нет.
 		 # 3) Опытным путём установил, что у description такое же ограничение по длине, как и у name.
 		'description' => self::adjustText(strip_tags(
-			$this->p()->getData('short_description') ?: $this->p()->getData('description')
+			$this->product()->getData('short_description') ?: $this->product()->getData('description')
 		))
 		# 2016-05-23
 		# «Array of option objects using the attributes specified below. Optional
@@ -91,7 +91,7 @@ final class Product extends LineItem {
 	 * @see \Dfe\TwoCheckout\LineItem::tangible()
 	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 */
-	protected function tangible():bool {return df_tangible($this->p());}
+	protected function tangible():bool {return df_tangible($this->product());}
 
 	/**
 	 * 2016-05-29
@@ -141,7 +141,7 @@ final class Product extends LineItem {
 	 * @used-by self::build()
 	 * @used-by self::tangible()
 	 */
-	private function p():P {return $this->oi()->getProduct();}
+	private function product():P {return $this->oi()->getProduct();}
 
 	/**
 	 * 2016-05-23
