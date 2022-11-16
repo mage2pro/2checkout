@@ -1,6 +1,6 @@
 <?php
 namespace Dfe\TwoCheckout;
-use Dfe\TwoCheckout\LineItem as LI;
+use Dfe\TwoCheckout\LineItem\Additional as LIA;
 use Dfe\TwoCheckout\LineItem\Product as LIP;
 use Dfe\TwoCheckout\Method as M;
 use Magento\Sales\Model\Order\Item as OI;
@@ -18,7 +18,7 @@ final class Charge extends \Df\Payment\Charge {
 	 * @return array(string => string)|null
 	 */
 	private function liDiscount() {$o = $this->o(); return !($a = $o->getDiscountAmount()) ? null :
-		LI::buildLI('coupon', $this->cFromDocF($a) ,df_ccc(': ',
+		LIA::p('coupon', $this->cFromDocF($a) ,df_ccc(': ',
 			($d = $o->getDiscountDescription()) === $o->getCouponCode() ? $o['coupon_rule_name'] : null, $d
 		))
 	;}
@@ -29,7 +29,7 @@ final class Charge extends \Df\Payment\Charge {
 	 * @return array(string => string)|null
 	 */
 	private function liShipping() {$o = $this->o(); return !($a = $o->getShippingAmount()) ? null :
-		LI::buildLI('shipping', $this->cFromDocF($a), $o->getShippingDescription(), true)
+		LIA::p('shipping', $this->cFromDocF($a), $o->getShippingDescription(), true)
 	;}
 
 	/**
@@ -37,7 +37,7 @@ final class Charge extends \Df\Payment\Charge {
 	 * @used-by self::lineItems()
 	 * @return array(string => string)|null
 	 */
-	private function liTax() {return !($a = $this->o()->getTaxAmount()) ? null : LI::buildLI('tax', $this->cFromDocF($a));}
+	private function liTax() {return !($a = $this->o()->getTaxAmount()) ? null : LIA::p('tax', $this->cFromDocF($a));}
 	
 	/**
 	 * 2016-05-23
@@ -54,7 +54,7 @@ final class Charge extends \Df\Payment\Charge {
 			* dfa($item, 'quantity', 1)
 			* ('coupon' === $item['type'] ? -1 : 1)
 		;}, $r)); /** @var float $rest */
-		return array_merge($r, dff_eq0($rest) ? [] : [LI::buildLI(
+		return array_merge($r, dff_eq0($rest) ? [] : [LIA::p(
 			$rest > 0 ? 'tax' : 'coupon', $this->amountFormat($rest), 'Correction', false, 'correction'
 		)]);
 	}

@@ -10,7 +10,7 @@ final class Product extends LineItem {
 	 * 2016-05-29
 	 * @override
 	 * @see \Dfe\TwoCheckout\LineItem::build()
-	 * @used-by \Dfe\TwoCheckout\LineItem::buildLI()
+	 * @used-by \Dfe\TwoCheckout\LineItem::buildP()
 	 * @return array(string => string)
 	 */
 	protected function build():array {return parent::build() + df_clean([
@@ -52,13 +52,13 @@ final class Product extends LineItem {
 	 *  	vendor_product_id: наш идентификатор.
 	 * Вот тут-то мы их и сопоставим.
 	 * @override
-	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 * @see \Dfe\TwoCheckout\LineItem::id()
+	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 */
 	protected function id():string {return $this->oi()->getQuoteItemId();}
 
 	/**
-	 * 2016-05-29   
+	 * 2016-05-29
 	 * 2017-02-01
 	 * Раньше здесь стояло $this->top()->getName().
 	 * Идея была в том, что название «New Very Prive» лучше, чем «New Very Prive-37-Almond».

@@ -2,9 +2,59 @@
 namespace Dfe\TwoCheckout;
 /**
  * 2016-05-29
+ * @see \Dfe\TwoCheckout\LineItem\Additional
  * @see \Dfe\TwoCheckout\LineItem\Product
  */
-class LineItem extends \Df\Core\O {
+abstract class LineItem extends \Df\Core\O {
+	/**
+	 * 2016-05-29 «Your custom product identifier. Optional»
+	 * @used-by self::build()
+	 * @see \Dfe\TwoCheckout\LineItem\Additional::id()
+	 * @see \Dfe\TwoCheckout\LineItem\Product::id()
+	 */
+	abstract protected function id():string;
+
+	/**
+	 * 2016-05-29
+	 * @used-by self::build()
+	 * @see \Dfe\TwoCheckout\LineItem\Additional::nameRaw()
+	 * @see \Dfe\TwoCheckout\LineItem\Product::nameRaw()
+	 */
+	abstract protected function nameRaw():string;
+
+	/**
+	 * 2016-05-23
+	 * «Price of the line item.
+	 * Format: 0.00-99999999.99, defaults to 0 if a value isn’t passed in
+	 * or if value is incorrectly formatted, no negatives
+	 * (use positive values for coupons). Required».
+	 * Здесь нужно указывать именно цену товара, а не цену строки заказа.
+	 * Т.е. умножать на количество здесь не надо: проверил опытным путём.
+	 * @used-by self::build()
+	 * @see \Dfe\TwoCheckout\LineItem\Additional::price()
+	 * @see \Dfe\TwoCheckout\LineItem\Product::price()
+	 */
+	abstract protected function price():string;
+
+	/**
+	 * 2016-05-23 «Y or N. Will default to Y if the type is shipping. Optional»
+	 * @used-by self::build()
+	 * @see \Dfe\TwoCheckout\LineItem\Additional::tangible()
+	 * @see \Dfe\TwoCheckout\LineItem\Product::tangible()
+	 */
+	abstract protected function tangible():bool;
+
+	/**
+	 * 2016-05-23
+	 * «The type of line item that is being passed in.
+	 * (Always Lower Case, ‘product’, ‘shipping’, ‘tax’ or ‘coupon’, defaults to ‘product’) Required»
+	 * https://www.2checkout.com/documentation/payment-api/create-sale
+	 * @used-by self::build()
+	 * @see \Dfe\TwoCheckout\LineItem\Additional::type()
+	 * @see \Dfe\TwoCheckout\LineItem\Product::type()
+	 */
+	abstract protected function type():string;
+
 	/**
 	 * 2016-05-29
 	 * @used-by self::buildLI()
@@ -34,67 +84,6 @@ class LineItem extends \Df\Core\O {
 	]);}
 
 	/**
-	 * 2016-05-29 «Your custom product identifier. Optional»
-	 * @used-by self::build()
-	 * @see \Dfe\TwoCheckout\LineItem\Product::id()
-	 */
-	protected function id():string {return $this[self::$P__ID];}
-
-	/**
-	 * 2016-05-29
-	 * @used-by self::build()
-	 * @see \Dfe\TwoCheckout\LineItem\Product::nameRaw()
-	 */
-	protected function nameRaw():string {return $this[self::$P__NAME];}
-
-	/**
-	 * 2016-05-23
-	 * «Price of the line item.
-	 * Format: 0.00-99999999.99, defaults to 0 if a value isn’t passed in
-	 * or if value is incorrectly formatted, no negatives
-	 * (use positive values for coupons). Required».
-	 * Здесь нужно указывать именно цену товара, а не цену строки заказа.
-	 * Т.е. умножать на количество здесь не надо: проверил опытным путём. 
-	 * @used-by self::build()
-	 * @see \Dfe\TwoCheckout\LineItem\Product::price()
-	 */
-	protected function price():string {return $this[self::$P__PRICE];}
-
-	/**
-	 * 2016-05-23 «Y or N. Will default to Y if the type is shipping. Optional»
-	 * @used-by self::build()
-	 * @see \Dfe\TwoCheckout\LineItem\Product::tangible()
-	 */
-	protected function tangible():bool {return $this[self::$P__TANGIBLE];}
-
-	/**
-	 * 2016-05-23
-	 * «The type of line item that is being passed in.
-	 * (Always Lower Case, ‘product’, ‘shipping’, ‘tax’ or ‘coupon’, defaults to ‘product’) Required»
-	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 * @used-by self::build()
-	 * @see \Dfe\TwoCheckout\LineItem\Product::type()
-	 */
-	protected function type():string {return $this[self::$P__TYPE];}
-
-	/**
-	 * @used-by \Dfe\TwoCheckout\Charge::liDiscount()
-	 * @used-by \Dfe\TwoCheckout\Charge::liShipping()
-	 * @used-by \Dfe\TwoCheckout\Charge::liTax()
-	 * @used-by \Dfe\TwoCheckout\Charge::lineItems()
-	 * @return array(string => string)
-	 */
-	final static function buildLI(string $t, string $price, string $name = '', bool $tangible = false, string $id = ''):array {
-		return (new self([
-			self::$P__ID => $id ?: $t
-			, self::$P__NAME => $name
-			, self::$P__PRICE => $price
-			, self::$P__TANGIBLE => $tangible
-			, self::$P__TYPE => $t
-		]))->build();
-	}
-
-	/**
 	 * 2016-05-29
 	 * 1) В именах товаров недопустимы символы < и >:
 	 * «Name of the item passed in. (128 characters max, cannot use ‘<' or '>’,
@@ -106,20 +95,5 @@ class LineItem extends \Df\Core\O {
 	 * @used-by self::build()
 	 * @used-by \Dfe\TwoCheckout\LineItem\Product::build()
 	 */
-	protected static function adjustText(string $s):string {return df_chop(strtr($s, ['<' => '«', '>' => '»']), 128);}
-
-	/** @var string */
-	private static $P__ID = 'id';
-
-	/** @var string */
-	private static $P__NAME = 'name';
-
-	/** @var string */
-	private static $P__PRICE = 'price';
-
-	/** @var string */
-	private static $P__TANGIBLE = 'tangible';
-
-	/** @var string */
-	private static $P__TYPE = 'type';
+	final protected static function adjustText(string $s):string {return df_chop(strtr($s, ['<' => '«', '>' => '»']), 128);}
 }
