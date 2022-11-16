@@ -62,9 +62,8 @@ class LineItem extends \Df\Core\O {
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
 	 * @see \Dfe\TwoCheckout\LineItem\Product::type()
 	 * @used-by self::build()
-	 * @return string
 	 */
-	protected function type() {return $this[self::$P__TYPE];}
+	protected function type():string {return $this[self::$P__TYPE];}
 
 	/**
 	 * 2016-05-23

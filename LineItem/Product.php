@@ -96,10 +96,9 @@ final class Product extends LineItem {
 	 * 2016-05-29
 	 * @override
 	 * @see \Dfe\TwoCheckout\LineItem::type()
-	 * @used-by \Dfe\TwoCheckout\LineItem::build()
-	 * @return string
+
 	 */
-	protected function type() {return 'product';}
+	protected function type():string {return 'product';}
 
 	/** @return Charge */
 	private function charge() {return $this[self::$P__C];}
