@@ -64,7 +64,7 @@ final class Charge extends \Df\Payment\Charge {
 	 * @used-by self::p()
 	 * @return array(string => mixed)
 	 */
-	private function pCharge() {return [
+	private function pCharge():array {return [
 		/**
 		 * 2016-05-19
 		 * «sellerId»
