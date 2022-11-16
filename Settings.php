@@ -5,9 +5,11 @@ use Twocheckout as T;
 final class Settings extends \Df\StripeClone\Settings {
 	/**
 	 * 2016-05-18
-	 * @return string
+	 * @used-by self::init()
+	 * @used-by \Dfe\TwoCheckout\ConfigProvider::config()
+	 * @used-by \Dfe\TwoCheckout\Method::charge()
 	 */
-	function accountNumber() {return $this->testable();}
+	function accountNumber():string {return $this->testable();}
 
 	/**
 	 * 2016-05-19
