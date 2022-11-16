@@ -52,9 +52,8 @@ class LineItem extends \Df\Core\O {
 	 * 2016-05-23 «Y or N. Will default to Y if the type is shipping. Optional»
 	 * @see \Dfe\TwoCheckout\LineItem\Product::tangible()
 	 * @used-by self::build()
-	 * @return bool
 	 */
-	protected function tangible() {return $this[self::$P__TANGIBLE];}
+	protected function tangible():bool {return $this[self::$P__TANGIBLE];}
 
 	/**
 	 * 2016-05-23

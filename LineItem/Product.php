@@ -89,9 +89,8 @@ final class Product extends LineItem {
 	 * @override
 	 * @see \Dfe\TwoCheckout\LineItem::tangible()
 	 * @used-by \Dfe\TwoCheckout\LineItem::build()
-	 * @return bool
 	 */
-	protected function tangible() {return df_tangible($this->p());}
+	protected function tangible():bool {return df_tangible($this->p());}
 
 	/**
 	 * 2016-05-29
