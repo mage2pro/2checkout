@@ -4,11 +4,18 @@ use Dfe\TwoCheckout\Handler\DefaultT;
 use Dfe\TwoCheckout\Settings as S;
 use Exception as E;
 /**
- * @see \Dfe\TwoCheckout\Handler\Charge
  * @see \Dfe\TwoCheckout\Handler\DefaultT
  * @see \Dfe\TwoCheckout\Handler\RefundIssued
  */
 abstract class Handler extends \Df\Core\O {
+	/**
+	 * 2016-03-28
+	 * @used-by self::p()
+	 * @see \Dfe\TwoCheckout\Handler\DefaultT::eligible()
+	 * @see \Dfe\TwoCheckout\Handler\RefundIssued::process()
+	 */
+	abstract protected function eligible():bool;
+
 	/**
 	 * 2016-03-25
 	 * @used-by self::p()
@@ -17,15 +24,6 @@ abstract class Handler extends \Df\Core\O {
 	 * @return mixed
 	 */
 	abstract protected function process();
-
-	/**
-	 * 2016-03-28
-	 * @used-by self::p()
-	 * @see \Dfe\TwoCheckout\Handler\DefaultT::eligible()
-	 * @see \Dfe\TwoCheckout\Handler\RefundIssued::process()
-	 * @see \Dfe\TwoCheckout\Handler\Charge::eligible()
-	 */
-	protected function eligible():bool {return false;}
 
 	/**
 	 * 2016-05-22
@@ -37,7 +35,7 @@ abstract class Handler extends \Df\Core\O {
 	 * , or RECURRING_RESTARTED )»
 	 * @return string
 	 */
-	protected function type() {return $this['message_type'];}
+	final protected function type() {return $this['message_type'];}
 
 	/**
 	 * 2016-03-25

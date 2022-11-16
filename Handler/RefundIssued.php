@@ -1,14 +1,20 @@
 <?php
 namespace Dfe\TwoCheckout\Handler;
+use Df\Sales\Model\Order as DfOrder;
+use Df\Sales\Model\Order\Payment as DfPayment;
+use Dfe\TwoCheckout\Handler;
+use Magento\Framework\Exception\LocalizedException as LE;
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Payment as OP;
 # 2016-05-22 REFUND_ISSUED https://www.2checkout.com/documentation/notifications/refund-issued
-final class RefundIssued extends Charge {
+final class RefundIssued extends Handler {
 	/**
 	 * 2016-05-23
 	 * @override
 	 * @see \Dfe\TwoCheckout\Handler\Charge::eligible()
 	 * @used-by \Dfe\TwoCheckout\Handler::p()
 	 */
-	protected function eligible():bool {return parent::eligible() && $this->o()->canCreditmemo();}
+	protected function eligible():bool {return $this->op() && $this->o()->canCreditmemo();}
 
 	/**
 	 * 2016-03-27
@@ -84,4 +90,31 @@ final class RefundIssued extends Charge {
 		}
 		return $r;
 	}
+
+	/**
+	 * 2016-03-26
+	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::eligible()
+	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::process()
+	 * @return Order|DfOrder
+	 * @throws LE
+	 */
+	private function o() {return df_order($this->op());}
+
+	/**
+	 * 2016-05-22
+	 * @used-by self::eligible()
+	 * @used-by self::o()
+	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::process()
+	 * @return OP|DfPayment|null
+	 */
+	private function op() {return dfc($this, function() {return /** @var string $pid */
+		($pid = $this->pid()) ? dfp_webhook_case(dfp(df_transx($pid, false))) : null
+	;});}
+
+	/**
+	 * 2016-05-22 Идентификатор транзакции capture.
+	 * @used-by self::op()
+	 * @used-by \Dfe\TwoCheckout\Handler\RefundIssued::process()
+	 */
+	private function pid():string {return df_nts($this['invoice_id']);}
 }
