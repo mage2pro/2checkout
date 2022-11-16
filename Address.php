@@ -3,6 +3,7 @@ namespace Dfe\TwoCheckout;
 use Df\Core\Visitor;
 use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Address as A;
+# 2016-05-20
 final class Address extends \Df\Core\O {
 	/**
 	 * @used-by self::city()
@@ -133,10 +134,9 @@ final class Address extends \Df\Core\O {
 	 * *) @uses \Magento\Sales\Model\Order::getShippingAddress() returns null
 	 * *) @uses \Magento\Quote\Model\Quote::getShippingAddress() returns an empty object.
 	 * @param A|null $oa
-	 * @param bool $isBilling [optional]
 	 * @return array(mixed => mixed)
 	 */
-	static function build($oa, $isBilling = false) {
+	static function build($oa, bool $isBilling = false):array {
 		/** @var array(string => string) $result */
 		if (!$oa) {
 			$result = [];
