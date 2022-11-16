@@ -11,6 +11,8 @@ abstract class Handler extends \Df\Core\O {
 	/**
 	 * 2016-03-25
 	 * @used-by self::p()
+	 * @see \Dfe\TwoCheckout\Handler\DefaultT::process()
+	 * @see \Dfe\TwoCheckout\Handler\RefundIssued::process()
 	 * @return mixed
 	 */
 	abstract protected function process();
