@@ -6,6 +6,7 @@ use Exception as E;
 /**
  * @see \Dfe\TwoCheckout\Handler\Charge
  * @see \Dfe\TwoCheckout\Handler\DefaultT
+ * @see \Dfe\TwoCheckout\Handler\RefundIssued
  */
 abstract class Handler extends \Df\Core\O {
 	/**
