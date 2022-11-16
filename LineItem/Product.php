@@ -2,7 +2,6 @@
 namespace Dfe\TwoCheckout\LineItem;
 use Dfe\TwoCheckout\Charge;
 use Dfe\TwoCheckout\LineItem;
-use JMS\Serializer\Annotation as Serializer;
 use Magento\Catalog\Model\Product as P;
 use Magento\Sales\Model\Order\Item as OI;
 # 2016-05-29
@@ -35,7 +34,7 @@ final class Product extends LineItem {
 		# «Quantity of the item passed in.
 		# (0-999, defaults to 1 if not passed in or incorrectly formatted.) Optional»
 		# https://www.2checkout.com/documentation/payment-api/create-sale
-		,'quantity' => df_oqi_qty($this->oi())
+		,'quantity' => df_oqi_qty($this->_oi)
 	]);}
 
 	/**
@@ -56,7 +55,7 @@ final class Product extends LineItem {
 	 * @see \Dfe\TwoCheckout\LineItem::id()
 	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 */
-	protected function id():string {return $this->oi()->getQuoteItemId();}
+	protected function id():string {return $this->_oi->getQuoteItemId();}
 
 	/**
 	 * 2016-05-29
@@ -69,7 +68,7 @@ final class Product extends LineItem {
 	 * @see \Dfe\TwoCheckout\LineItem::nameRaw()
 	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 */
-	protected function nameRaw():string {return $this->oi()->getName();}
+	protected function nameRaw():string {return $this->_oi->getName();}
 
 	/**
 	 * 2016-05-29
@@ -84,7 +83,7 @@ final class Product extends LineItem {
 	 * @see \Dfe\TwoCheckout\LineItem::price()
 	 * @used-by \Dfe\TwoCheckout\LineItem::build()
 	 */
-	protected function price():string {return $this->charge()->cFromDocF(df_oqi_price($this->oi()));}
+	protected function price():string {return $this->_c->cFromDocF(df_oqi_price($this->_oi));}
 
 	/**
 	 * 2016-05-23
@@ -108,23 +107,12 @@ final class Product extends LineItem {
 	 */
 	private function __construct(Charge $c, OI $oi) {$this->_c = $c; $this->_oi = $oi;}
 
-	/** @used-by self::price() */
-	private function charge():Charge {return $this[self::$P__C];}
-
-	/**
-	 * @used-by self::build()
-	 * @used-by self::id()
-	 * @used-by self::nameRaw()
-	 * @used-by self::price()
-	 */
-	private function oi():OI {return $this[self::$P__OI];}
-
 	/**
 	 * @used-by self::build()
 	 * @return array(array(string => string))
 	 */
 	private function options():array {return
-		!($op = df_oqi_top($this->oi())->getProductOptions()) || !($ai = dfa($op, 'attributes_info')) ? [] :
+		!($op = df_oqi_top($this->_oi)->getProductOptions()) || !($ai = dfa($op, 'attributes_info')) ? [] :
 			array_map(function(array $i) {return [
 				# 2016-05-23
 				# «Name of product option.
@@ -148,7 +136,7 @@ final class Product extends LineItem {
 	 * @used-by self::build()
 	 * @used-by self::tangible()
 	 */
-	private function product():P {return $this->oi()->getProduct();}
+	private function product():P {return $this->_oi->getProduct();}
 
 	/**
 	 * 2016-05-23
@@ -161,6 +149,7 @@ final class Product extends LineItem {
 	/**
 	 * 2022-11-16
 	 * @used-by self::__construct()
+	 * @used-by self::price()
 	 * @var Charge
 	 */
 	private $_c;
@@ -168,6 +157,10 @@ final class Product extends LineItem {
 	/**
 	 * 2022-11-16
 	 * @used-by self::__construct()
+	 * @used-by self::build()
+	 * @used-by self::id()
+	 * @used-by self::nameRaw()
+	 * @used-by self::price()
 	 * @var OI
 	 */
 	private $_oi;
