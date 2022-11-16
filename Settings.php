@@ -30,15 +30,12 @@ final class Settings extends \Df\StripeClone\Settings {
 	}
 
 	/**
-	 * 2016-05-23
-	 * «Mage2.PRO» → «Payment» → «2Checkout» → «Pass Order Items to the Payment Gateway?»
-	 * @return bool
+	 * 2016-05-23 «Mage2.PRO» → «Payment» → «2Checkout» → «Pass Order Items to the Payment Gateway?»
 	 */
-	function passOrderItems() {return $this->b();}
+	function passOrderItems():bool {return $this->b();}
 
 	/**
 	 * 2016-05-22
-	 * @return string
 	 */
-	function secretWord() {return $this->testableP();}
+	function secretWord():string {return $this->testableP();}
 }
