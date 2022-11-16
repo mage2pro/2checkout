@@ -50,8 +50,8 @@ class LineItem extends \Df\Core\O {
 
 	/**
 	 * 2016-05-23 «Y or N. Will default to Y if the type is shipping. Optional»
-	 * @see \Dfe\TwoCheckout\LineItem\Product::tangible()
 	 * @used-by self::build()
+	 * @see \Dfe\TwoCheckout\LineItem\Product::tangible()
 	 */
 	protected function tangible():bool {return $this[self::$P__TANGIBLE];}
 
@@ -60,8 +60,8 @@ class LineItem extends \Df\Core\O {
 	 * «The type of line item that is being passed in.
 	 * (Always Lower Case, ‘product’, ‘shipping’, ‘tax’ or ‘coupon’, defaults to ‘product’) Required»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 * @see \Dfe\TwoCheckout\LineItem\Product::type()
 	 * @used-by self::build()
+	 * @see \Dfe\TwoCheckout\LineItem\Product::type()
 	 */
 	protected function type():string {return $this[self::$P__TYPE];}
 
