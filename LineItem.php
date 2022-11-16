@@ -99,19 +99,16 @@ class LineItem extends \Df\Core\O {
 
 	/**
 	 * 2016-05-29
-	 * В именах товаров недопустимы символы < и >:
+	 * 1) В именах товаров недопустимы символы < и >:
 	 * «Name of the item passed in. (128 characters max, cannot use ‘<' or '>’,
 	 * defaults to capitalized version of ‘type’.) Required»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 *
-	 * Думаю, в description они тоже недопустимы...
+	 * 2) Думаю, в description они тоже недопустимы...
 	 * Похоже, description также имеет ограничения по длине, как и name.
-	 *
-	 * Опытным путём установил, что у description такое же ограничение по длине, как и у name.
-	 * @param string $s
-	 * @return string
+	 * 3) Опытным путём установил, что у description такое же ограничение по длине, как и у name.
+	 * @used-by self::name()
 	 */
-	protected static function adjustText($s) {return df_chop(strtr($s, ['<' => '«', '>' => '»']), 128);}
+	protected static function adjustText(string $s):string {return df_chop(strtr($s, ['<' => '«', '>' => '»']), 128);}
 
 	/** @var string */
 	private static $P__ID = 'id';
