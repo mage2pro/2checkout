@@ -33,9 +33,8 @@ abstract class Handler extends \Df\Core\O {
 	 * , INVOICE_STATUS_CHANGED, REFUND_ISSUED, RECURRING_INSTALLMENT_SUCCESS
 	 * , RECURRING_INSTALLMENT_FAILED, RECURRING_STOPPED, RECURRING_COMPLETE
 	 * , or RECURRING_RESTARTED )»
-	 * @return string
 	 */
-	final protected function type() {return $this['message_type'];}
+	final protected function type():string {return $this['message_type'];}
 
 	/**
 	 * 2016-03-25
