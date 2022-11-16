@@ -102,8 +102,8 @@ final class Product extends LineItem {
 	 */
 	protected function type():string {return 'product';}
 
-	/** @return Charge */
-	private function charge() {return $this[self::$P__C];}
+	/** @used-by self::price() */
+	private function charge():Charge {return $this[self::$P__C];}
 
 	/**
 	 * @used-by self::build()
