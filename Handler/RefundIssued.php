@@ -23,7 +23,9 @@ final class RefundIssued extends Handler {
 	 * @used-by \Dfe\TwoCheckout\Handler::process()
 	 * @return int|string
 	 */
-	final protected function process() {return dfp_refund($this->op(), $this->pid(), dfa($this->itemA(), 'refund')) ?: 'skipped';}
+	final protected function process() {return
+		dfp_refund($this->op(), $this->pid(), dfa($this->itemA(), 'refund')) ?: 'skipped'
+	;}
 
 	/**
 	 * 2016-05-23
