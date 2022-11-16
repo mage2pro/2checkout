@@ -113,8 +113,11 @@ final class Product extends LineItem {
 	 */
 	private function oi():OI {return $this[self::$P__OI];}
 
-	/** @return array(array(string => string)) */
-	private function options() {return
+	/**
+	 * @used-by self::build()
+	 * @return array(array(string => string))
+	 */
+	private function options():array {return
 		!($op = df_oqi_top($this->oi())->getProductOptions()) || !($ai = dfa($op, 'attributes_info')) ? [] :
 			array_map(function(array $i) {return [
 				# 2016-05-23
