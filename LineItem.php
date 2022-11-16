@@ -45,6 +45,7 @@ class LineItem extends \Df\Core\O {
 	 * Здесь нужно указывать именно цену товара, а не цену строки заказа.
 	 * Т.е. умножать на количество здесь не надо: проверил опытным путём. 
 	 * @used-by self::build()
+	 * @see \Dfe\TwoCheckout\LineItem\Product::price()
 	 */
 	protected function price():string {return $this[self::$P__PRICE];}
 
@@ -70,14 +71,12 @@ class LineItem extends \Df\Core\O {
 	 * «Name of the item passed in. (128 characters max, cannot use ‘<' or '>’,
 	 * defaults to capitalized version of ‘type’.) Required»
 	 * https://www.2checkout.com/documentation/payment-api/create-sale
-	 *
 	 * 2016-05-29
 	 * The fallback to the «capitalized version of ‘type’» does not work:
 	 * the server responds "Bad request - parameter error" if the "name" is absent.
 	 * https://mail.google.com/mail/u/0/#sent/154f4ade595abd5b
-	 * @return string
 	 */
-	private function name() {return dfc($this, function() {return self::adjustText(
+	private function name():string {return dfc($this, function() {return self::adjustText(
 		$this->nameRaw() ?: df_ucfirst($this->type())
 	);});}
 
