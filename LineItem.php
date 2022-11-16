@@ -33,9 +33,8 @@ class LineItem extends \Df\Core\O {
 	 * 2016-05-29
 	 * @used-by self::name()
 	 * @see \Dfe\TwoCheckout\LineItem\Product::nameRaw()
-	 * @return string
 	 */
-	protected function nameRaw() {return $this[self::$P__NAME];}
+	protected function nameRaw():string {return $this[self::$P__NAME];}
 
 	/**
 	 * 2016-05-23

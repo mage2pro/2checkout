@@ -66,9 +66,8 @@ final class Product extends LineItem {
 	 * @override
 	 * @see \Dfe\TwoCheckout\LineItem::nameRaw()
 	 * @used-by \Dfe\TwoCheckout\LineItem::name()
-	 * @return string
 	 */
-	protected function nameRaw() {return $this->oi()->getName();}
+	protected function nameRaw():string {return $this->oi()->getName();}
 
 	/**
 	 * 2016-05-29
