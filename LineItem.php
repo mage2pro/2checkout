@@ -11,7 +11,7 @@ class LineItem extends \Df\Core\O {
 	 * @used-by self::buildLI()
 	 * @return array(string => string)
 	 */
-	protected function build() {return df_clean([
+	protected function build():array {return df_clean([
 		'type' => $this->type()
 		,'name' => $this->name()
 		,'price' => $this->price()
