@@ -26,9 +26,8 @@ class LineItem extends \Df\Core\O {
 	 * 2016-05-29 «Your custom product identifier. Optional»
 	 * @used-by self::build()
 	 * @see \Dfe\TwoCheckout\LineItem\Product::id()
-	 * @return string
 	 */
-	protected function id() {return $this[self::$P__ID];}
+	protected function id():string {return $this[self::$P__ID];}
 
 	/**
 	 * 2016-05-29
