@@ -37,9 +37,7 @@ final class Charge extends \Df\Payment\Charge {
 	 * @used-by self::lineItems()
 	 * @return array(string => string)|null
 	 */
-	private function liTax() {return !($a = $this->o()->getTaxAmount()) ? null :
-		LI::buildLI('tax', $this->cFromDocF($a))
-	;}
+	private function liTax() {return !($a = $this->o()->getTaxAmount()) ? null : LI::buildLI('tax', $this->cFromDocF($a));}
 	
 	/**
 	 * 2016-05-23
