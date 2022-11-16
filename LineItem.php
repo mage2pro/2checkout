@@ -75,10 +75,9 @@ class LineItem extends \Df\Core\O {
 	 * The fallback to the «capitalized version of ‘type’» does not work:
 	 * the server responds "Bad request - parameter error" if the "name" is absent.
 	 * https://mail.google.com/mail/u/0/#sent/154f4ade595abd5b
+	 * @used-by self::build()
 	 */
-	private function name():string {return dfc($this, function() {return self::adjustText(
-		$this->nameRaw() ?: df_ucfirst($this->type())
-	);});}
+	private function name():string {return self::adjustText($this->nameRaw() ?: df_ucfirst($this->type()));}
 
 	/**
 	 * @used-by \Dfe\TwoCheckout\Charge::liDiscount()
