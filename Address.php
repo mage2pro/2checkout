@@ -28,7 +28,7 @@ final class Address extends \Df\Core\O {
 	 * @used-by build()
 	 * @used-by req()
 	 */
-	private function countryIso3():string {return dfc($this, function() {return df_country_2_to_3(
+	private function countryIso3():string {return dfc($this, function():string {return df_country_2_to_3(
 		$this->aa()->getCountryId() ?: $this->visitor()->iso2()
 	);});}
 
