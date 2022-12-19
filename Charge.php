@@ -108,7 +108,7 @@ final class Charge extends \Df\Payment\Charge {
 		 * Required. (Passed as a sub object to the Authorization Object.)»
 		 * https://www.2checkout.com/documentation/payment-api/create-sale
 		 */
-		,'billingAddr' => Address::build($this->addressB(), $isBilling = true)
+		,'billingAddr' => Address::build($this->addressB(), true)
 		/**
 		 * 2016-05-19
 		 * «Object that defines the shipping address using the attributes specified below.
