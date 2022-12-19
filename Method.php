@@ -26,9 +26,8 @@ final class Method extends \Df\Payment\Method {
 	 * @override
 	 * @see \Df\Payment\Method::amountFormat()
 	 * @used-by \Df\Payment\Operation::amountFormat()
-	 * @param float|int $a
 	 */
-	function amountFormat($a):string {return dff_2(df_assert_le(99999999.99, abs($a)));}
+	function amountFormat(float $a):string {return dff_2(df_assert_le(99999999.99, abs($a)));}
 
 	/**
 	 * 2016-03-07
