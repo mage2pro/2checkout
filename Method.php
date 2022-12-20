@@ -258,7 +258,9 @@ final class Method extends \Df\Payment\Method {
 	 * @see \Df\Payment\Method::amountLimits()
 	 * @used-by \Df\Payment\Method::isAvailable()
 	 */
-	protected function amountLimits():\Closure {return function($c) {return [df_currency_convert_safe(1, 'USD', $c), null];};}
+	protected function amountLimits():\Closure {return function(string $c):float {return [
+		df_currency_convert_safe(1, 'USD', $c), null
+	];};}
 
 	/**
 	 * 2016-08-14
