@@ -132,6 +132,7 @@ final class Address extends \Df\Core\O {
 	 * An order/quote can be without a shipping address (consist of the Virtual products). In this case:
 	 * *) @uses \Magento\Sales\Model\Order::getShippingAddress() returns null
 	 * *) @uses \Magento\Quote\Model\Quote::getShippingAddress() returns an empty object.
+	 * @used-by \Dfe\TwoCheckout\Charge::pCharge()
 	 * @param A|null $oa
 	 * @return array(mixed => mixed)
 	 */
