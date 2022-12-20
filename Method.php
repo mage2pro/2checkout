@@ -111,9 +111,8 @@ final class Method extends \Df\Payment\Method {
 	 * https://github.com/mage2pro/core/blob/3.4.1/StripeClone/Method.php#L372-L442
 	 * @override
 	 * @see \Df\Payment\Method::_refund()
-	 * @param float $a
 	 */
-	protected function _refund($a):void {$this->api(function() use($a) {
+	protected function _refund(float $a):void {$this->api(function() use($a) {
 		/**
 		 * 2016-03-17, 2017-11-11, 2017-12-06
 		 * Despite of its name, @uses \Magento\Sales\Model\Order\Payment::getAuthorizationTransaction()
