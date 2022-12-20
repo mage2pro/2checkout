@@ -1,6 +1,6 @@
 {
 	"name": "mage2pro/2checkout"
-	,"version": "1.7.0"
+	,"version": "1.7.1"
 	,"description": "2Checkout integration with Magento 2"
 	,"type": "magento2-module"
 	,"homepage": "https://mage2.pro/c/extensions/2checkout"
