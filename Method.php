@@ -374,14 +374,12 @@ final class Method extends \Df\Payment\Method {
 		# 2016-05-20 Мы не можем получить 4 последние цифры карты: вместо этого получаем 4 первых и 2 последних.
 		$this->iiaAdd(
 			dfa($card, [InfoBlock::CARD_F6, InfoBlock::CARD_L2])
-			/**
-			 * 2016-05-21
-			 * Идентификатор документа-sale в 2Checkout.
-			 * https://www.2checkout.com/documentation/payment-api/create-sale
-			 * Обратите внимание, что он отличается
-			 * от идентификатора документа-invoice в 2Checkout.
-			 * Его также можно получить посредством dfa($sale, 'sale_id')
-			 */
+			# 2016-05-21
+			# Идентификатор документа-sale в 2Checkout.
+			# https://www.2checkout.com/documentation/payment-api/create-sale
+			# Обратите внимание, что он отличается
+			# от идентификатора документа-invoice в 2Checkout.
+			# Его также можно получить посредством dfa($sale, 'sale_id')
 			+ [InfoBlock::SALE_ID => $saleId]
 		);
 		$this->iiaUnset(Token::KEY);
