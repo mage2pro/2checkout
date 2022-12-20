@@ -133,10 +133,9 @@ final class Address extends \Df\Core\O {
 	 * *) @uses \Magento\Sales\Model\Order::getShippingAddress() returns null
 	 * *) @uses \Magento\Quote\Model\Quote::getShippingAddress() returns an empty object.
 	 * @used-by \Dfe\TwoCheckout\Charge::pCharge()
-	 * @param A|null $oa
 	 * @return array(mixed => mixed)
 	 */
-	static function build($oa, bool $isBilling = false):array {/** @var array(string => string) $r */
+	static function build(A $oa = null, bool $isBilling = false):array {/** @var array(string => string) $r */
 		if (!$oa) {
 			$r = [];
 		}
