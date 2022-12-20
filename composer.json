@@ -11,7 +11,7 @@
 		"homepage": "https://mage2.pro/users/dmitry_fedyuk",
 		"role": "Developer"
 	}]
-	,"require": {"mage2pro/core": ">=8.1.1", "2checkout/2checkout-php": "*"}
+	,"require": {"mage2pro/core": ">=9.0.2", "2checkout/2checkout-php": "*"}
 	,"autoload": {"files": ["registration.php"], "psr-4": {"Dfe\\TwoCheckout\\": ""}}
 	,"keywords": [
 		"2Checkout"
