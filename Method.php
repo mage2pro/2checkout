@@ -112,7 +112,7 @@ final class Method extends \Df\Payment\Method {
 	 * @override
 	 * @see \Df\Payment\Method::_refund()
 	 */
-	protected function _refund(float $a):void {$this->api(function() use($a) {
+	protected function _refund(float $a):void {$this->api(function() use($a):void {
 		/**
 		 * 2016-03-17, 2017-11-11, 2017-12-06
 		 * Despite of its name, @uses \Magento\Sales\Model\Order\Payment::getAuthorizationTransaction()
