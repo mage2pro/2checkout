@@ -367,13 +367,11 @@ final class Method extends \Df\Payment\Method {
 		$sr = \Twocheckout_Sale::retrieve(['invoice_id' => $id]);  /** @var array(string => string|mixed) $sr */
 		$sale = dfa($sr, 'sale'); /** @var array(string => string|array) $sale */
 		$card = dfa_deep($sale, 'customer/pay_method'); /** @var array(string => string) $card */
-		/**
-		 * 2016-03-15
-		 * https://mage2.pro/t/941
-		 * https://stripe.com/docs/api#card_object-last4
-		 * «How is the \Magento\Sales\Model\Order\Payment's setCcLast4() / getCcLast4() used?»
-		 * 2016-05-20 Мы не можем получить 4 последние цифры карты: вместо этого получаем 4 первых и 2 последних.
-		 */
+		# 2016-03-15
+		# https://mage2.pro/t/941
+		# https://stripe.com/docs/api#card_object-last4
+		# «How is the \Magento\Sales\Model\Order\Payment's setCcLast4() / getCcLast4() used?»
+		# 2016-05-20 Мы не можем получить 4 последние цифры карты: вместо этого получаем 4 первых и 2 последних.
 		$this->iiaAdd(
 			dfa($card, [InfoBlock::CARD_F6, InfoBlock::CARD_L2])
 			/**
