@@ -77,7 +77,7 @@ final class Address extends \Df\Core\O {
 			 *		"city": "Абакан",
 			 *		"country": "RUS",
 			 *		"email": "dfediuk@gmail.com",
-			 *		"name": "Dmitry Fedyuk",
+			 *		"name": "Dmitrii Fediuk",
 			 *		"phoneExt": "",
 			 *		"phoneNumber": "+79629197300",
 			 *		"state": "Хакасия",
