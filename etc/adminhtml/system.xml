@@ -98,7 +98,7 @@ So the `sortOrder` value is 1920. -->
 валидатор стал ложно срабатывать на звёздочки (маску),
 требуя, чтобы этих звёздочек было 36 штук.
 2016-11-24
-Аналогичные проявления для модулей Df_Amazon и Dfe_AmazonLogin:
+Аналогичные проявления для модулей Dfe_Amazon и Dfe_AmazonLogin:
 https://github.com/mage2pro/amazon/blob/1.0.9/etc/adminhtml/system.xml#L122
 https://github.com/mage2pro/amazon-login/blob/1.0.7/etc/adminhtml/system.xml#L69
 -->
