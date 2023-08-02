@@ -3,10 +3,9 @@ namespace Dfe\TwoCheckout;
 use Df\Payment\Token;
 use Dfe\TwoCheckout\Block\Info as InfoBlock;
 use Magento\Framework\Exception\LocalizedException as LE;
-use Magento\Sales\Model\Order as O;
 use Magento\Sales\Model\Order\Creditmemo as CM;
-use Magento\Sales\Model\Order\Payment as OP;
 use Magento\Sales\Model\Order\Payment\Transaction as T;
+use \Throwable as Th; # 2023-08-02 "Treat `\Throwable` similar to `\Exception`": https://github.com/mage2pro/core/issues/311
 # 2016-05-17
 /** @method Settings s() */
 final class Method extends \Df\Payment\Method {
@@ -459,7 +458,8 @@ final class Method extends \Df\Payment\Method {
 	private function api(\Closure $f) {
 		try {$this->s()->init(); return $f();}
 		catch (Exception $e) {throw $e;}
-		catch (\Exception $e) {throw df_lx($e);}
+		# 2023-08-02 "Treat `\Throwable` similar to `\Exception`": https://github.com/mage2pro/core/issues/311
+		catch (Th $th) {throw df_lx($th);}
 	}
 
 	/**

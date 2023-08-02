@@ -2,7 +2,7 @@
 namespace Dfe\TwoCheckout;
 use Dfe\TwoCheckout\Handler\DefaultT;
 use Dfe\TwoCheckout\Settings as S;
-use Exception as E;
+use \Throwable as Th; # 2023-08-02 "Treat `\Throwable` similar to `\Exception`": https://github.com/mage2pro/core/issues/311
 /**
  * @see \Dfe\TwoCheckout\Handler\DefaultT
  * @see \Dfe\TwoCheckout\Handler\RefundIssued
@@ -40,7 +40,6 @@ abstract class Handler extends \Df\Core\O {
 	 * 2016-03-25
 	 * @param array(string => mixed) $request
 	 * @return mixed
-	 * @throws E
 	 */
 	final static function p(array $request) {/** @var mixed $r */
 		try {
@@ -81,15 +80,16 @@ abstract class Handler extends \Df\Core\O {
 			$i = df_new(df_con(__CLASS__, $suffix, DefaultT::class), $request); /** @var Handler $i */
 			$r = $i->eligible() ? $i->process() : 'The event is not for our store.';
 		}
-		catch (E $e) {
+		# 2023-08-02 "Treat `\Throwable` similar to `\Exception`": https://github.com/mage2pro/core/issues/311
+		catch (Th $th) {
 			df_500();
 			# 2023-07-25
 			# "Change the 3rd argument of `df_sentry` from `$context` to `$extra`": https://github.com/mage2pro/core/issues/249
-			df_sentry(__CLASS__, $e, ['request' => $request]);
+			df_sentry(__CLASS__, $th, ['request' => $request]);
 			if (df_my_local()) {
-				throw $e; # 2016-03-27 Удобно видеть стек на экране.
+				throw $th; # 2016-03-27 Удобно видеть стек на экране.
 			}
-			$r = __($e->getMessage());
+			$r = __($th->getMessage());
 		}
 		return $r;
 	}
