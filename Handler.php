@@ -89,7 +89,7 @@ abstract class Handler extends \Df\Core\O {
 			if (df_my_local()) {
 				throw $th; # 2016-03-27 Удобно видеть стек на экране.
 			}
-			$r = __($th->getMessage());
+			$r = __(df_xts($th));
 		}
 		return $r;
 	}
