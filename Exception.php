@@ -22,6 +22,7 @@ final class Exception extends \Df\Payment\Exception {
 	 * @override
 	 * @see \Df\Core\Exception::message()
 	 * @used-by df_xts()
+	 * @used-by \Df\Core\Exception::throw_()
 	 * @used-by \Dfe\TwoCheckout\Method::api()
 	 */
 	function message():string {return df_api_rr_failed('2Checkout', $this->_res->a(), $this->_req);}
