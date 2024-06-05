@@ -83,8 +83,9 @@ final class Address extends \Df\Core\O {
 			 *		"state": "Хакасия",
 			 *		"zipCode": "655017"
 			 *	}
+			 * 2024-06-06 "Use the «Symmetric array destructuring» PHP 7.1 feature": https://github.com/mage2pro/core/issues/379
 			 */
-			list($s1, $s2) = [$s, !in_array($this->countryIso3(), ['CHN', 'JPN', 'RUS']) ? '' : '---'];
+			[$s1, $s2] = [$s, !in_array($this->countryIso3(), ['CHN', 'JPN', 'RUS']) ? '' : '---'];
 		}
 		return [$s1, $s2];
 	}); return is_null($i) ? $r : $r[$i - 1];}
